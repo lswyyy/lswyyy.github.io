@@ -51,15 +51,31 @@
 
 
 
-<meta name="description">
-<meta property="og:type" content="website">
+<meta name="description" content="一.org.apache.spark.shuffle.FetchFailedException1.问题描述这种问题一般发生在有大量shuffle操作的时候,task不断的failed,然后又重执行，一直循环下去，非常的耗时。
+
+2.报错提示(1) missing output location
+1org.apache.spark.shuffle.MetadataFetchFailedExcepti">
+<meta property="og:type" content="article">
 <meta property="og:title" content="breeze">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/12/02/spark任务常见问题解决方案及优化/index.html">
 <meta property="og:site_name" content="breeze">
-<meta property="og:description">
+<meta property="og:description" content="一.org.apache.spark.shuffle.FetchFailedException1.问题描述这种问题一般发生在有大量shuffle操作的时候,task不断的failed,然后又重执行，一直循环下去，非常的耗时。
+
+2.报错提示(1) missing output location
+1org.apache.spark.shuffle.MetadataFetchFailedExcepti">
+<meta property="og:image" content="http://img.blog.csdn.net/20151015114958881">
+<meta property="og:image" content="http://img.blog.csdn.net/20151015114309842">
+<meta property="og:image" content="http://img.blog.csdn.net/20151015114008642">
+<meta property="og:image" content="http://img.blog.csdn.net/20151015152750199">
+<meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
+<meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
+<meta property="og:updated_time" content="2015-12-02T02:55:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="breeze">
-<meta name="twitter:description">
+<meta name="twitter:description" content="一.org.apache.spark.shuffle.FetchFailedException1.问题描述这种问题一般发生在有大量shuffle操作的时候,task不断的failed,然后又重执行，一直循环下去，非常的耗时。
+
+2.报错提示(1) missing output location
+1org.apache.spark.shuffle.MetadataFetchFailedExcepti">
 
 
 
@@ -71,7 +87,7 @@
   };
 </script>
 
-  <title> breeze </title>
+  <title>  | breeze </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="">
@@ -92,9 +108,7 @@
 
 
 
-  <div class="container one-column 
-   page-home 
-">
+  <div class="container one-column page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -171,15 +185,9 @@
       <div class="main-inner">
         <div id="content" class="content">
           
-  <section id="posts" class="posts-expand">
 
+  <div id="posts" class="posts-expand">
     
-
-    
-    
-
-    
-      
 
   
   
@@ -200,9 +208,6 @@
             
               
                 
-                <a class="post-title-link" href="/2015/12/02/spark任务常见问题解决方案及优化/" itemprop="url">
-                  未命名
-                </a>
               
             
           </h1>
@@ -235,10 +240,7 @@
       
 
       
-        
-          <span itemprop="articleBody">
-            
-              <h2 id="一-org-apache-spark-shuffle-FetchFailedException">一.org.apache.spark.shuffle.FetchFailedException</h2><h3 id="1-问题描述">1.问题描述</h3><p>这种问题一般发生在有大量shuffle操作的时候,task不断的failed,然后又重执行，一直循环下去，非常的耗时。</p>
+        <span itemprop="articleBody"><h2 id="一-org-apache-spark-shuffle-FetchFailedException">一.org.apache.spark.shuffle.FetchFailedException</h2><h3 id="1-问题描述">1.问题描述</h3><p>这种问题一般发生在有大量shuffle操作的时候,task不断的failed,然后又重执行，一直循环下去，非常的耗时。</p>
 <p><img src="http://img.blog.csdn.net/20151015114958881" alt="faild"></p>
 <h3 id="2-报错提示">2.报错提示</h3><p><strong>(1) missing output location</strong></p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.shuffle</span><span class="class">.MetadataFetchFailedException</span>: Missing an output location <span class="keyword">for</span> shuffle <span class="number">0</span></span><br></pre></td></tr></table></figure>
@@ -320,10 +322,7 @@
 <p><img src="http://img.blog.csdn.net/20151015165959710" alt="并行度500"></p>
 <p>速度变快主要是大量的减少了gc的时间。</p>
 <p>修改map阶段并行度主要是在代码中使用<code>rdd.repartition(partitionNum)</code>来操作。</p>
-
-            
-          </span>
-        
+</span>
       
     </div>
 
@@ -334,17 +333,15 @@
 
       
       
-        <div class="post-eof"></div>
-      
     </footer>
   </article>
 
 
-    
 
-  </section>
-
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
         </div>
@@ -353,6 +350,10 @@
 
 
         
+  <div class="comments" id="comments">
+    
+  </div>
+
 
       </div>
 
@@ -373,8 +374,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" src="/images/default_avatar.jpg" alt="shiwei.liang" itemprop="image"/>
           <p class="site-author-name" itemprop="name">shiwei.liang</p>
@@ -419,6 +429,23 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-org-apache-spark-shuffle-FetchFailedException"><span class="nav-number">1.</span> <span class="nav-text">一.org.apache.spark.shuffle.FetchFailedException</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-问题描述"><span class="nav-number">1.1.</span> <span class="nav-text">1.问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-报错提示"><span class="nav-number">1.2.</span> <span class="nav-text">2.报错提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-解决方案"><span class="nav-number">1.3.</span> <span class="nav-text">3.解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-Executor&Task_Lost"><span class="nav-number">2.</span> <span class="nav-text">二.Executor&Task Lost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-问题描述-1"><span class="nav-number">2.1.</span> <span class="nav-text">1.问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-报错提示-1"><span class="nav-number">2.2.</span> <span class="nav-text">2.报错提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-解决方案-1"><span class="nav-number">2.3.</span> <span class="nav-text">3.解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-倾斜"><span class="nav-number">3.</span> <span class="nav-text">三.倾斜</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-问题描述-2"><span class="nav-number">3.1.</span> <span class="nav-text">1.问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-错误提示"><span class="nav-number">3.2.</span> <span class="nav-text">2.错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-解决方案-2"><span class="nav-number">3.3.</span> <span class="nav-text">3.解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-OOM（内存溢出）"><span class="nav-number">4.</span> <span class="nav-text">四.OOM（内存溢出）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-问题描述-3"><span class="nav-number">4.1.</span> <span class="nav-text">1.问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-解决方案"><span class="nav-number">4.2.</span> <span class="nav-text">2.解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-driver-maxResultSize太小"><span class="nav-number">5.</span> <span class="nav-text">五.driver.maxResultSize太小</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-问题描述-4"><span class="nav-number">5.1.</span> <span class="nav-text">1.问题描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-错误提示-1"><span class="nav-number">5.2.</span> <span class="nav-text">2.错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-解决方案-3"><span class="nav-number">5.3.</span> <span class="nav-text">3.解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六-"><span class="nav-number">6.</span> <span class="nav-text">六.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-错误提示-2"><span class="nav-number">6.1.</span> <span class="nav-text">2.错误提示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化"><span class="nav-number">7.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-内存"><span class="nav-number">7.1.</span> <span class="nav-text">1.内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-并行度"><span class="nav-number">7.2.</span> <span class="nav-text">2.并行度</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
       
 
     </div>
@@ -489,6 +516,167 @@
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
   
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
 
   <script type="text/javascript" src="/js/bootstrap.js"></script>
 

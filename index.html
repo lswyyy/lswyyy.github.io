@@ -177,15 +177,6 @@
 
     
     
-      
-      
-        
-        
-        
-      
-
-      
-    
 
     
       
@@ -209,7 +200,7 @@
             
               
                 
-                <a class="post-title-link" href="/2015/12/02/spark任务常见问题解决方案及优化-1/" itemprop="url">
+                <a class="post-title-link" href="/2015/12/02/spark任务常见问题解决方案及优化/" itemprop="url">
                   spark任务常见问题解决方案及优化
                 </a>
               
@@ -248,168 +239,6 @@
           <span itemprop="articleBody">
             
               
-            
-          </span>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/02/spark任务常见问题解决方案及优化/" itemprop="url">
-                  未命名
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2015-12-02T10:55:37+08:00" content="2015-12-02">
-              2015-12-02
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h2 id="一-org-apache-spark-shuffle-FetchFailedException">一.org.apache.spark.shuffle.FetchFailedException</h2><h3 id="1-问题描述">1.问题描述</h3><p>这种问题一般发生在有大量shuffle操作的时候,task不断的failed,然后又重执行，一直循环下去，非常的耗时。</p>
-<p><img src="http://img.blog.csdn.net/20151015114958881" alt="faild"></p>
-<h3 id="2-报错提示">2.报错提示</h3><p><strong>(1) missing output location</strong></p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.shuffle</span><span class="class">.MetadataFetchFailedException</span>: Missing an output location <span class="keyword">for</span> shuffle <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p><img src="http://img.blog.csdn.net/20151015114309842" alt="missing output location"></p>
-<p><strong>(2) shuffle fetch faild</strong></p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.shuffle</span><span class="class">.FetchFailedException</span>: Failed to connect to spark047215/<span class="number">192.168</span>.<span class="number">47.215</span>:<span class="number">50268</span></span><br></pre></td></tr></table></figure>
-<p><img src="http://img.blog.csdn.net/20151015114008642" alt="shuffle fetch faild"></p>
-<p>当前的配置为每个executor使用1cpu,5GRAM,启动了20个executor</p>
-<h3 id="3-解决方案">3.解决方案</h3><p>一般遇到这种问题提高executor内存即可,同时增加每个executor的cpu,这样不会减少task并行度。</p>
-<ul>
-<li>spark.executor.memory 15G</li>
-<li>spark.executor.cores 3</li>
-<li>spark.cores.max 21</li>
-</ul>
-<p>启动的execuote数量为:7个</p>
-<pre><code>execuoteNum = spark<span class="class">.cores</span><span class="class">.max</span>/spark<span class="class">.executor</span><span class="class">.cores</span> 
-</code></pre><p>每个executor的配置：</p>
-<pre><code><span class="number">3</span>core,<span class="number">15</span>G RAM
-</code></pre><p>消耗的内存资源为:105G RAM</p>
-<pre><code><span class="number">15</span>G*<span class="number">7</span>=<span class="number">105</span>G
-</code></pre><p>可以发现使用的资源并没有提升，但是同样的任务原来的配置跑几个小时还在卡着，改了配置后几分钟就结束了。</p>
-<h2 id="二-Executor&amp;Task_Lost">二.Executor&amp;Task Lost</h2><h3 id="1-问题描述-1">1.问题描述</h3><p>因为网络或者gc的原因,worker或executor没有接收到executor或task的心跳反馈</p>
-<h3 id="2-报错提示-1">2.报错提示</h3><p><strong>(1) executor lost</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WARN TaskSetManager: Lost task <span class="number">1.0</span> in stage <span class="number">0.0</span> (TID <span class="number">1</span>, aa.local): ExecutorLostFailure (executor lost)</span><br></pre></td></tr></table></figure>
-<p><strong>(2) task lost</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WARN TaskSetManager: Lost task <span class="number">69.2</span> in stage <span class="number">7.0</span> (TID <span class="number">1145</span>, <span class="number">192.168</span><span class="number">.47</span><span class="number">.217</span>): java.io.IOException: Connection from /<span class="number">192.168</span><span class="number">.47</span><span class="number">.217</span>:<span class="number">55483</span> closed</span><br></pre></td></tr></table></figure></p>
-<p><strong>(3) 各种timeout</strong><br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java<span class="class">.util</span><span class="class">.concurrent</span><span class="class">.TimeoutException</span>: Futures timed out after [<span class="number">120</span> second</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR TransportChannelHandler: Connection to /<span class="number">192.168</span><span class="number">.47</span><span class="number">.212</span>:<span class="number">35409</span> has been quiet <span class="keyword">for</span> <span class="number">120000</span> ms <span class="keyword">while</span> there are outstanding requests. Assuming connection is dead; please adjust spark.network.timeout <span class="keyword">if</span> <span class="keyword">this</span> is wrong</span><br></pre></td></tr></table></figure>
-<h3 id="3-解决方案-1">3.解决方案</h3><p>提高 <strong>spark.network.timeout</strong> 的值，根据情况改成300(5min)或更高。</p>
-<p>默认为 120(120s),配置所有网络传输的延时，如果没有主动设置以下参数，默认覆盖其属性</p>
-<ul>
-<li>spark.core.connection.ack.wait.timeout</li>
-<li>spark.akka.timeout</li>
-<li>spark.storage.blockManagerSlaveTimeoutMs</li>
-<li>spark.shuffle.io.connectionTimeout</li>
-<li>spark.rpc.askTimeout or spark.rpc.lookupTimeout</li>
-</ul>
-<h2 id="三-倾斜">三.倾斜</h2><h3 id="1-问题描述-2">1.问题描述</h3><p>大多数任务都完成了，还有那么一两个任务怎么都跑不完或者跑的很慢。<br>分为数据倾斜和task倾斜两种。</p>
-<h3 id="2-错误提示">2.错误提示</h3><p><strong>(1) 数据倾斜</strong></p>
-<p><img src="http://img.blog.csdn.net/20151015152750199" alt="数据倾斜"></p>
-<p><strong>(2) 任务倾斜</strong></p>
-<p>差距不大的几个task,有的运行速度特别慢。</p>
-<h3 id="3-解决方案-2">3.解决方案</h3><p><strong>(1) 数据倾斜</strong></p>
-<p>数据倾斜大多数情况是由于大量<code>null</code>值或者<code>&quot;&quot;</code>引起，在计算前过滤掉这些数据既可。<br>例如：    </p>
-<pre><code>sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"...where col is not null and col != ''"</span>)</span></span>
-</code></pre><p><strong>(2) 任务倾斜</strong> </p>
-<p>task倾斜原因比较多，网络io,cpu,mem都有可能造成这个节点上的任务执行缓慢，可以去看该节点的性能监控来分析原因。以前遇到过同事在spark的一台worker上跑R的任务导致该节点spark task运行缓慢。<br>或者可以开启spark的推测机制，开启推测机制后如果某一台机器的几个task特别慢，推测机制会将任务分配到其他机器执行，最后Spark会选取最快的作为最终结果。</p>
-<ul>
-<li>spark.speculation true</li>
-<li>spark.speculation.interval 100 - 检测周期，单位毫秒；</li>
-<li>spark.speculation.quantile 0.75 - 完成task的百分比时启动推测</li>
-<li>spark.speculation.multiplier 1.5 - 比其他的慢多少倍时启动推测。</li>
-</ul>
-<h2 id="四-OOM（内存溢出）">四.OOM（内存溢出）</h2><h3 id="1-问题描述-3">1.问题描述</h3><p>内存不够，数据太多就会抛出OOM的Exeception</p>
-<p>因为报错提示很明显，这里就不给报错提示了。。。</p>
-<h3 id="2-解决方案">2.解决方案</h3><p>主要有driver OOM和executor OOM两种</p>
-<p><strong>(1) driver OOM</strong></p>
-<p>一般是使用了collect操作将所有executor的数据聚合到driver导致。尽量不要使用collect操作即可。</p>
-<p><strong>(2) executor OOM</strong></p>
-<p>1.可以按下面的内存优化的方法增加code使用内存空间</p>
-<p>2.增加executor内存总量,也就是说增加spark.executor.memory的值</p>
-<p>3.增加任务并行度（大任务就被分成小任务了)，参考下面优化并行度的方法</p>
-<h2 id="五-driver-maxResultSize太小">五.driver.maxResultSize太小</h2><h3 id="1-问题描述-4">1.问题描述</h3><p>spark.driver.maxResultSize    每个Spark action(如collect)所有分区的序列化结果的总大小限制,默认大小为1G,报这个错说明需要提高这个值了。</p>
-<h3 id="2-错误提示-1">2.错误提示</h3><pre><code><span class="tag">Caused</span> <span class="tag">by</span>: <span class="tag">org</span><span class="class">.apache</span><span class="class">.spark</span><span class="class">.SparkException</span>: <span class="tag">Job</span> <span class="tag">aborted</span> <span class="tag">due</span> <span class="tag">to</span> <span class="tag">stage</span> <span class="tag">failure</span>: <span class="tag">Total</span> <span class="tag">size</span> <span class="tag">of</span> <span class="tag">serialized</span> <span class="tag">results</span> <span class="tag">of</span> 374 <span class="tag">tasks</span> (1026<span class="class">.0</span> <span class="tag">MB</span>) <span class="tag">is</span> <span class="tag">bigger</span> <span class="tag">than</span> <span class="tag">spark</span><span class="class">.driver</span><span class="class">.maxResultSize</span> (1024<span class="class">.0</span> <span class="tag">MB</span>)
-</code></pre><h3 id="3-解决方案-3">3.解决方案</h3><p>将值调大即可</p>
-<pre><code>spark<span class="class">.driver</span><span class="class">.maxResultSize</span> <span class="number">2</span>g
-</code></pre><h2 id="六-">六.</h2><h3 id="2-错误提示-2">2.错误提示</h3><h2 id="优化">优化</h2><h3 id="1-内存">1.内存</h3><p>当然如果你的任务shuffle量特别大，同时rdd缓存比较少可以更改下面的参数进一步提高任务运行速度。</p>
-<p><code>spark.storage.memoryFraction</code> － 分配给rdd缓存的比例，默认为0.6(60%)，如果缓存的数据较少可以降低该值。</p>
-<p><code>spark.shuffle.memoryFraction</code> - 分配给shuffle数据的内存比例，默认为0.2(20%)</p>
-<p>剩下的20%内存空间则是分配给代码生成对象等。</p>
-<p>如果任务运行缓慢，jvm进行频繁gc或者内存空间不足，或者可以降低上述的两个值。</p>
-<p><code>&quot;spark.rdd.compress&quot;,&quot;true&quot;</code> － 默认为false，压缩序列化的RDD分区,消耗一些cpu减少空间的使用</p>
-<h3 id="2-并行度">2.并行度</h3><p><code>spark.default.parallelism</code></p>
-<p>发生shuffle时的并行度，在standalone模式下的数量默认为core的个数，也可手动调整，数量设置太大会造成很多小任务，增加启动任务的开销，太小，运行大数据量的任务时速度缓慢。</p>
-<p><code>spark.sql.shuffle.partitions</code></p>
-<p>sql聚合操作(发生shuffle)时的并行度，默认为200,如果任务运行缓慢增加这个值。</p>
-<p>相同的两个任务：<br>spark.sql.shuffle.partitions=300:</p>
-<p><img src="http://img.blog.csdn.net/20151015165917751" alt="并行度300"></p>
-<p>spark.sql.shuffle.partitions=500:</p>
-<p><img src="http://img.blog.csdn.net/20151015165959710" alt="并行度500"></p>
-<p>速度变快主要是大量的减少了gc的时间。</p>
-<p>修改map阶段并行度主要是在代码中使用<code>rdd.repartition(partitionNum)</code>来操作。</p>
-
             
           </span>
         
@@ -472,7 +301,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">1</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

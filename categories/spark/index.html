@@ -54,7 +54,7 @@
 <meta name="description">
 <meta property="og:type" content="website">
 <meta property="og:title" content="breeze">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/categories/spark/index.html">
 <meta property="og:site_name" content="breeze">
 <meta property="og:description">
 <meta name="twitter:card" content="summary">
@@ -71,7 +71,7 @@
   };
 </script>
 
-  <title> breeze </title>
+  <title> 分类: spark | breeze </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -92,9 +92,7 @@
 
 
 
-  <div class="container one-column 
-   page-home 
-">
+  <div class="container one-column ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -191,153 +189,48 @@
       <div class="main-inner">
         <div id="content" class="content">
           
-  <section id="posts" class="posts-expand">
 
-    
-
-    
-    
-      
-      
-        
-        
-        
-      
-
-      
-    
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/06/使用Hexo搭建github博客/" itemprop="url">
-                  使用Hexo搭建github博客
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2015-12-06T20:19:29+08:00" content="2015-12-06">
-              2015-12-06
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">hexo</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-              <h2 id="使用环境">使用环境</h2><pre><code><span class="tag">Git</span>
-<span class="tag">Github</span>仓库<span class="pseudo">:xxx</span><span class="class">.github</span><span class="class">.io</span>
-<span class="tag">hexo</span> 3<span class="class">.x</span>
-</code></pre><h2 id="安装Hexo">安装Hexo</h2><pre><code>npm <span class="operator"><span class="keyword">install</span> -<span class="keyword">g</span> hexo</span>
-</code></pre><h2 id="初始化blog框架">初始化blog框架</h2><pre><code><span class="comment">//创建博客文件夹</span>
-<span class="keyword">mkdir</span> GitBlog
-<span class="keyword">cd</span> GitBlog
-
-<span class="comment">//初始化    </span>
-hexo init
-npm install
-npm install hexo-deployer-git --<span class="keyword">save</span>
-</code></pre><h2 id="修改_config-yml">修改<code>_config.yml</code></h2><p>使用ssh地址</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">deploy</span>:</span><br><span class="line">  <span class="attribute">type</span>: git</span><br><span class="line">  <span class="attribute">repository</span>: git<span class="variable">@github</span>.<span class="attribute">com</span>:lswyyy/lswyyy.github.io.git</span><br><span class="line">  <span class="attribute">branch</span>: master</span><br></pre></td></tr></table></figure>
-<h2 id="部署启动">部署启动</h2><p>生成静态页面，自带一个<code>helloworld.md</code></p>
-<pre><code><span class="comment">//hexo generate</span>
-hexo <span class="keyword">g</span> 
-</code></pre><p>部署到git</p>
-<pre><code><span class="comment">//hexo deply</span>
-hexo <span class="literal">d</span>
-</code></pre><p>也可以直接使用</p>
-<pre><code>heo <span class="keyword">d</span> -<span class="keyword">g</span>     
-</code></pre><p>本地预览,启动后在<code>http://localhost:4000/</code>中查看</p>
-<pre><code><span class="comment">//hexo server</span>
-hexo <span class="literal">s</span>
-</code></pre><h2 id="写blog">写blog</h2><p>将写好的md文件放到<code>source/_posts</code>下，在开头添加一些描述信息，分类和标签不是必须的。</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">title</span>: <span class="string">文章名</span></span><br><span class="line"><span class="attribute">date</span>: <span class="string">2015-12-02 11:09:17</span></span><br><span class="line"><span class="attribute">category</span>: <span class="string">"分类名"   </span></span><br><span class="line"><span class="attribute">tags</span>: <span class="string">"标签名"       </span></span><br><span class="line"></span><br><span class="line"><span class="haml">-<span class="ruby">--</span><br><span class="line"></span>你的文章</span></span><br></pre></td></tr></table></figure>
-<p>或者使用命令<code>hexo n</code>,将会生成一个md文件，直接将你的md文件追加进去就行了</p>
-<pre><code><span class="title">hexo</span> n 文章名
-</code></pre><p>将更改部署到git</p>
-<pre><code>hexo <span class="keyword">d</span> -<span class="keyword">g</span>
-</code></pre>
-            
-          </span>
-        
-      
+  <section id="posts" class="posts-collapse">
+    <div class="collection-title">
+      <h2 >
+        spark
+        <small>分类</small>
+      </h2>
     </div>
 
-    <footer class="post-footer">
+    
       
 
-      
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
+      <h1 class="post-title">
+        
+            <a class="post-title-link" href="/2015/12/02/spark任务常见问题解决方案及优化/" itemprop="url">
+              
+                <span itemprop="name">spark任务常见问题解决方案及优化</span>
+              
+            </a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2015-12-02T11:09:17+08:00"
+              content="2015-12-02" >
+          12-02
+        </time>
+      </div>
+
+    </header>
   </article>
 
 
     
-
   </section>
 
   
+
 
 
         </div>
@@ -456,6 +349,12 @@ hexo <span class="literal">s</span>
 
   
   
+  
+    <script type="text/javascript">
+      postMotionOptions = {stagger: 100, drag: true};
+    </script>
+  
+
 
   
     

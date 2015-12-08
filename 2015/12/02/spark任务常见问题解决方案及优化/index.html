@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="spark," />
 
 
 
@@ -51,31 +51,34 @@
 
 
 
-<meta name="description" content="title: spark任务常见问题解决方案及优化date: 2015-12-02 11:09:17category: “spark”tags: “spark”
-huffle.FetchFailedException
-错误提示(1) missing output location
-1org.apache.spark.shuffle.MetadataFetchFailedException: Mis">
+<meta name="description" content="常见错误1.shuffle.FetchFailedException错误提示(1) missing output location
+1org.apache.spark.shuffle.MetadataFetchFailedException: Missing an output location for shuffle 0
+
+(2) shuffle fetch faild
+1org.apache.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="breeze">
-<meta property="og:url" content="http://yoursite.com/2015/12/08/spark任务常见问题解决方案及优化/index.html">
+<meta property="og:title" content="spark任务常见问题解决方案及优化">
+<meta property="og:url" content="http://yoursite.com/2015/12/02/spark任务常见问题解决方案及优化/index.html">
 <meta property="og:site_name" content="breeze">
-<meta property="og:description" content="title: spark任务常见问题解决方案及优化date: 2015-12-02 11:09:17category: “spark”tags: “spark”
-huffle.FetchFailedException
-错误提示(1) missing output location
-1org.apache.spark.shuffle.MetadataFetchFailedException: Mis">
+<meta property="og:description" content="常见错误1.shuffle.FetchFailedException错误提示(1) missing output location
+1org.apache.spark.shuffle.MetadataFetchFailedException: Missing an output location for shuffle 0
+
+(2) shuffle fetch faild
+1org.apache.">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015114309842">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015114008642">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015114958881">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015152750199">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
-<meta property="og:updated_time" content="2015-12-08T03:27:52.000Z">
+<meta property="og:updated_time" content="2015-12-08T03:31:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="breeze">
-<meta name="twitter:description" content="title: spark任务常见问题解决方案及优化date: 2015-12-02 11:09:17category: “spark”tags: “spark”
-huffle.FetchFailedException
-错误提示(1) missing output location
-1org.apache.spark.shuffle.MetadataFetchFailedException: Mis">
+<meta name="twitter:title" content="spark任务常见问题解决方案及优化">
+<meta name="twitter:description" content="常见错误1.shuffle.FetchFailedException错误提示(1) missing output location
+1org.apache.spark.shuffle.MetadataFetchFailedException: Missing an output location for shuffle 0
+
+(2) shuffle fetch faild
+1org.apache.">
 
 
 
@@ -87,7 +90,7 @@ huffle.FetchFailedException
   };
 </script>
 
-  <title>  | breeze </title>
+  <title> spark任务常见问题解决方案及优化 | breeze </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -227,7 +230,7 @@ huffle.FetchFailedException
             
             
               
-                
+                spark任务常见问题解决方案及优化
               
             
           </h1>
@@ -236,11 +239,26 @@ huffle.FetchFailedException
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-08T11:27:52+08:00" content="2015-12-08">
-              2015-12-08
+            <time itemprop="dateCreated" datetime="2015-12-02T11:09:17+08:00" content="2015-12-02">
+              2015-12-02
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -260,9 +278,7 @@ huffle.FetchFailedException
       
 
       
-        <span itemprop="articleBody"><p>title: spark任务常见问题解决方案及优化<br>date: 2015-12-02 11:09:17<br>category: “spark”<br>tags: “spark”</p>
-<p>huffle.FetchFailedException</p>
-<h3 id="错误提示">错误提示</h3><p><strong>(1) missing output location</strong></p>
+        <span itemprop="articleBody"><h1 id="常见错误">常见错误</h1><h2 id="1-shuffle-FetchFailedException">1.shuffle.FetchFailedException</h2><h3 id="错误提示">错误提示</h3><p><strong>(1) missing output location</strong></p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.shuffle</span><span class="class">.MetadataFetchFailedException</span>: Missing an output location <span class="keyword">for</span> shuffle <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <p><img src="http://img.blog.csdn.net/20151015114309842" alt="missing output location"></p>
 <p><strong>(2) shuffle fetch faild</strong></p>
@@ -354,18 +370,24 @@ huffle.FetchFailedException
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/spark/" rel="tag">#spark</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/06/使用Hexo搭建github博客/" rel="next" title="使用Hexo搭建github博客">
-                <i class="fa fa-chevron-left"></i> 使用Hexo搭建github博客
-              </a>
-            
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/06/使用Hexo搭建github博客/" rel="prev" title="使用Hexo搭建github博客">
+                使用Hexo搭建github博客 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -479,7 +501,7 @@ huffle.FetchFailedException
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示"><span class="nav-number">1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Executor&Task_Lost"><span class="nav-number"></span> <span class="nav-text">2.Executor&Task Lost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-1"><span class="nav-number">1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-1"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-倾斜"><span class="nav-number"></span> <span class="nav-text">3.倾斜</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-2"><span class="nav-number">1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-2"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-OOM（内存溢出）"><span class="nav-number"></span> <span class="nav-text">4.OOM（内存溢出）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-3"><span class="nav-number">1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-3"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-driver-maxResultSize太小"><span class="nav-number"></span> <span class="nav-text">5.driver.maxResultSize太小</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-4"><span class="nav-number">1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-4"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-python权限不够"><span class="nav-number"></span> <span class="nav-text">6.python权限不够</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-5"><span class="nav-number">1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-5"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化"><span class="nav-number"></span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-内存"><span class="nav-number">1.</span> <span class="nav-text">1.内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-并行度"><span class="nav-number">2.</span> <span class="nav-text">2.并行度</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常见错误"><span class="nav-number">1.</span> <span class="nav-text">常见错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-shuffle-FetchFailedException"><span class="nav-number">1.1.</span> <span class="nav-text">1.shuffle.FetchFailedException</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示"><span class="nav-number">1.1.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决"><span class="nav-number">1.1.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Executor&Task_Lost"><span class="nav-number">1.2.</span> <span class="nav-text">2.Executor&Task Lost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-倾斜"><span class="nav-number">1.3.</span> <span class="nav-text">3.倾斜</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-OOM（内存溢出）"><span class="nav-number">1.4.</span> <span class="nav-text">4.OOM（内存溢出）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-3"><span class="nav-number">1.4.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-3"><span class="nav-number">1.4.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-driver-maxResultSize太小"><span class="nav-number">1.5.</span> <span class="nav-text">5.driver.maxResultSize太小</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-4"><span class="nav-number">1.5.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-4"><span class="nav-number">1.5.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-python权限不够"><span class="nav-number">1.6.</span> <span class="nav-text">6.python权限不够</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-5"><span class="nav-number">1.6.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-5"><span class="nav-number">1.6.2.</span> <span class="nav-text">解决</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化"><span class="nav-number">2.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-内存"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-并行度"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.并行度</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -58,7 +58,7 @@
 1org.apache.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spark任务常见问题解决方案及优化">
-<meta property="og:url" content="http://yoursite.com/2015/12/02/spark任务常见问题解决方案及优化/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/10/15/spark任务常见问题解决方案及优化/index.html">
 <meta property="og:site_name" content="breeze">
 <meta property="og:description" content="常见错误1.shuffle.FetchFailedException错误提示(1) missing output location
 1org.apache.spark.shuffle.MetadataFetchFailedException: Missing an output location for shuffle 0
@@ -71,7 +71,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015152750199">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
-<meta property="og:updated_time" content="2015-12-08T03:31:36.000Z">
+<meta property="og:updated_time" content="2015-12-08T16:17:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark任务常见问题解决方案及优化">
 <meta name="twitter:description" content="常见错误1.shuffle.FetchFailedException错误提示(1) missing output location
@@ -239,8 +239,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-02T11:09:17+08:00" content="2015-12-02">
-              2015-12-02
+            <time itemprop="dateCreated" datetime="2015-10-15T17:09:17+08:00" content="2015-10-15">
+              2015-10-15
             </time>
           </span>
 
@@ -347,8 +347,12 @@
 <pre><code>spark<span class="class">.driver</span><span class="class">.maxResultSize</span> <span class="number">2</span>g
 </code></pre><h2 id="6-python权限不够">6.python权限不够</h2><h3 id="错误提示-5">错误提示</h3><p>部分节点上有错误提示</p>
 <pre><code>java.io.IOExeception: Cannot <span class="keyword">run</span> <span class="keyword">program</span> <span class="string">"python2.7"</span>: <span class="keyword">error</span>=13, 权限不够
-</code></pre><h3 id="解决-5">解决</h3><p> 新加的节点运维装2.7版本的python,python命令是正确的,python2.7却无法调用，只要改改环境变量就好了。</p>
-<h1 id="优化">优化</h1><h3 id="1-内存">1.内存</h3><p>当然如果你的任务shuffle量特别大，同时rdd缓存比较少可以更改下面的参数进一步提高任务运行速度。</p>
+</code></pre><h3 id="解决-5">解决</h3><p> 新加的节点运维装2.7版本的python,python命令是正确的,python2.7却无法调用，正确修改环境变量即可。</p>
+<h2 id="7-worker和master宕掉">7.worker和master宕掉</h2><h3 id="错误提示-6">错误提示</h3><p>master和worker突然挂掉，log里没有任何提示</p>
+<h2 id="解决-6">解决</h2><p>大量任务运行在集群上时，内存不足导致的进程退出。<br>修改master和worker的守护进程内存空间，默认512m</p>
+<p>在<code>conf/spark-env.sh</code>中</p>
+<pre><code><span class="keyword">export</span> SPARK_DAEMON_MEMORY=<span class="number">3</span>g
+</code></pre><h1 id="优化">优化</h1><h3 id="1-内存">1.内存</h3><p>当然如果你的任务shuffle量特别大，同时rdd缓存比较少可以更改下面的参数进一步提高任务运行速度。</p>
 <p><code>spark.storage.memoryFraction</code> － 分配给rdd缓存的比例，默认为0.6(60%)，如果缓存的数据较少可以降低该值。</p>
 <p><code>spark.shuffle.memoryFraction</code> - 分配给shuffle数据的内存比例，默认为0.2(20%)</p>
 <p>剩下的20%内存空间则是分配给代码生成对象等。</p>
@@ -381,16 +385,12 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/26/磁盘IO对spark的影响/" rel="next" title="磁盘IO对spark的影响">
-                <i class="fa fa-chevron-left"></i> 磁盘IO对spark的影响
-              </a>
-            
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/12/06/使用Hexo搭建github博客/" rel="prev" title="使用Hexo搭建github博客">
-                使用Hexo搭建github博客 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/11/26/磁盘IO对spark的影响/" rel="prev" title="磁盘IO对spark的影响">
+                磁盘IO对spark的影响 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -505,7 +505,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常见错误"><span class="nav-number">1.</span> <span class="nav-text">常见错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-shuffle-FetchFailedException"><span class="nav-number">1.1.</span> <span class="nav-text">1.shuffle.FetchFailedException</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示"><span class="nav-number">1.1.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决"><span class="nav-number">1.1.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Executor&Task_Lost"><span class="nav-number">1.2.</span> <span class="nav-text">2.Executor&Task Lost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-倾斜"><span class="nav-number">1.3.</span> <span class="nav-text">3.倾斜</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-OOM（内存溢出）"><span class="nav-number">1.4.</span> <span class="nav-text">4.OOM（内存溢出）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-3"><span class="nav-number">1.4.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-3"><span class="nav-number">1.4.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-driver-maxResultSize太小"><span class="nav-number">1.5.</span> <span class="nav-text">5.driver.maxResultSize太小</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-4"><span class="nav-number">1.5.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-4"><span class="nav-number">1.5.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-python权限不够"><span class="nav-number">1.6.</span> <span class="nav-text">6.python权限不够</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-5"><span class="nav-number">1.6.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-5"><span class="nav-number">1.6.2.</span> <span class="nav-text">解决</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化"><span class="nav-number">2.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-内存"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-并行度"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.并行度</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常见错误"><span class="nav-number">1.</span> <span class="nav-text">常见错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-shuffle-FetchFailedException"><span class="nav-number">1.1.</span> <span class="nav-text">1.shuffle.FetchFailedException</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示"><span class="nav-number">1.1.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决"><span class="nav-number">1.1.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Executor&Task_Lost"><span class="nav-number">1.2.</span> <span class="nav-text">2.Executor&Task Lost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-倾斜"><span class="nav-number">1.3.</span> <span class="nav-text">3.倾斜</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-OOM（内存溢出）"><span class="nav-number">1.4.</span> <span class="nav-text">4.OOM（内存溢出）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-3"><span class="nav-number">1.4.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-3"><span class="nav-number">1.4.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-driver-maxResultSize太小"><span class="nav-number">1.5.</span> <span class="nav-text">5.driver.maxResultSize太小</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-4"><span class="nav-number">1.5.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-4"><span class="nav-number">1.5.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-python权限不够"><span class="nav-number">1.6.</span> <span class="nav-text">6.python权限不够</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-5"><span class="nav-number">1.6.1.</span> <span class="nav-text">错误提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决-5"><span class="nav-number">1.6.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-worker和master宕掉"><span class="nav-number">1.7.</span> <span class="nav-text">7.worker和master宕掉</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误提示-6"><span class="nav-number">1.7.1.</span> <span class="nav-text">错误提示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决-6"><span class="nav-number">1.8.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化"><span class="nav-number">2.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-内存"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-并行度"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.并行度</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -53,42 +53,36 @@
 
 <meta name="description" content="在大量数据中对一些字段进行关联。
 举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-直接join将会对所有数据进行shuffle。
+直接join将会对所有数据进行shuffle，相同的key会在同一个partition中进行处理。
 
-使用broadcast将会把小表分发到每台执行节点上，基本就取消了shuffle的过程，运行效率大幅度提高。
+使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大幅度提高。
 
-样本数据(2000w)性能测试对比小表没有进行broadcast
-
-进行了broadcast,可以看到连shuf">
+样本数据(2000w)性能测试对">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spark_join_broadcast优化">
 <meta property="og:url" content="http://yoursite.com/2015/09/24/spark-join-broadcast优化/index.html">
 <meta property="og:site_name" content="breeze">
 <meta property="og:description" content="在大量数据中对一些字段进行关联。
 举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-直接join将会对所有数据进行shuffle。
+直接join将会对所有数据进行shuffle，相同的key会在同一个partition中进行处理。
 
-使用broadcast将会把小表分发到每台执行节点上，基本就取消了shuffle的过程，运行效率大幅度提高。
+使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大幅度提高。
 
-样本数据(2000w)性能测试对比小表没有进行broadcast
-
-进行了broadcast,可以看到连shuf">
+样本数据(2000w)性能测试对">
 <meta property="og:image" content="http://img.blog.csdn.net/20151209234633986">
 <meta property="og:image" content="http://img.blog.csdn.net/20151209233338252">
 <meta property="og:image" content="http://img.blog.csdn.net/20151209223934994">
 <meta property="og:image" content="http://img.blog.csdn.net/20151209224459080">
-<meta property="og:updated_time" content="2015-12-09T15:47:43.000Z">
+<meta property="og:updated_time" content="2015-12-09T15:51:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark_join_broadcast优化">
 <meta name="twitter:description" content="在大量数据中对一些字段进行关联。
 举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-直接join将会对所有数据进行shuffle。
+直接join将会对所有数据进行shuffle，相同的key会在同一个partition中进行处理。
 
-使用broadcast将会把小表分发到每台执行节点上，基本就取消了shuffle的过程，运行效率大幅度提高。
+使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大幅度提高。
 
-样本数据(2000w)性能测试对比小表没有进行broadcast
-
-进行了broadcast,可以看到连shuf">
+样本数据(2000w)性能测试对">
 
 
 
@@ -290,9 +284,9 @@
       
         <span itemprop="articleBody"><p>在大量数据中对一些字段进行关联。</p>
 <h2 id="举例">举例</h2><p>ipTable：需要进行关联的几千条ip数据(70k)<br>hist：历史数据（百亿级别） </p>
-<p>直接join将会对所有数据进行shuffle。</p>
+<p>直接join将会对所有数据进行shuffle，相同的key会在同一个partition中进行处理。</p>
 <p><img src="http://img.blog.csdn.net/20151209234633986" alt="这里写图片描述"></p>
-<p>使用broadcast将会把小表分发到每台执行节点上，基本就取消了shuffle的过程，运行效率大幅度提高。</p>
+<p>使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大幅度提高。</p>
 <p><img src="http://img.blog.csdn.net/20151209233338252" alt="这里写图片描述"></p>
 <h2 id="样本数据(2000w)性能测试对比">样本数据(2000w)性能测试对比</h2><p>小表没有进行broadcast</p>
 <p><img src="http://img.blog.csdn.net/20151209223934994" alt="无广播"></p>

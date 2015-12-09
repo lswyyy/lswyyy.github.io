@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="spark,sparkSQL," />
+  <meta name="keywords" content="sparkSQL," />
 
 
 
@@ -53,54 +53,42 @@
 
 <meta name="description" content="在大量数据中对一些字段进行关联。
 举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-
 直接join会造成大量的shuffle。
-
-
 
 使用broadcast将会把小表分发到每台执行节点上，基本就取消了shuffle的过程，运行效率大幅度提高。
 
-
 样本数据(2000w)性能测试对比小表没有进行broadcast
 
-进行了broadcast,可以看到连shu">
+进行了broadcast,可以看到连shuffle">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spark_join_broadcast优化">
 <meta property="og:url" content="http://yoursite.com/2015/09/24/spark-join-broadcast优化/index.html">
 <meta property="og:site_name" content="breeze">
 <meta property="og:description" content="在大量数据中对一些字段进行关联。
 举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-
 直接join会造成大量的shuffle。
-
-
 
 使用broadcast将会把小表分发到每台执行节点上，基本就取消了shuffle的过程，运行效率大幅度提高。
 
-
 样本数据(2000w)性能测试对比小表没有进行broadcast
 
-进行了broadcast,可以看到连shu">
+进行了broadcast,可以看到连shuffle">
 <meta property="og:image" content="http://img.blog.csdn.net/20150923234641636">
 <meta property="og:image" content="http://img.blog.csdn.net/20150923235332719">
 <meta property="og:image" content="http://img.blog.csdn.net/20151209223934994">
 <meta property="og:image" content="http://img.blog.csdn.net/20151209224459080">
-<meta property="og:updated_time" content="2015-12-09T15:08:19.000Z">
+<meta property="og:updated_time" content="2015-12-09T15:11:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark_join_broadcast优化">
 <meta name="twitter:description" content="在大量数据中对一些字段进行关联。
 举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-
 直接join会造成大量的shuffle。
-
-
 
 使用broadcast将会把小表分发到每台执行节点上，基本就取消了shuffle的过程，运行效率大幅度提高。
 
-
 样本数据(2000w)性能测试对比小表没有进行broadcast
 
-进行了broadcast,可以看到连shu">
+进行了broadcast,可以看到连shuffle">
 
 
 
@@ -302,13 +290,9 @@
       
         <span itemprop="articleBody"><p>在大量数据中对一些字段进行关联。</p>
 <h2 id="举例">举例</h2><p>ipTable：需要进行关联的几千条ip数据(70k)<br>hist：历史数据（百亿级别） </p>
-<ol>
-<li>直接join会造成大量的shuffle。</li>
-</ol>
+<p>直接join会造成大量的shuffle。</p>
 <p><img src="http://img.blog.csdn.net/20150923234641636" alt="shuffle"></p>
-<ol>
-<li>使用broadcast将会把小表分发到每台执行节点上，基本就取消了shuffle的过程，运行效率大幅度提高。</li>
-</ol>
+<p>使用broadcast将会把小表分发到每台执行节点上，基本就取消了shuffle的过程，运行效率大幅度提高。</p>
 <p><img src="http://img.blog.csdn.net/20150923235332719" alt="broadcast"></p>
 <h2 id="样本数据(2000w)性能测试对比">样本数据(2000w)性能测试对比</h2><p>小表没有进行broadcast</p>
 <p><img src="http://img.blog.csdn.net/20151209223934994" alt="无广播"></p>
@@ -325,7 +309,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/spark-sparkSQL/" rel="tag">#spark,sparkSQL</a>
+            <a href="/tags/sparkSQL/" rel="tag">#sparkSQL</a>
           
         </div>
       
@@ -422,7 +406,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

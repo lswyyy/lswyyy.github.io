@@ -629,6 +629,114 @@ hexo <span class="literal">s</span>
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/24/spark-join-broadcast优化/" itemprop="url">
+                  spark join broadcast优化
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-09-24T23:06:53+08:00" content="2015-09-24">
+              2015-09-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>在大量数据中对一些字段进行关联。</p>
+<h2 id="举例">举例</h2><p>ipTable：需要进行关联的几千条ip数据(70k)<br>hist：历史数据（百亿级别） </p>
+<p>直接join将会对所有数据进行shuffle，需要大量的io操作，相同的key会在同一个partition中进行处理，任务的并发度也收到了限制。</p>
+<p><img src="http://img.blog.csdn.net/20151209234633986" alt="这里写图片描述"></p>
+<p>使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大幅度提高。</p>
+<p><img src="http://img.blog.csdn.net/20151209233338252" alt="这里写图片描述"></p>
+<h2 id="样本数据(2000w)性能测试对比">样本数据(2000w)性能测试对比</h2><p>小表没有进行broadcast</p>
+<p><img src="http://img.blog.csdn.net/20151209223934994" alt="无广播"></p>
+<p>进行了broadcast,可以看到连shuffle过程都省略了</p>
+<p><img src="http://img.blog.csdn.net/20151209224459080" alt="这里写图片描述"></p>
+<h2 id="实现代码(spark1-5)">实现代码(spark1.5)</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取ip表</span></span><br><span class="line">val df = ...</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果数据小于设定的广播大小则将该表广播,默认10M</span></span><br><span class="line">df<span class="class">.cache</span><span class="class">.count</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//注册表</span></span><br><span class="line">df.<span class="function"><span class="title">registerTempTable</span><span class="params">(<span class="string">"ipTable"</span>)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//关联</span></span><br><span class="line">sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"select * from ipTable join (select * from hist) on ipTable.ip = hist.ip"</span>)</span></span></span><br><span class="line"></span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<p>设置表广播的阈值，如果有需求且内存足够，可以将该值提高，默认10M</p>
+<p><code>spark.sql.autoBroadcastJoinThreshold</code></p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
 
   </section>
 

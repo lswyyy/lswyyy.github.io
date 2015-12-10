@@ -55,8 +55,7 @@
 
 可以看到在3硬盘的机器的处理速度是单 硬盘机器的2-3倍。
 同时shuffle的性能也有很大提高
-为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。
-当磁盘io成为程序瓶颈的解决方法：1.使用多块硬盘（最简单有效）,可以使用ssd存放部">
+为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="磁盘IO对spark的影响">
 <meta property="og:url" content="http://yoursite.com/2015/11/26/磁盘IO对spark的影响/index.html">
@@ -65,20 +64,18 @@
 
 可以看到在3硬盘的机器的处理速度是单 硬盘机器的2-3倍。
 同时shuffle的性能也有很大提高
-为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。
-当磁盘io成为程序瓶颈的解决方法：1.使用多块硬盘（最简单有效）,可以使用ssd存放部">
+为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。">
 <meta property="og:image" content="http://img.blog.csdn.net/20151126132904742">
 <meta property="og:image" content="http://img.blog.csdn.net/20151208105610212">
 <meta property="og:image" content="http://img.blog.csdn.net/20151208195228232">
-<meta property="og:updated_time" content="2015-12-08T11:57:41.000Z">
+<meta property="og:updated_time" content="2015-12-10T18:02:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="磁盘IO对spark的影响">
 <meta name="twitter:description" content="红框圈起来的是3块硬盘的机器，其余的是单硬盘的机器。
 
 可以看到在3硬盘的机器的处理速度是单 硬盘机器的2-3倍。
 同时shuffle的性能也有很大提高
-为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。
-当磁盘io成为程序瓶颈的解决方法：1.使用多块硬盘（最简单有效）,可以使用ssd存放部">
+为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。">
 
 
 
@@ -300,6 +297,7 @@
 <p>可以看到在3硬盘的机器的处理速度是单 硬盘机器的2-3倍。</p>
 <p>同时shuffle的性能也有很大提高<br><img src="http://img.blog.csdn.net/20151208105610212" alt="这里写图片描述"></p>
 <p>为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。</p>
+<a id="more"></a>
 <h2 id="当磁盘io成为程序瓶颈的解决方法：">当磁盘io成为程序瓶颈的解决方法：</h2><p>1.使用多块硬盘（最简单有效）,可以使用ssd存放部分spark计算的中间结果。</p>
 <p>2.通过压缩减少本地磁盘IO,对计算的中间结果压缩，在取数据时还要进行解压。</p>
 <pre><code>spark<span class="class">.shuffle</span><span class="class">.spill</span><span class="class">.compress</span> true（默认）

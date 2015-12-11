@@ -69,7 +69,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151209233338252">
 <meta property="og:image" content="http://img.blog.csdn.net/20151209223934994">
 <meta property="og:image" content="http://img.blog.csdn.net/20151209224459080">
-<meta property="og:updated_time" content="2015-12-10T18:04:06.000Z">
+<meta property="og:updated_time" content="2015-12-11T01:28:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark join broadcast优化">
 <meta name="twitter:description" content="在大量数据中对一些字段进行关联。
@@ -299,7 +299,6 @@
 <p><img src="http://img.blog.csdn.net/20151209234633986" alt="这里写图片描述"></p>
 <p>使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大幅度提高。</p>
 <p><img src="http://img.blog.csdn.net/20151209233338252" alt="这里写图片描述"></p>
-<a id="more"></a>
 <h2 id="样本数据(2000w)性能测试对比">样本数据(2000w)性能测试对比</h2><p>小表没有进行broadcast</p>
 <p><img src="http://img.blog.csdn.net/20151209223934994" alt="无广播"></p>
 <p>进行了broadcast,可以看到连shuffle过程都省略了</p>

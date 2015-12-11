@@ -1,11 +1,5 @@
 <!doctype html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion">
+<html class="theme-next   use-motion ">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -38,7 +32,7 @@
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.0.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="spark," />
@@ -50,7 +44,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
 
@@ -81,16 +75,10 @@
 
 
 <script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: '[object Object]',
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: 0,
-      author: '博主'
-    }
+    sidebar: 'post',
+    motion: true
   };
 </script>
 
@@ -99,6 +87,15 @@
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
   
 
 
@@ -116,12 +113,7 @@
 
 
 
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container one-column page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -205,7 +197,6 @@
 
       
       
-      
     </ul>
   
 
@@ -217,9 +208,8 @@
 
     <main id="main" class="main">
       <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
+        <div id="content" class="content">
+          
 
   <div id="posts" class="posts-expand">
     
@@ -250,10 +240,7 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
+            发表于
             <time itemprop="dateCreated" datetime="2015-10-15T17:09:17+08:00" content="2015-10-15">
               2015-10-15
             </time>
@@ -261,11 +248,7 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
+              &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/spark/" itemprop="url" rel="index">
@@ -293,20 +276,18 @@
 
           
 
-          
-          
         </div>
       </header>
     
 
 
-    <div class="post-body" itemprop="articleBody">
+    <div class="post-body">
 
       
       
 
       
-        <h1 id="一-报错">一.报错</h1><h2 id="常见错误">常见错误</h2><h3 id="1-shuffle-FetchFailedException">1.shuffle.FetchFailedException</h3><h4 id="错误提示">错误提示</h4><p><strong>(1) missing output location</strong></p>
+        <span itemprop="articleBody"><h1 id="一-报错">一.报错</h1><h2 id="常见错误">常见错误</h2><h3 id="1-shuffle-FetchFailedException">1.shuffle.FetchFailedException</h3><h4 id="错误提示">错误提示</h4><p><strong>(1) missing output location</strong></p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.shuffle</span><span class="class">.MetadataFetchFailedException</span>: Missing an output location <span class="keyword">for</span> shuffle <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <p><img src="http://img.blog.csdn.net/20151015114309842" alt="missing output location"></p>
 <a id="more"></a>
@@ -399,7 +380,7 @@
 <p><img src="http://img.blog.csdn.net/20151210161217631" alt="这里写图片描述"></p>
 <p>修改map阶段并行度主要是在代码中使用<code>rdd.repartition(partitionNum)</code>来操作。</p>
 <h3 id="3-shuffle">3.shuffle</h3><p> <a href="http://lswyyy.github.io/2015/09/24/spark-join-broadcast优化/" target="_blank" rel="external">shuffle join优化</a></p>
-
+</span>
       
     </div>
 
@@ -445,11 +426,12 @@
   </div>
 
 
-          </div>
-          
+        </div>
+
+        
 
 
-          
+        
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2015/10/15/spark任务常见问题解决方案及优化/"
@@ -459,9 +441,10 @@
   </div>
 
 
-        </div>
+      </div>
+
+      
         
-          
   
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
@@ -489,12 +472,10 @@
 
       <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="http://i12.tietuku.com/558afd7739d419f8.jpg"
-               alt="breeze" />
+          <img class="site-author-image" src="http://i12.tietuku.com/558afd7739d419f8.jpg" alt="breeze" itemprop="image"/>
           <p class="site-author-name" itemprop="name">breeze</p>
-          <p class="site-description motion-element" itemprop="description"></p>
         </div>
+        <p class="site-description motion-element" itemprop="description"></p>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
@@ -557,8 +538,7 @@
   </aside>
 
 
-        
-      </div>
+      
     </main>
 
     <footer id="footer" class="footer">
@@ -592,41 +572,56 @@
     <div class="back-to-top"></div>
   </div>
 
-  
-
-
-  
-
-
-
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+  
 
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lswyyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.0"></script>
-
-
-
   
   
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
 
-  
-  
-<script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.0"></script>
 
 <script type="text/javascript" id="sidebar.toc.highlight">
   $(document).ready(function () {
@@ -760,7 +755,7 @@
 
     $('.post-toc a').on('click', function (e) {
       e.preventDefault();
-      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var targetSelector = escapeSelector(this.getAttribute('href'));
       var offset = $(targetSelector).offset().top;
       hasVelocity ?
         html.velocity('stop').velocity('scroll', {
@@ -773,12 +768,11 @@
     });
 
     // Expand sidebar on post detail page by default, when post has a toc.
-    NexT.motion.middleWares.sidebar = function () {
+    motionMiddleWares.sidebar = function () {
       var $tocContent = $('.post-toc-content');
-
       if (CONFIG.sidebar === 'post') {
         if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          NexT.utils.displaySidebar();
+          displaySidebar();
         }
       }
     };
@@ -787,46 +781,13 @@
 
 
 
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.0"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"lswyyy"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-  
-
-
-
-
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
 
   
   
 
   
   
-
 
 </body>
 </html>

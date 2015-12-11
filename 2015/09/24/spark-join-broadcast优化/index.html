@@ -1,11 +1,5 @@
 <!doctype html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion">
+<html class="theme-next   use-motion ">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -38,7 +32,7 @@
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.0.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="spark,sparkSQL," />
@@ -50,7 +44,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
 
@@ -87,16 +81,10 @@
 
 
 <script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: '[object Object]',
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: 0,
-      author: '博主'
-    }
+    sidebar: 'post',
+    motion: true
   };
 </script>
 
@@ -105,6 +93,15 @@
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
   
 
 
@@ -122,12 +119,7 @@
 
 
 
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container one-column page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -211,7 +203,6 @@
 
       
       
-      
     </ul>
   
 
@@ -223,9 +214,8 @@
 
     <main id="main" class="main">
       <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
+        <div id="content" class="content">
+          
 
   <div id="posts" class="posts-expand">
     
@@ -256,10 +246,7 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
+            发表于
             <time itemprop="dateCreated" datetime="2015-09-24T23:06:53+08:00" content="2015-09-24">
               2015-09-24
             </time>
@@ -267,11 +254,7 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
+              &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/spark/" itemprop="url" rel="index">
@@ -299,20 +282,18 @@
 
           
 
-          
-          
         </div>
       </header>
     
 
 
-    <div class="post-body" itemprop="articleBody">
+    <div class="post-body">
 
       
       
 
       
-        <p>在大量数据中对一些字段进行关联。</p>
+        <span itemprop="articleBody"><p>在大量数据中对一些字段进行关联。</p>
 <h2 id="举例">举例</h2><p>ipTable：需要进行关联的几千条ip数据(70k)<br>hist：历史数据（百亿级别） </p>
 <p>直接join将会对所有数据进行shuffle，需要大量的io操作，相同的key会在同一个partition中进行处理，任务的并发度也收到了限制。</p>
 <p><img src="http://img.blog.csdn.net/20151209234633986" alt="这里写图片描述"></p>
@@ -326,7 +307,7 @@
 <h2 id="实现代码(spark1-5)">实现代码(spark1.5)</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取ip表</span></span><br><span class="line">val df = ...</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果数据小于设定的广播大小则将该表广播,默认10M</span></span><br><span class="line">df<span class="class">.cache</span><span class="class">.count</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//注册表</span></span><br><span class="line">df.<span class="function"><span class="title">registerTempTable</span><span class="params">(<span class="string">"ipTable"</span>)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//关联</span></span><br><span class="line">sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"select * from ipTable join (select * from hist) on ipTable.ip = hist.ip"</span>)</span></span></span><br><span class="line"></span><br><span class="line">......</span><br></pre></td></tr></table></figure>
 <p>设置表广播的阈值，如果有需求且内存足够，可以将该值提高，默认10M</p>
 <p><code>spark.sql.autoBroadcastJoinThreshold</code></p>
-
+</span>
       
     </div>
 
@@ -370,11 +351,12 @@
   </div>
 
 
-          </div>
-          
+        </div>
+
+        
 
 
-          
+        
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2015/09/24/spark-join-broadcast优化/"
@@ -384,9 +366,10 @@
   </div>
 
 
-        </div>
+      </div>
+
+      
         
-          
   
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
@@ -414,12 +397,10 @@
 
       <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="http://i12.tietuku.com/558afd7739d419f8.jpg"
-               alt="breeze" />
+          <img class="site-author-image" src="http://i12.tietuku.com/558afd7739d419f8.jpg" alt="breeze" itemprop="image"/>
           <p class="site-author-name" itemprop="name">breeze</p>
-          <p class="site-description motion-element" itemprop="description"></p>
         </div>
+        <p class="site-description motion-element" itemprop="description"></p>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
@@ -482,8 +463,7 @@
   </aside>
 
 
-        
-      </div>
+      
     </main>
 
     <footer id="footer" class="footer">
@@ -517,41 +497,56 @@
     <div class="back-to-top"></div>
   </div>
 
-  
-
-
-  
-
-
-
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+  
 
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lswyyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.0"></script>
-
-
-
   
   
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
 
-  
-  
-<script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.0"></script>
 
 <script type="text/javascript" id="sidebar.toc.highlight">
   $(document).ready(function () {
@@ -685,7 +680,7 @@
 
     $('.post-toc a').on('click', function (e) {
       e.preventDefault();
-      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var targetSelector = escapeSelector(this.getAttribute('href'));
       var offset = $(targetSelector).offset().top;
       hasVelocity ?
         html.velocity('stop').velocity('scroll', {
@@ -698,12 +693,11 @@
     });
 
     // Expand sidebar on post detail page by default, when post has a toc.
-    NexT.motion.middleWares.sidebar = function () {
+    motionMiddleWares.sidebar = function () {
       var $tocContent = $('.post-toc-content');
-
       if (CONFIG.sidebar === 'post') {
         if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          NexT.utils.displaySidebar();
+          displaySidebar();
         }
       }
     };
@@ -712,46 +706,13 @@
 
 
 
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.0"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"lswyyy"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-  
-
-
-
-
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
 
   
   
 
   
   
-
 
 </body>
 </html>

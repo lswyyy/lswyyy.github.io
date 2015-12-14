@@ -51,31 +51,24 @@
 
 
 
-<meta name="description" content="红框圈起来的是3块硬盘的机器，其余的是单硬盘的机器。
-
-可以看到在3硬盘的机器的处理速度是单 硬盘机器的2-3倍。
-同时shuffle的性能也有很大提高
-为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。">
+<meta name="description" content="一.动态资源调配这是spark1.5以后新加入的功能
+为standalone模式和mesos的粗粒度模式提供了executor的动态管理，具体表现为：如果executor在一段时间内空闲就会移除这个executor。
+动态申请executor如果有新任务处于等待状态，并且等待时间超过spark.dynamicAllocation.schedulerBacklogTimeout(默认1s)，则会依次">
 <meta property="og:type" content="article">
-<meta property="og:title" content="磁盘IO对spark的影响">
-<meta property="og:url" content="http://yoursite.com/2015/11/26/磁盘IO对spark的影响/index.html">
+<meta property="og:title" content="spark dynamicAllocation">
+<meta property="og:url" content="http://yoursite.com/2015/11/17/spark-dynamicAllocation/index.html">
 <meta property="og:site_name" content="breeze">
-<meta property="og:description" content="红框圈起来的是3块硬盘的机器，其余的是单硬盘的机器。
-
-可以看到在3硬盘的机器的处理速度是单 硬盘机器的2-3倍。
-同时shuffle的性能也有很大提高
-为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。">
-<meta property="og:image" content="http://img.blog.csdn.net/20151126132904742">
-<meta property="og:image" content="http://img.blog.csdn.net/20151208105610212">
-<meta property="og:image" content="http://img.blog.csdn.net/20151208195228232">
-<meta property="og:updated_time" content="2015-12-10T18:02:12.000Z">
+<meta property="og:description" content="一.动态资源调配这是spark1.5以后新加入的功能
+为standalone模式和mesos的粗粒度模式提供了executor的动态管理，具体表现为：如果executor在一段时间内空闲就会移除这个executor。
+动态申请executor如果有新任务处于等待状态，并且等待时间超过spark.dynamicAllocation.schedulerBacklogTimeout(默认1s)，则会依次">
+<meta property="og:image" content="http://img.blog.csdn.net/20151117160106618">
+<meta property="og:image" content="http://img.blog.csdn.net/20151117160128026">
+<meta property="og:updated_time" content="2015-12-14T03:31:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="磁盘IO对spark的影响">
-<meta name="twitter:description" content="红框圈起来的是3块硬盘的机器，其余的是单硬盘的机器。
-
-可以看到在3硬盘的机器的处理速度是单 硬盘机器的2-3倍。
-同时shuffle的性能也有很大提高
-为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。">
+<meta name="twitter:title" content="spark dynamicAllocation">
+<meta name="twitter:description" content="一.动态资源调配这是spark1.5以后新加入的功能
+为standalone模式和mesos的粗粒度模式提供了executor的动态管理，具体表现为：如果executor在一段时间内空闲就会移除这个executor。
+动态申请executor如果有新任务处于等待状态，并且等待时间超过spark.dynamicAllocation.schedulerBacklogTimeout(默认1s)，则会依次">
 
 
 
@@ -87,7 +80,7 @@
   };
 </script>
 
-  <title> 磁盘IO对spark的影响 | breeze </title>
+  <title> spark dynamicAllocation | breeze </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -237,7 +230,7 @@
             
             
               
-                磁盘IO对spark的影响
+                spark dynamicAllocation
               
             
           </h1>
@@ -246,8 +239,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-11-26T14:34:21+08:00" content="2015-11-26">
-              2015-11-26
+            <time itemprop="dateCreated" datetime="2015-11-17T22:00:00+08:00" content="2015-11-17">
+              2015-11-17
             </time>
           </span>
 
@@ -272,8 +265,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/11/26/磁盘IO对spark的影响/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/26/磁盘IO对spark的影响/" itemprop="commentsCount"></span>
+                <a href="/2015/11/17/spark-dynamicAllocation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/17/spark-dynamicAllocation/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -292,21 +285,75 @@
       
 
       
-        <span itemprop="articleBody"><p>红框圈起来的是3块硬盘的机器，其余的是单硬盘的机器。</p>
-<p><img src="http://img.blog.csdn.net/20151126132904742" alt="性能"></p>
-<p>可以看到在3硬盘的机器的处理速度是单 硬盘机器的2-3倍。</p>
-<p>同时shuffle的性能也有很大提高<br><img src="http://img.blog.csdn.net/20151208105610212" alt="这里写图片描述"></p>
-<p>为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。</p>
-<a id="more"></a>
-<h2 id="当磁盘io成为程序瓶颈的解决方法：">当磁盘io成为程序瓶颈的解决方法：</h2><p>1.使用多块硬盘（最简单有效）,可以使用ssd存放部分spark计算的中间结果。</p>
-<p>2.通过压缩减少本地磁盘IO,对计算的中间结果压缩，在取数据时还要进行解压。</p>
-<pre><code>spark<span class="class">.shuffle</span><span class="class">.spill</span><span class="class">.compress</span> true（默认）
-</code></pre><p>3.优化程序，减少shuffle</p>
-<p>通过压缩的两个配置其实使用cpu换磁盘io和网络io,如果在磁盘io不是瓶颈的计算密集型作业中，如此设置反而会降低运行效率。所以应观察应用，根据情况进行调整。</p>
-<h2 id="网络IO优化">网络IO优化</h2><p>通过压缩减少网络IO，减少即将进行shuffle的本地数据。<br>这样需要shuffle的数据就需要压缩-&gt;网络传输-&gt;解压缩三个步骤</p>
-<pre><code>spark<span class="class">.shuffle</span><span class="class">.compress</span> true（默认）
-</code></pre><p>可以监控网卡使用情况，根据实际情况修改参数</p>
-<p><img src="http://img.blog.csdn.net/20151208195228232" alt="这里写图片描述"></p>
+        <span itemprop="articleBody"><h2 id="一-动态资源调配">一.动态资源调配</h2><p>这是spark1.5以后新加入的功能</p>
+<p>为standalone模式和mesos的粗粒度模式提供了executor的动态管理，具体表现为：如果executor在一段时间内空闲就会移除这个executor。</p>
+<h3 id="动态申请executor">动态申请executor</h3><p>如果有新任务处于等待状态，并且等待时间超过<code>spark.dynamicAllocation.schedulerBacklogTimeout</code>(默认1s)，则会依次启动executor,每次启动1,2,4,8…个executor（如果有的话）。启动的间隔由<code>spark.dynamicAllocation.sustainedSchedulerBacklogTimeout</code>控制(默认与schedulerBacklogTimeout相同)。</p>
+<h3 id="动态移除executor">动态移除executor</h3><p>executor空闲时间超过<code>spark.dynamicAllocation.executorIdleTimeout</code>设置的值(默认60s )，该executor会被移除，除非有缓存数据。</p>
+<h2 id="二-配置">二.配置</h2><p><code>conf/spark-default.conf</code>中配置</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spark<span class="class">.dynamicAllocation</span><span class="class">.enabled</span> true</span><br><span class="line">spark<span class="class">.shuffle</span><span class="class">.service</span><span class="class">.enabled</span> true</span><br></pre></td></tr></table></figure>
+<p>开启shuffle service(每个worker节点)</p>
+<pre><code>sbin/<span class="literal">start</span>-shuffle-service.sh
+</code></pre><p>启动worker</p>
+<pre><code>sbin/<span class="literal">start</span>-<span class="literal">slave</span>.sh -h hostname sparkURL
+</code></pre><p>如果有节点没开，运行任务时该节点就报错</p>
+<pre><code>ExecutorLostFailure
+</code></pre><h3 id="相关配置">相关配置</h3><table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>spark.dynamicAllocation.executorIdleTimeout</td>
+<td>60s</td>
+<td>executor空闲时间达到规定值，则将该executor移除。</td>
+</tr>
+<tr>
+<td>spark.dynamicAllocation.cachedExecutorIdleTimeout</td>
+<td>infinity</td>
+<td>缓存了数据的executor默认不会被移除</td>
+</tr>
+<tr>
+<td>spark.dynamicAllocation.maxExecutors</td>
+<td>infinity</td>
+<td>最多使用的executor数，默认为你申请的最大executor数</td>
+</tr>
+<tr>
+<td>spark.dynamicAllocation.minExecutors</td>
+<td>0</td>
+<td>最少保留的executor数</td>
+</tr>
+<tr>
+<td>spark.dynamicAllocation.schedulerBacklogTimeout</td>
+<td>1s</td>
+<td>有task等待运行时间超过该值后开始启动executor</td>
+</tr>
+<tr>
+<td>spark.dynamicAllocation.executorIdleTimeout</td>
+<td>schedulerBacklogTimeout</td>
+<td>动态启动executor的间隔</td>
+</tr>
+<tr>
+<td>spark.dynamicAllocation.initialExecutors</td>
+<td>spark.dynamicAllocation.minExecutors</td>
+<td>如果所有的executor都移除了，重新请求时启动的初始executor数</td>
+</tr>
+</tbody>
+</table>
+<h2 id="三-使用">三.使用</h2><p>启动一个spark-shell,有5个executor,每个executor使用2个core</p>
+<pre><code><span class="comment">bin/spark</span><span class="literal">-</span><span class="comment">shell</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">total</span><span class="literal">-</span><span class="comment">executor</span><span class="literal">-</span><span class="comment">cores</span> <span class="comment">10</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">executor</span><span class="literal">-</span><span class="comment">cores</span> <span class="comment">2</span>
+</code></pre><p>如果在60s内无动作，在终端会看到如下提示</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="number">15</span>/<span class="number">11</span>/<span class="number">17</span> <span class="number">15</span>:<span class="number">40</span>:<span class="number">47</span> ERROR TaskSchedulerImpl: Lost executor <span class="number">0</span> on spark047213: remote Rpc client disassociated</span><br><span class="line"><span class="number">15</span>/<span class="number">11</span>/<span class="number">17</span> <span class="number">15</span>:<span class="number">40</span>:<span class="number">47</span> WARN ReliableDeliverySupervisor: Association with remote system [akka.tcp:<span class="comment">//sparkExecutor@spark047213:50015] has failed, address is now gated for [5000] ms. Reason: [Disassociated] </span></span><br><span class="line"><span class="number">15</span>/<span class="number">11</span>/<span class="number">17</span> <span class="number">15</span>:<span class="number">40</span>:<span class="number">50</span> ERROR TaskSchedulerImpl: Lost executor <span class="number">1</span> on spark047213: remote Rpc client disassociated</span><br><span class="line"><span class="number">15</span>/<span class="number">11</span>/<span class="number">17</span> <span class="number">15</span>:<span class="number">40</span>:<span class="number">50</span> WARN ReliableDeliverySupervisor: Association with remote system [akka.tcp:<span class="comment">//sparkExecutor@spark047213:49847] has failed, address is now gated for [5000] ms. Reason: [Disassociated]</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>吐槽一下，executor移除后会提示你和executor断开连接，给的提示居然是ERROR….</p>
+<p>然后可以在web ui上看到使用的10个core已经处于left状态</p>
+<p><img src="http://img.blog.csdn.net/20151117160106618" alt="这里写图片描述"></p>
+<p>提交一个只需要2个core的任务</p>
+<pre><code>sc.<span class="function"><span class="title">parallelize</span><span class="params">(<span class="number">1</span> to <span class="number">2</span>)</span></span>.count
+</code></pre><p>看到有2个core开始进入注册状态，提供服务</p>
+<p><img src="http://img.blog.csdn.net/20151117160128026" alt="这里写图片描述"></p>
 </span>
       
     </div>
@@ -324,16 +371,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/17/spark-dynamicAllocation/" rel="next" title="spark dynamicAllocation">
-                <i class="fa fa-chevron-left"></i> spark dynamicAllocation
+              <a href="/2015/10/15/spark任务常见问题解决方案及优化/" rel="next" title="spark任务常见问题解决方案及优化">
+                <i class="fa fa-chevron-left"></i> spark任务常见问题解决方案及优化
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/12/06/使用Hexo搭建github博客/" rel="prev" title="使用Hexo搭建github博客">
-                使用Hexo搭建github博客 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/11/26/磁盘IO对spark的影响/" rel="prev" title="磁盘IO对spark的影响">
+                磁盘IO对spark的影响 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -361,8 +408,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/11/26/磁盘IO对spark的影响/"
-           data-title="磁盘IO对spark的影响" data-url="http://yoursite.com/2015/11/26/磁盘IO对spark的影响/">
+      <div class="ds-thread" data-thread-key="2015/11/17/spark-dynamicAllocation/"
+           data-title="spark dynamicAllocation" data-url="http://yoursite.com/2015/11/17/spark-dynamicAllocation/">
       </div>
     
   </div>
@@ -452,7 +499,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#当磁盘io成为程序瓶颈的解决方法："><span class="nav-number">1.</span> <span class="nav-text">当磁盘io成为程序瓶颈的解决方法：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络IO优化"><span class="nav-number">2.</span> <span class="nav-text">网络IO优化</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-动态资源调配"><span class="nav-number">1.</span> <span class="nav-text">一.动态资源调配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态申请executor"><span class="nav-number">1.1.</span> <span class="nav-text">动态申请executor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态移除executor"><span class="nav-number">1.2.</span> <span class="nav-text">动态移除executor</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-配置"><span class="nav-number">2.</span> <span class="nav-text">二.配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关配置"><span class="nav-number">2.1.</span> <span class="nav-text">相关配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-使用"><span class="nav-number">3.</span> <span class="nav-text">三.使用</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

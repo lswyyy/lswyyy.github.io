@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="spark,sparkSQL," />
+  <meta name="keywords" content="elasticsearch," />
 
 
 
@@ -51,32 +51,28 @@
 
 
 
-<meta name="description" content="在大量数据中对一些字段进行关联。
-举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-直接join将会对所有数据进行shuffle，需要大量的io操作，相同的key会在同一个partition中进行处理，任务的并发度也收到了限制。
-
-使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大">
+<meta name="description" content="主要有两种方式
+from/sizefrom 偏移，默认为0
+size 返回的结果数，默认为10
+在数据量不大的情况下我们一般会使用from/size,而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢就不说了，往往还会造成es内存不足而挂掉。
+从index A的type B">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark join broadcast优化">
-<meta property="og:url" content="http://yoursite.com/2015/09/24/spark-join-broadcast优化/index.html">
+<meta property="og:title" content="elasticsearch分页查询">
+<meta property="og:url" content="http://yoursite.com/2015/12/16/elasticsearch分页查询/index.html">
 <meta property="og:site_name" content="breeze">
-<meta property="og:description" content="在大量数据中对一些字段进行关联。
-举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-直接join将会对所有数据进行shuffle，需要大量的io操作，相同的key会在同一个partition中进行处理，任务的并发度也收到了限制。
-
-使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大">
-<meta property="og:image" content="http://img.blog.csdn.net/20151209234633986">
-<meta property="og:image" content="http://img.blog.csdn.net/20151209233338252">
-<meta property="og:image" content="http://img.blog.csdn.net/20151209223934994">
-<meta property="og:image" content="http://img.blog.csdn.net/20151209224459080">
-<meta property="og:updated_time" content="2015-12-11T05:44:57.000Z">
+<meta property="og:description" content="主要有两种方式
+from/sizefrom 偏移，默认为0
+size 返回的结果数，默认为10
+在数据量不大的情况下我们一般会使用from/size,而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢就不说了，往往还会造成es内存不足而挂掉。
+从index A的type B">
+<meta property="og:updated_time" content="2015-12-14T14:46:17.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark join broadcast优化">
-<meta name="twitter:description" content="在大量数据中对一些字段进行关联。
-举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-直接join将会对所有数据进行shuffle，需要大量的io操作，相同的key会在同一个partition中进行处理，任务的并发度也收到了限制。
-
-使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大">
+<meta name="twitter:title" content="elasticsearch分页查询">
+<meta name="twitter:description" content="主要有两种方式
+from/sizefrom 偏移，默认为0
+size 返回的结果数，默认为10
+在数据量不大的情况下我们一般会使用from/size,而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢就不说了，往往还会造成es内存不足而挂掉。
+从index A的type B">
 
 
 
@@ -88,7 +84,7 @@
   };
 </script>
 
-  <title> spark join broadcast优化 | breeze </title>
+  <title> elasticsearch分页查询 | breeze </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -238,7 +234,7 @@
             
             
               
-                spark join broadcast优化
+                elasticsearch分页查询
               
             
           </h1>
@@ -247,8 +243,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-09-24T23:06:53+08:00" content="2015-09-24">
-              2015-09-24
+            <time itemprop="dateCreated" datetime="2015-12-16T22:00:00+08:00" content="2015-12-16">
+              2015-12-16
             </time>
           </span>
 
@@ -257,8 +253,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
                   </a>
                 </span>
 
@@ -273,8 +269,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/09/24/spark-join-broadcast优化/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/24/spark-join-broadcast优化/" itemprop="commentsCount"></span>
+                <a href="/2015/12/16/elasticsearch分页查询/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/16/elasticsearch分页查询/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -293,21 +289,27 @@
       
 
       
-        <span itemprop="articleBody"><p>在大量数据中对一些字段进行关联。</p>
-<h2 id="举例">举例</h2><p>ipTable：需要进行关联的几千条ip数据(70k)<br>hist：历史数据（百亿级别） </p>
-<p>直接join将会对所有数据进行shuffle，需要大量的io操作，相同的key会在同一个partition中进行处理，任务的并发度也收到了限制。</p>
-<p><img src="http://img.blog.csdn.net/20151209234633986" alt="这里写图片描述"></p>
-<p>使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大幅度提高。</p>
-<p><img src="http://img.blog.csdn.net/20151209233338252" alt="这里写图片描述"></p>
-<a id="more"></a>
-<h2 id="样本数据(2000w)性能测试对比">样本数据(2000w)性能测试对比</h2><p>小表没有进行broadcast</p>
-<p><img src="http://img.blog.csdn.net/20151209223934994" alt="无广播"></p>
-<p>进行了broadcast,可以看到连shuffle过程都省略了</p>
-<p><img src="http://img.blog.csdn.net/20151209224459080" alt="这里写图片描述"></p>
-<h2 id="实现代码(spark1-5)">实现代码(spark1.5)</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取ip表</span></span><br><span class="line">val df = ...</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果数据小于设定的广播大小则将该表广播,默认10M</span></span><br><span class="line">df<span class="class">.cache</span><span class="class">.count</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//注册表</span></span><br><span class="line">df.<span class="function"><span class="title">registerTempTable</span><span class="params">(<span class="string">"ipTable"</span>)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//关联</span></span><br><span class="line">sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"select * from ipTable join (select * from hist) on ipTable.ip = hist.ip"</span>)</span></span></span><br><span class="line"></span><br><span class="line">......</span><br></pre></td></tr></table></figure>
-<p>设置表广播的阈值，如果有需求且内存足够，可以将该值提高，默认10M</p>
-<p><code>spark.sql.autoBroadcastJoinThreshold</code></p>
-</span>
+        <span itemprop="articleBody"><p>主要有两种方式</p>
+<h2 id="from/size">from/size</h2><p><code>from</code> 偏移，默认为0</p>
+<p><code>size</code> 返回的结果数，默认为10</p>
+<p>在数据量不大的情况下我们一般会使用<code>from/size</code>,而在深度分页的情况下效率极低，该命令会把<code>from+size</code>条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢就不说了，往往还会造成es内存不足而挂掉。</p>
+<p>从index <code>A</code>的type <code>B</code>中搜索出从0开始的1w条数据:</p>
+<pre><code><span class="title">curl</span> -XGET <span class="string">"hostname:9200/A/B/_search?from=0&amp;size=10000"</span>
+</code></pre><a id="more"></a>
+<h3 id="理解深度分页为什么慢">理解深度分页为什么慢</h3><p>让我们假设在一个有5个主分片的索引中搜索。当我们请求结果的第一页（结果1到10）时，每个分片产生自己最顶端10个结果然后返回它们给请求节点(requesting node)，它再排序这所有的50个结果以选出顶端的10个结果。</p>
+<p>现在假设我们请求第1000页——结果10001到10010。工作方式都相同，不同的是每个分片都必须产生顶端的10010个结果。然后请求节点排序这50050个结果并丢弃50040个！</p>
+<p>在分布式系统中，排序结果的花费随着分页的深入而成倍增长。</p>
+<p>ps: 我曾经在一个14亿条记录的type中使用from/size进行分页，多么痛的领悟。。。</p>
+<h2 id="scan/scroll">scan/scroll</h2><p>scan（扫描）搜索类型是和scroll（滚屏）API一起使用来从es里高效地取回巨大数量的结果而不需要付出深分页的代价。</p>
+<p><code>scroll</code> 做一个初始阶段搜索并且持续批量从es里拉取结果直到没有结果剩下，类似传统数据库里的cursors。</p>
+<p><code>scan</code> es查询将不再进行排序。</p>
+<p>因为size作用在每个shard上，所以每次GET的数据量为<code>shard_num*size</code>条:</p>
+<pre><code><span class="title">curl</span> -XGET <span class="string">"hostname:9200/A/B/_search?search_type=scan&amp;scroll=5m&amp;size=200000"</span>
+</code></pre><p>将会返回一个过期时间为5分钟scroll_id</p>
+<pre><code><span class="string">"_scroll_id"</span> : <span class="string">"c2Nhbjs1OzkwODg5OmEta2lMZlJJUmFxMDVvdWNLWXR0dUE7NDI5NTA1OnFjcVZSQUdnU3hpdy15XzRYT0lYWVE7OTA4OTA6YS1raUxmUklSYXEwNW91Y0tZdHR1QTs5MDg5MTphLWtpTGZSSVJhcTA1b3VjS1l0dHVBOzkwODkyOmEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7"</span>
+</code></pre><p>根据该scroll_id从es中检索数据，每次调用都会检索下一批数据，并将scroll_id的过期时间重置为5m，直到所有数据检索完毕或者scroll_id过期:</p>
+<pre><code>curl -XGET <span class="string">"hostname:9200/_search/scroll?scroll=5m"</span> <span class="operator">-d</span> <span class="string">'c2Nhbjs1OzkwODg5OmEta2lMZlJJUmFxMDVvdWNLWXR0dUE7NDI5NTA1OnFjcVZSQUdnU3hpdy15XzRYT0lYWVE7OTA4OTA6YS1raUxmUklSYXEwNW91Y0tZdHR1QTs5MDg5MTphLWtpTGZSSVJhcTA1b3VjS1l0dHVBOzkwODkyOmEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7'</span>
+</code></pre></span>
       
     </div>
 
@@ -315,9 +317,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/spark/" rel="tag">#spark</a>
-          
-            <a href="/tags/sparkSQL/" rel="tag">#sparkSQL</a>
+            <a href="/tags/elasticsearch/" rel="tag">#elasticsearch</a>
           
         </div>
       
@@ -326,13 +326,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2015/12/06/使用Hexo搭建github博客/" rel="next" title="使用Hexo搭建github博客">
+                <i class="fa fa-chevron-left"></i> 使用Hexo搭建github博客
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/09/26/部署ganglia3.7/" rel="prev" title="部署ganglia3.7">
-                部署ganglia3.7 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -359,8 +359,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/09/24/spark-join-broadcast优化/"
-           data-title="spark join broadcast优化" data-url="http://yoursite.com/2015/09/24/spark-join-broadcast优化/">
+      <div class="ds-thread" data-thread-key="2015/12/16/elasticsearch分页查询/"
+           data-title="elasticsearch分页查询" data-url="http://yoursite.com/2015/12/16/elasticsearch分页查询/">
       </div>
     
   </div>
@@ -450,7 +450,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#举例"><span class="nav-number">1.</span> <span class="nav-text">举例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样本数据(2000w)性能测试对比"><span class="nav-number">2.</span> <span class="nav-text">样本数据(2000w)性能测试对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现代码(spark1-5)"><span class="nav-number">3.</span> <span class="nav-text">实现代码(spark1.5)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#from/size"><span class="nav-number">1.</span> <span class="nav-text">from/size</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#理解深度分页为什么慢"><span class="nav-number">1.1.</span> <span class="nav-text">理解深度分页为什么慢</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scan/scroll"><span class="nav-number">2.</span> <span class="nav-text">scan/scroll</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

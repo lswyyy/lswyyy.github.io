@@ -637,11 +637,11 @@ body {
   width: 1200px;
 }
 .one-column .header-inner {
-  width: 700px;
+  width: 800px;
 }
 @media (min-width: 1600px) {
   .one-column .header-inner {
-    width: 900px;
+    width: 1000px;
   }
 }
 .main {
@@ -652,11 +652,11 @@ body {
   width: 1200px;
 }
 .one-column .main-inner {
-  width: 700px;
+  width: 800px;
 }
 @media (min-width: 1600px) {
   .one-column .main-inner {
-    width: 900px;
+    width: 1000px;
   }
 }
 .footer {
@@ -671,11 +671,11 @@ body {
   width: 1200px;
 }
 .one-column .footer-inner {
-  width: 700px;
+  width: 800px;
 }
 @media (min-width: 1600px) {
   .one-column .footer-inner {
-    width: 900px;
+    width: 1000px;
   }
 }
 .headband {
@@ -965,7 +965,7 @@ body {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #c6c7f7;
+  background: #83ffff;
 }
 .sidebar-nav {
   margin: 0 0 20px;

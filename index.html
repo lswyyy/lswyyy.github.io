@@ -461,6 +461,112 @@ npm install hexo-deployer-git --<span class="keyword">save</span>
             
               
                 
+                <a class="post-title-link" href="/2015/11/17/spark-dynamicAllocation/" itemprop="url">
+                  spark dynamicAllocation
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-11-17T22:00:00+08:00" content="2015-11-17">
+              2015-11-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/11/17/spark-dynamicAllocation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/17/spark-dynamicAllocation/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="一-动态资源调配">一.动态资源调配</h2><p>这是spark1.5以后新加入的功能</p>
+<p>为standalone模式和mesos的粗粒度模式提供了executor的动态管理，具体表现为：如果executor在一段时间内空闲就会移除这个executor。</p>
+<h3 id="动态申请executor">动态申请executor</h3><p>如果有新任务处于等待状态，并且等待时间超过<code>spark.dynamicAllocation.schedulerBacklogTimeout</code>(默认1s)，则会依次启动executor,每次启动1,2,4,8…个executor（如果有的话）。启动的间隔由<code>spark.dynamicAllocation.sustainedSchedulerBacklogTimeout</code>控制(默认与schedulerBacklogTimeout相同)。</p>
+<h3 id="动态移除executor">动态移除executor</h3><p>executor空闲时间超过<code>spark.dynamicAllocation.executorIdleTimeout</code>设置的值(默认60s )，该executor会被移除，除非有缓存数据。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/11/17/spark-dynamicAllocation/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/10/15/spark任务常见问题解决方案及优化/" itemprop="url">
                   spark任务常见问题解决方案及优化
                 </a>

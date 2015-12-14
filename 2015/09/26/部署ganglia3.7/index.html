@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="spark,sparkSQL," />
+  <meta name="keywords" content="ganglia," />
 
 
 
@@ -51,32 +51,32 @@
 
 
 
-<meta name="description" content="在大量数据中对一些字段进行关联。
-举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-直接join将会对所有数据进行shuffle，需要大量的io操作，相同的key会在同一个partition中进行处理，任务的并发度也收到了限制。
+<meta name="description" content="环境
+centOS6.6gmetad节点关闭iptable
+gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。
+一.安装epel源sudo wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm 
 
-使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大">
+sudo rpm -ivh epel-release-6-8.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark join broadcast优化">
-<meta property="og:url" content="http://yoursite.com/2015/09/24/spark-join-broadcast优化/index.html">
+<meta property="og:title" content="spark任务常见问题解决方案及优化">
+<meta property="og:url" content="http://yoursite.com/2015/09/26/部署ganglia3.7/index.html">
 <meta property="og:site_name" content="breeze">
-<meta property="og:description" content="在大量数据中对一些字段进行关联。
-举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-直接join将会对所有数据进行shuffle，需要大量的io操作，相同的key会在同一个partition中进行处理，任务的并发度也收到了限制。
+<meta property="og:description" content="环境
+centOS6.6gmetad节点关闭iptable
+gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。
+一.安装epel源sudo wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm 
 
-使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大">
-<meta property="og:image" content="http://img.blog.csdn.net/20151209234633986">
-<meta property="og:image" content="http://img.blog.csdn.net/20151209233338252">
-<meta property="og:image" content="http://img.blog.csdn.net/20151209223934994">
-<meta property="og:image" content="http://img.blog.csdn.net/20151209224459080">
-<meta property="og:updated_time" content="2015-12-11T05:44:57.000Z">
+sudo rpm -ivh epel-release-6-8.">
+<meta property="og:image" content="http://img.blog.csdn.net/20150926203648994">
+<meta property="og:updated_time" content="2015-12-14T05:13:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark join broadcast优化">
-<meta name="twitter:description" content="在大量数据中对一些字段进行关联。
-举例ipTable：需要进行关联的几千条ip数据(70k)hist：历史数据（百亿级别） 
-直接join将会对所有数据进行shuffle，需要大量的io操作，相同的key会在同一个partition中进行处理，任务的并发度也收到了限制。
+<meta name="twitter:title" content="spark任务常见问题解决方案及优化">
+<meta name="twitter:description" content="环境
+centOS6.6gmetad节点关闭iptable
+gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。
+一.安装epel源sudo wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm 
 
-使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大">
+sudo rpm -ivh epel-release-6-8.">
 
 
 
@@ -88,7 +88,7 @@
   };
 </script>
 
-  <title> spark join broadcast优化 | breeze </title>
+  <title> spark任务常见问题解决方案及优化 | breeze </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -238,7 +238,7 @@
             
             
               
-                spark join broadcast优化
+                spark任务常见问题解决方案及优化
               
             
           </h1>
@@ -247,8 +247,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-09-24T23:06:53+08:00" content="2015-09-24">
-              2015-09-24
+            <time itemprop="dateCreated" datetime="2015-09-26T20:09:17+08:00" content="2015-09-26">
+              2015-09-26
             </time>
           </span>
 
@@ -257,8 +257,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
+                  <a href="/categories/deploy/" itemprop="url" rel="index">
+                    <span itemprop="name">deploy</span>
                   </a>
                 </span>
 
@@ -273,8 +273,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/09/24/spark-join-broadcast优化/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/24/spark-join-broadcast优化/" itemprop="commentsCount"></span>
+                <a href="/2015/09/26/部署ganglia3.7/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/26/部署ganglia3.7/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -293,20 +293,76 @@
       
 
       
-        <span itemprop="articleBody"><p>在大量数据中对一些字段进行关联。</p>
-<h2 id="举例">举例</h2><p>ipTable：需要进行关联的几千条ip数据(70k)<br>hist：历史数据（百亿级别） </p>
-<p>直接join将会对所有数据进行shuffle，需要大量的io操作，相同的key会在同一个partition中进行处理，任务的并发度也收到了限制。</p>
-<p><img src="http://img.blog.csdn.net/20151209234633986" alt="这里写图片描述"></p>
-<p>使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大幅度提高。</p>
-<p><img src="http://img.blog.csdn.net/20151209233338252" alt="这里写图片描述"></p>
-<a id="more"></a>
-<h2 id="样本数据(2000w)性能测试对比">样本数据(2000w)性能测试对比</h2><p>小表没有进行broadcast</p>
-<p><img src="http://img.blog.csdn.net/20151209223934994" alt="无广播"></p>
-<p>进行了broadcast,可以看到连shuffle过程都省略了</p>
-<p><img src="http://img.blog.csdn.net/20151209224459080" alt="这里写图片描述"></p>
-<h2 id="实现代码(spark1-5)">实现代码(spark1.5)</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取ip表</span></span><br><span class="line">val df = ...</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果数据小于设定的广播大小则将该表广播,默认10M</span></span><br><span class="line">df<span class="class">.cache</span><span class="class">.count</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//注册表</span></span><br><span class="line">df.<span class="function"><span class="title">registerTempTable</span><span class="params">(<span class="string">"ipTable"</span>)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//关联</span></span><br><span class="line">sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"select * from ipTable join (select * from hist) on ipTable.ip = hist.ip"</span>)</span></span></span><br><span class="line"></span><br><span class="line">......</span><br></pre></td></tr></table></figure>
-<p>设置表广播的阈值，如果有需求且内存足够，可以将该值提高，默认10M</p>
-<p><code>spark.sql.autoBroadcastJoinThreshold</code></p>
+        <span itemprop="articleBody"><p><strong>环境</strong></p>
+<p>centOS6.6<br>gmetad节点关闭iptable</p>
+<p>gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。</p>
+<h2 id="一-安装epel源">一.安装epel源</h2><pre><code>sudo wget http:<span class="comment">//download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm </span>
+
+sudo rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8</span><span class="class">.noarch</span><span class="class">.rpm</span> 
+</code></pre><h2 id="二-安装gmetad">二.安装gmetad</h2><p>安装依赖和php,gmetad<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install rrdtool rrdtool-devel ganglia-web ganglia-gmetad ganglia-gmond ganglia-gmond-python httpd apr-devel zlib-devel libconfuse-devel expat-devel pcre-devel php-<span class="built_in">common</span> php-<span class="keyword">cli</span> php-gb php</span><br></pre></td></tr></table></figure></p>
+<p>修改配置</p>
+<pre><code>sudo <span class="keyword">vim</span> /etc/ganglia/gmetad.<span class="keyword">conf</span>
+</code></pre><p>修改其中的date_source属性，第一个参数是集群的名字，第二个是接收数据的节点，可以有多个。</p>
+<p>如果使用的默认端口8649也可以不写端口号</p>
+<pre><code>dat<span class="built_in">a_source</span> <span class="string">"spark"</span> spark219:<span class="number">8649</span>
+</code></pre><p>设置开机启动服务</p>
+<pre><code>sudo chkconfig gmetad <span class="function_start"><span class="keyword">on</span></span>
+</code></pre><p>启动gmetad</p>
+<pre><code>sudo service gmetad <span class="literal">start</span>
+</code></pre><h2 id="三-安装httpd">三.安装httpd</h2><pre><code>vim /etc/httpd/<span class="keyword">conf</span>.<span class="keyword">d</span>/ganglia.<span class="keyword">conf</span>    
+</code></pre><p>修改为</p>
+<pre><code><span class="tag">&lt;Location /ganglia&gt;</span>
+<span class="keyword"><span class="common">Order</span></span> deny,allow
+<span class="keyword"><span class="common">Allow</span></span> from <span class="literal">all</span>
+<span class="tag">&lt;/Location&gt;</span>
+</code></pre><p>如果不修改启动网页时则会看到如下错误</p>
+<pre><code>You don<span class="attribute">'t</span> have permission <span class="keyword">to</span> <span class="keyword">access</span> /ganglia <span class="keyword">on</span> this server
+</code></pre><p>设置开机启动服务</p>
+<pre><code>sudo chkconfig httpd <span class="function_start"><span class="keyword">on</span></span>
+</code></pre><p>启动http服务</p>
+<pre><code>sudo service httpd <span class="literal">start</span>
+</code></pre><h2 id="四-安装gmond">四.安装gmond</h2><p>安装gmond</p>
+<pre><code>sudo yum <span class="keyword">install</span> ganglia-gmond
+</code></pre><p><strong>组播模式</strong><br>ganglia默认使用的就是组播模式，所以要修改的配置不多</p>
+<p>如果使用组播，请增加组播地址</p>
+<pre><code>sudo ip route add <span class="number">239.2</span><span class="number">.11</span><span class="number">.71</span> dev 你的网卡
+</code></pre><p>修改配置</p>
+<pre><code>sudo <span class="keyword">vim</span> /etc/ganglia/gmond.<span class="keyword">conf</span>
+</code></pre><p>修改参数</p>
+<pre><code>cluster{
+<span class="comment">//要发送到的分组名</span>
+name = <span class="string">"spark"</span>
+<span class="attribute">...</span>
+}
+</code></pre><p>启动gmond</p>
+<pre><code>sudo service gmond <span class="literal">start</span>
+</code></pre><p><strong>单播模式</strong></p>
+<p>修改配置</p>
+<pre><code>sudo <span class="keyword">vim</span> /etc/ganglia/gmond.<span class="keyword">conf</span>
+</code></pre><p>修改参数</p>
+<pre><code>cluster{
+name = <span class="string">"spark"</span>
+...
+}
+
+udp_send_channel {
+<span class="comment">//收集数据的节点,不同分组数据要发到不同节点</span>
+host = <span class="number">192.168</span><span class="number">.47</span><span class="number">.209</span>
+port = <span class="number">8649</span>
+ttl = <span class="number">1</span>
+}
+
+udp_recv_channel {
+port = <span class="number">8649</span>
+}
+</code></pre><p>设置开机启动服务</p>
+<pre><code>sudo chkconfig gmond <span class="function_start"><span class="keyword">on</span></span>
+</code></pre><p>启动gmond</p>
+<pre><code>sudo service gmond <span class="literal">start</span>
+</code></pre><p>如果服务启动失败，查看</p>
+<pre><code>sudo /usr/sbin/gmond <span class="operator">-d</span> <span class="number">1</span>
+</code></pre><h2 id="五-GUI">五.GUI</h2><p>在网页上通过<code>spark219:80/ganglia</code>访问</p>
+<p>可以看到目前spark集群处于比较空闲的状态<br><img src="http://img.blog.csdn.net/20150926203648994" alt="spark"></p>
 </span>
       
     </div>
@@ -315,9 +371,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/spark/" rel="tag">#spark</a>
-          
-            <a href="/tags/sparkSQL/" rel="tag">#sparkSQL</a>
+            <a href="/tags/ganglia/" rel="tag">#ganglia</a>
           
         </div>
       
@@ -326,11 +380,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2015/09/24/spark-join-broadcast优化/" rel="next" title="spark join broadcast优化">
+                <i class="fa fa-chevron-left"></i> spark join broadcast优化
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/26/部署ganglia3.7/" rel="prev" title="spark任务常见问题解决方案及优化">
+              <a href="/2015/10/15/spark任务常见问题解决方案及优化/" rel="prev" title="spark任务常见问题解决方案及优化">
                 spark任务常见问题解决方案及优化 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -359,8 +417,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/09/24/spark-join-broadcast优化/"
-           data-title="spark join broadcast优化" data-url="http://yoursite.com/2015/09/24/spark-join-broadcast优化/">
+      <div class="ds-thread" data-thread-key="2015/09/26/部署ganglia3.7/"
+           data-title="spark任务常见问题解决方案及优化" data-url="http://yoursite.com/2015/09/26/部署ganglia3.7/">
       </div>
     
   </div>
@@ -450,7 +508,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#举例"><span class="nav-number">1.</span> <span class="nav-text">举例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样本数据(2000w)性能测试对比"><span class="nav-number">2.</span> <span class="nav-text">样本数据(2000w)性能测试对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现代码(spark1-5)"><span class="nav-number">3.</span> <span class="nav-text">实现代码(spark1.5)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-安装epel源"><span class="nav-number">1.</span> <span class="nav-text">一.安装epel源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-安装gmetad"><span class="nav-number">2.</span> <span class="nav-text">二.安装gmetad</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-安装httpd"><span class="nav-number">3.</span> <span class="nav-text">三.安装httpd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-安装gmond"><span class="nav-number">4.</span> <span class="nav-text">四.安装gmond</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-GUI"><span class="nav-number">5.</span> <span class="nav-text">五.GUI</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

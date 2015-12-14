@@ -54,8 +54,8 @@
 <meta name="description" content="主要有两种方式
 from/sizefrom 偏移，默认为0
 size 返回的结果数，默认为10
-在数据量不大的情况下我们一般会使用from/size,而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢就不说了，往往还会造成es内存不足而挂掉。
-从index A的type B">
+在数据量不大的情况下我们一般会使用from/size，而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。
+从index A的type B中搜索">
 <meta property="og:type" content="article">
 <meta property="og:title" content="elasticsearch分页查询">
 <meta property="og:url" content="http://yoursite.com/2015/12/16/elasticsearch分页查询/index.html">
@@ -63,16 +63,16 @@ size 返回的结果数，默认为10
 <meta property="og:description" content="主要有两种方式
 from/sizefrom 偏移，默认为0
 size 返回的结果数，默认为10
-在数据量不大的情况下我们一般会使用from/size,而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢就不说了，往往还会造成es内存不足而挂掉。
-从index A的type B">
-<meta property="og:updated_time" content="2015-12-14T14:46:17.000Z">
+在数据量不大的情况下我们一般会使用from/size，而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。
+从index A的type B中搜索">
+<meta property="og:updated_time" content="2015-12-14T14:49:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="elasticsearch分页查询">
 <meta name="twitter:description" content="主要有两种方式
 from/sizefrom 偏移，默认为0
 size 返回的结果数，默认为10
-在数据量不大的情况下我们一般会使用from/size,而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢就不说了，往往还会造成es内存不足而挂掉。
-从index A的type B">
+在数据量不大的情况下我们一般会使用from/size，而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。
+从index A的type B中搜索">
 
 
 
@@ -292,7 +292,7 @@ size 返回的结果数，默认为10
         <span itemprop="articleBody"><p>主要有两种方式</p>
 <h2 id="from/size">from/size</h2><p><code>from</code> 偏移，默认为0</p>
 <p><code>size</code> 返回的结果数，默认为10</p>
-<p>在数据量不大的情况下我们一般会使用<code>from/size</code>,而在深度分页的情况下效率极低，该命令会把<code>from+size</code>条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢就不说了，往往还会造成es内存不足而挂掉。</p>
+<p>在数据量不大的情况下我们一般会使用<code>from/size</code>，而在深度分页的情况下效率极低，该命令会把<code>from+size</code>条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。</p>
 <p>从index <code>A</code>的type <code>B</code>中搜索出从0开始的1w条数据:</p>
 <pre><code><span class="title">curl</span> -XGET <span class="string">"hostname:9200/A/B/_search?from=0&amp;size=10000"</span>
 </code></pre><a id="more"></a>

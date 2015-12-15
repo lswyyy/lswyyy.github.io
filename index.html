@@ -988,6 +988,232 @@ sudo rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8<
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/06/10/Hexo主题使用进阶/" itemprop="url">
+                  Hexo 主题使用进阶
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-06-10T22:00:00+08:00" content="2015-06-10">
+              2015-06-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">hexo</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/06/10/Hexo主题使用进阶/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/06/10/Hexo主题使用进阶/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="更换为next主题">更换为<code>next</code>主题</h2><p>进入hexo站点文件夹</p>
+<pre><code><span class="built_in">cd</span> your-hexo-site
+</code></pre><p>clone <code>Next</code>代码并存放到 <code>themes/next</code> 目录下</p>
+<pre><code>git clone http<span class="variable">s:</span>//github.<span class="keyword">com</span>/iissnan/hexo-theme-<span class="keyword">next</span> themes/<span class="keyword">next</span>
+</code></pre><p>在站点 <code>_config.yml</code> 中修改:</p>
+<pre><code><span class="attribute">theme</span>: <span class="string">next</span>
+</code></pre><p><code>Next</code> 主题拥有”题中题”，可以在主题的 <code>_config.yml</code> 中设置：</p>
+<pre><code><span class="label">scheme:</span> Mist  <span class="preprocessor"># 开启Next.Mist主题</span>
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/06/10/Hexo主题使用进阶/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/06/09/使用Hexo搭建github博客/" itemprop="url">
+                  使用Hexo搭建github博客
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-06-09T22:00:00+08:00" content="2015-06-09">
+              2015-06-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">hexo</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/06/09/使用Hexo搭建github博客/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/06/09/使用Hexo搭建github博客/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h2 id="环境">环境</h2><pre><code><span class="tag">Git</span>
+<span class="tag">Github</span>仓库<span class="pseudo">:xxx</span><span class="class">.github</span><span class="class">.io</span>
+<span class="tag">hexo</span> 3<span class="class">.x</span>
+</code></pre><h2 id="安装Hexo">安装Hexo</h2><pre><code>npm <span class="operator"><span class="keyword">install</span> -<span class="keyword">g</span> hexo</span>
+</code></pre><h2 id="初始化blog框架">初始化blog框架</h2><pre><code><span class="comment">//创建博客文件夹</span>
+<span class="keyword">mkdir</span> GitBlog
+<span class="keyword">cd</span> GitBlog
+
+<span class="comment">//初始化    </span>
+hexo init
+npm install
+npm install hexo-deployer-git --<span class="keyword">save</span>
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/06/09/使用Hexo搭建github博客/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
 
   </section>
 

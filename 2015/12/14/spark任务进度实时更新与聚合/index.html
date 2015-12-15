@@ -53,22 +53,22 @@
 
 <meta name="description" content="spree
 spree从spark web ui中获取正在运行的任务状态，从history server中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。
-因为把运行日志进行了聚合，所以查看线上正在运行的任务也不需要ssh端口转发了，只要把该页面配置个代理就OK了。">
+因为把运行日志进行了聚合，所以查看线上正在运行的任务也不再需要ssh端口转发，只要把该页面配置个代理就OK了">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spark任务进度实时更新与聚合">
 <meta property="og:url" content="http://yoursite.com/2015/12/14/spark任务进度实时更新与聚合/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
 <meta property="og:description" content="spree
 spree从spark web ui中获取正在运行的任务状态，从history server中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。
-因为把运行日志进行了聚合，所以查看线上正在运行的任务也不需要ssh端口转发了，只要把该页面配置个代理就OK了。">
+因为把运行日志进行了聚合，所以查看线上正在运行的任务也不再需要ssh端口转发，只要把该页面配置个代理就OK了">
 <meta property="og:image" content="http://img.blog.csdn.net/20151215130215985">
 <meta property="og:image" content="http://img.blog.csdn.net/20151215130255921">
-<meta property="og:updated_time" content="2015-12-15T05:23:09.000Z">
+<meta property="og:updated_time" content="2015-12-15T08:49:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark任务进度实时更新与聚合">
 <meta name="twitter:description" content="spree
 spree从spark web ui中获取正在运行的任务状态，从history server中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。
-因为把运行日志进行了聚合，所以查看线上正在运行的任务也不需要ssh端口转发了，只要把该页面配置个代理就OK了。">
+因为把运行日志进行了聚合，所以查看线上正在运行的任务也不再需要ssh端口转发，只要把该页面配置个代理就OK了">
 
 
 
@@ -308,7 +308,7 @@ spree从spark web ui中获取正在运行的任务状态，从history server中�
       
         <span itemprop="articleBody"><h2 id="spree">spree</h2><p><img src="http://img.blog.csdn.net/20151215130215985" alt="这里写图片描述"></p>
 <p>spree从<code>spark web ui</code>中获取正在运行的任务状态，从<code>history server</code>中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。</p>
-<p>因为把运行日志进行了聚合，所以查看线上正在运行的任务也不需要ssh端口转发了，只要把该页面配置个代理就OK了。</p>
+<p>因为把运行日志进行了聚合，所以查看线上正在运行的任务也不再需要ssh端口转发，只要把该页面配置个代理就OK了</p>
 <a id="more"></a>
 <h2 id="spree安装部署">spree安装部署</h2><h3 id="环境">环境</h3><p>已安装<code>git</code>,<code>npm</code></p>
 <h3 id="安装Spree">安装<code>Spree</code></h3><pre><code>git <span class="keyword">clone</span> <span class="title">--recursive</span> https://github.com/hammerlab/spree.git
@@ -319,15 +319,25 @@ meteor        <span class="comment"># 安装meteor后运行</span>
 <h3 id="安装Meteor">安装<code>Meteor</code></h3><p>将会被安装在<code>~/.meteor</code> </p>
 <p>启动脚本在<code>/usr/local/bin/meteor</code>，因此可以直接输入<code>meteor</code>使用</p>
 <pre><code>curl http<span class="variable">s:</span>//install.meteor.<span class="keyword">com</span>/ | <span class="keyword">sh</span>
-</code></pre><h3 id="安装slim">安装<code>slim</code></h3><pre><code>npm <span class="operator"><span class="keyword">install</span> -<span class="keyword">g</span> slim.js
+</code></pre><h3 id="安装slim">安装<code>slim</code></h3><p>启动脚本在<code>/usr/bin/slim</code></p>
+<pre><code>npm <span class="operator"><span class="keyword">install</span> -<span class="keyword">g</span> slim.js
 slim</span>
-</code></pre><p>如果在启动meteor前启动slim，则会报错:</p>
+</code></pre><p>如果在启动meteor前启动slim，则会报错，因为连不到mongoDB:</p>
 <figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">node_modules</span>/<span class="title">slim</span>.<span class="title">js</span>/<span class="title">node_modules</span>/<span class="title">mongodb</span>/<span class="title">lib</span>/<span class="title">server</span>.<span class="title">js</span>:228</span></span><br><span class="line">        process.nextTick(function() &#123; throw err; &#125;)</span><br><span class="line">                                      ^</span><br><span class="line"><span class="constant">AssertionError</span>: null == &#123; [<span class="constant">MongoError</span>: connect <span class="constant">ECONNREFUSED</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">3001</span>]</span><br><span class="line">  <span class="symbol">name:</span> <span class="string">'MongoError'</span>,</span><br><span class="line">  <span class="symbol">message:</span> <span class="string">'connect ECONNREFUSED 127.0.0.1:3001'</span> &#125;</span><br></pre></td></tr></table></figure>
 <h3 id="使用spree">使用spree</h3><h4 id="spark1-5版本">spark1.5版本</h4><pre><code>spark-shell/spark-submit 
 --packages org<span class="class">.hammerlab</span>:spark-json-relay:<span class="number">2.0</span>.<span class="number">0</span> 
---conf spark.extraListeners=org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.JsonRelay</span> ...
-</code></pre><h4 id="其余版本">其余版本</h4><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wget <span class="keyword">https</span>://repo1.maven.org/maven2/org/hammerlab/spark-json-relay/<span class="number">2.0</span><span class="number">.0</span>/spark-json-relay-<span class="number">2.0</span><span class="number">.0</span>.jar</span><br><span class="line">	</span><br><span class="line"><span class="comment"># Include JsonRelay on the driver's classpath</span></span><br><span class="line"><span class="comment">--driver-class-path /path/to/json-relay-2.0.0.jar</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Register your JsonRelay as a SparkListener</span></span><br><span class="line"><span class="comment">--conf spark.extraListeners=org.apache.spark.JsonRelay</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Point it at your `slim` instance; default: localhost:8123</span></span><br><span class="line"><span class="comment">--conf spark.slim.host=…</span></span><br><span class="line"><span class="comment">--conf spark.slim.port=…</span></span><br></pre></td></tr></table></figure>
-<h3 id="运行效果">运行效果</h3><p><a href="https://github.com/hammerlab/spree/blob/master/screencasts.md" target="_blank" rel="external">更多运行截图</a></p>
+--conf spark.extraListeners=org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.JsonRelay</span> 
+--conf spark<span class="class">.slim</span><span class="class">.host</span>＝xxx  #启动slim的节点,默认为localhost
+</code></pre><h4 id="其余版本">其余版本</h4><p>获取<code>JsonRelay</code></p>
+<pre><code>wget <span class="string">https:</span><span class="comment">//repo1.maven.org/maven2/org/hammerlab/spark-json-relay/2.0.0/spark-json-relay-2.0.0.jar</span>
+</code></pre><p>将<code>JsonRelay</code>加入driver的classpath</p>
+<pre><code>--driver-<span class="keyword">class</span>-path /path/to/json-relay-<span class="number">2.0</span><span class="number">.0</span>.jar
+</code></pre><h4 id="通用参数">通用参数</h4><p>将<code>JsonRelay</code>注册成SparkListener</p>
+<pre><code>--conf spark.extraListeners=org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.JsonRelay</span>
+</code></pre><p>指向启动<code>slim</code>的实例; 默认为: localhost:8123</p>
+<pre><code>--conf spark<span class="class">.slim</span><span class="class">.host</span>=…
+ --conf spark<span class="class">.slim</span><span class="class">.port</span>=…
+</code></pre><h3 id="运行效果">运行效果</h3><p><a href="https://github.com/hammerlab/spree/blob/master/screencasts.md" target="_blank" rel="external">更多运行截图</a></p>
 <p><a href="https://github.com/hammerlab/spree" target="_blank" rel="external">项目地址</a></p>
 </span>
       
@@ -472,7 +482,7 @@ slim</span>
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#spree"><span class="nav-number">1.</span> <span class="nav-text">spree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spree安装部署"><span class="nav-number">2.</span> <span class="nav-text">spree安装部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境"><span class="nav-number">2.1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Spree"><span class="nav-number">2.2.</span> <span class="nav-text">安装Spree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Meteor"><span class="nav-number">2.3.</span> <span class="nav-text">安装Meteor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装slim"><span class="nav-number">2.4.</span> <span class="nav-text">安装slim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用spree"><span class="nav-number">2.5.</span> <span class="nav-text">使用spree</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#spark1-5版本"><span class="nav-number">2.5.1.</span> <span class="nav-text">spark1.5版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其余版本"><span class="nav-number">2.5.2.</span> <span class="nav-text">其余版本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行效果"><span class="nav-number">2.6.</span> <span class="nav-text">运行效果</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#spree"><span class="nav-number">1.</span> <span class="nav-text">spree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spree安装部署"><span class="nav-number">2.</span> <span class="nav-text">spree安装部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境"><span class="nav-number">2.1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Spree"><span class="nav-number">2.2.</span> <span class="nav-text">安装Spree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Meteor"><span class="nav-number">2.3.</span> <span class="nav-text">安装Meteor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装slim"><span class="nav-number">2.4.</span> <span class="nav-text">安装slim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用spree"><span class="nav-number">2.5.</span> <span class="nav-text">使用spree</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#spark1-5版本"><span class="nav-number">2.5.1.</span> <span class="nav-text">spark1.5版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其余版本"><span class="nav-number">2.5.2.</span> <span class="nav-text">其余版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通用参数"><span class="nav-number">2.5.3.</span> <span class="nav-text">通用参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行效果"><span class="nav-number">2.6.</span> <span class="nav-text">运行效果</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

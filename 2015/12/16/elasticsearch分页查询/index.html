@@ -65,7 +65,7 @@ from/sizefrom 偏移，默认为0
 size 返回的结果数，默认为10
 在数据量不大的情况下我们一般会使用from/size，而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。
 从index A的type B中搜索">
-<meta property="og:updated_time" content="2015-12-15T01:37:43.000Z">
+<meta property="og:updated_time" content="2015-12-15T01:43:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="elasticsearch分页查询">
 <meta name="twitter:description" content="主要有两种方式
@@ -328,10 +328,10 @@ size 返回的结果数，默认为10
 <pre><code><span class="title">curl</span> -XGET <span class="string">"hostname:9200/A/B/_search?search_type=scan&amp;scroll=5m&amp;size=200000"</span>
 </code></pre><p>将会返回一个过期时间为5分钟scroll_id</p>
 <pre><code><span class="string">"_scroll_id"</span> :
-<span class="string">"c2Nhbjs1OzkwODg5OmEta2lMZlJJUmFxMDVvdWNLWXR0dUE7NDI5NTA1OnF</span>
-jcVZSQUdnU3hpdy15XzRYT0lYWVE7OTA4OTA6YS1raUxmUklSYXEwNW91Y0tZ
-dHR1QTs5MDg5MTphLWtpTGZSSVJhcTA1b3VjS1l0dHVBOzkwODkyOmEta2l
-MZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="string">"</span>
+<span class="symbol">'c2Nhbjs1OzkwODg5OmEta2lMZlJJUmFxMDVvdWNLWXR0dUE7NDI5</span>
+<span class="type">NTA1OnFjcVZSQUdnU3hpdy15XzRYT0lYWVE7OTA4OTA6YS1raUxmUklSYXEw</span>
+<span class="type">NW91Y0tZdHR1QTs5MDg5MTphLWtpTGZSSVJhcTA1b3VjS1l0dHVBOzkwODkyO</span>
+mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7'
 </code></pre><p>根据该scroll_id从es中检索数据，每次调用都会检索下一批数据，并将scroll_id的过期时间重置为5m，直到所有数据检索完毕或者scroll_id过期:</p>
 <pre><code>curl -XGET <span class="string">"hostname:9200/_search/scroll?scroll=5m"</span> <span class="operator">-d</span>
  <span class="string">'c2Nhbjs1OzkwODg5OmEta2lMZlJJUmFxMDVvdWNLWXR0dUE7NDI5NTA1OnFjc

@@ -69,7 +69,7 @@ git clone https://github.com/iissnan/hexo-theme-next themes/next
 在站点 _config.yml 中修改:
 theme: next
 Next 主题拥有”题中题”，可以在主题的 _config.">
-<meta property="og:updated_time" content="2015-12-15T15:38:13.000Z">
+<meta property="og:updated_time" content="2015-12-15T15:56:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo 主题使用进阶">
 <meta name="twitter:description" content="更换为next主题进入hexo站点文件夹
@@ -330,16 +330,22 @@ Next 主题拥有”题中题”，可以在主题的 _config.">
 </code></pre><h2 id="添加分类">添加分类</h2><p>新建一个页面，命名为 <code>categories</code></p>
 <pre><code>hexo <span class="keyword">new</span> page categories
 </code></pre><p>在 <code>source/categories</code> 目录的 <code>index.md</code> 中修改:</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: 分类</span><br><span class="line">date: 2015-12-02 12:44:45</span><br><span class="line"><span class="header">type: "categories"</span><br><span class="line">---</span></span><br></pre></td></tr></table></figure>
-<p>在主题的 <code>_config.yml</code> 中取消注释:</p>
+<pre><code>title: 分类
+date: 2015-12-02 12:44:45
+<span class="header">type: "categories"
+---</span>
+</code></pre><p>在主题的 <code>_config.yml</code> 中取消注释:</p>
 <pre><code><span class="attribute">categories</span>: <span class="string">/categories</span>
 </code></pre><p>在要分类的文章中加入 <code>category</code> 属性:</p>
 <pre><code><span class="label">category:</span> <span class="string">"hexo"</span>  <span class="preprocessor"># 分类为 hexo </span>
 </code></pre><h2 id="添加标签">添加标签</h2><p>新建一个页面，命名为 <code>tags</code></p>
 <pre><code>hexo <span class="keyword">new</span> page <span class="keyword">tags</span>
 </code></pre><p>在 <code>source/tags</code> 目录的 <code>index.md</code> 中修改:</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: tags</span><br><span class="line">date: 2015-12-02 12:10:34</span><br><span class="line"><span class="header">type: "tags"</span><br><span class="line">---</span></span><br></pre></td></tr></table></figure>
-<p>在主题的 <code>_config.yml</code> 中取消注释:</p>
+<pre><code>title: tags
+date: 2015-12-02 12:10:34
+<span class="header">type: "tags"
+---</span>
+</code></pre><p>在主题的 <code>_config.yml</code> 中取消注释:</p>
 <pre><code><span class="keyword">tag</span><span class="variable">s:</span> /<span class="keyword">tags</span>
 </code></pre><p>在需要变迁的文章中加入 <code>tgs</code> 属性:</p>
 <pre><code><span class="label">tags:</span> [spark,sparkSQL]  <span class="preprocessor"># 添加spark和sparkSQL两个标签</span>

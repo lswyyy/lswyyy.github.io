@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="elasticsearch," />
+  <meta name="keywords" content="spark,spress," />
 
 
 
@@ -51,28 +51,24 @@
 
 
 
-<meta name="description" content="主要有两种方式
-from/sizefrom 偏移，默认为0
-size 返回的结果数，默认为10
-在数据量不大的情况下我们一般会使用from/size，而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。
-从index A的type B中搜索">
+<meta name="description" content="spree
+spree从spark web ui中获取正在运行的任务状态，从history server中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。
+因为把运行日志进行了聚合，这意味着再也不用为了看到正在运行的任务必须要去ssh端口转发了，只要把该页面配置个代理就OK了。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="elasticsearch分页查询">
-<meta property="og:url" content="http://yoursite.com/2015/12/16/elasticsearch分页查询/index.html">
+<meta property="og:title" content="spark任务进度实时更新与聚合">
+<meta property="og:url" content="http://yoursite.com/2015/12/14/spark任务进度实时更新与聚合/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
-<meta property="og:description" content="主要有两种方式
-from/sizefrom 偏移，默认为0
-size 返回的结果数，默认为10
-在数据量不大的情况下我们一般会使用from/size，而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。
-从index A的type B中搜索">
-<meta property="og:updated_time" content="2015-12-15T01:44:56.000Z">
+<meta property="og:description" content="spree
+spree从spark web ui中获取正在运行的任务状态，从history server中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。
+因为把运行日志进行了聚合，这意味着再也不用为了看到正在运行的任务必须要去ssh端口转发了，只要把该页面配置个代理就OK了。">
+<meta property="og:image" content="http://img.blog.csdn.net/20151215130215985">
+<meta property="og:image" content="http://img.blog.csdn.net/20151215130255921">
+<meta property="og:updated_time" content="2015-12-15T05:13:42.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="elasticsearch分页查询">
-<meta name="twitter:description" content="主要有两种方式
-from/sizefrom 偏移，默认为0
-size 返回的结果数，默认为10
-在数据量不大的情况下我们一般会使用from/size，而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。
-从index A的type B中搜索">
+<meta name="twitter:title" content="spark任务进度实时更新与聚合">
+<meta name="twitter:description" content="spree
+spree从spark web ui中获取正在运行的任务状态，从history server中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。
+因为把运行日志进行了聚合，这意味着再也不用为了看到正在运行的任务必须要去ssh端口转发了，只要把该页面配置个代理就OK了。">
 
 
 
@@ -84,7 +80,7 @@ size 返回的结果数，默认为10
   };
 </script>
 
-  <title> elasticsearch分页查询 | LSW'S BLOG </title>
+  <title> spark任务进度实时更新与聚合 | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -255,7 +251,7 @@ size 返回的结果数，默认为10
             
             
               
-                elasticsearch分页查询
+                spark任务进度实时更新与聚合
               
             
           </h1>
@@ -264,8 +260,8 @@ size 返回的结果数，默认为10
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-16T22:00:00+08:00" content="2015-12-16">
-              2015-12-16
+            <time itemprop="dateCreated" datetime="2015-12-14T22:00:00+08:00" content="2015-12-14">
+              2015-12-14
             </time>
           </span>
 
@@ -274,8 +270,8 @@ size 返回的结果数，默认为10
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
                   </a>
                 </span>
 
@@ -290,8 +286,8 @@ size 返回的结果数，默认为10
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/16/elasticsearch分页查询/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/16/elasticsearch分页查询/" itemprop="commentsCount"></span>
+                <a href="/2015/12/14/spark任务进度实时更新与聚合/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/14/spark任务进度实时更新与聚合/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -310,35 +306,28 @@ size 返回的结果数，默认为10
       
 
       
-        <span itemprop="articleBody"><p>主要有两种方式</p>
-<h2 id="from/size">from/size</h2><p><code>from</code> 偏移，默认为0</p>
-<p><code>size</code> 返回的结果数，默认为10</p>
-<p>在数据量不大的情况下我们一般会使用<code>from/size</code>，而在深度分页的情况下效率极低，该命令会把<code>from+size</code>条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。</p>
-<p>从index <code>A</code>的type <code>B</code>中搜索出从0开始的1w条数据:</p>
-<pre><code><span class="title">curl</span> -XGET <span class="string">"hostname:9200/A/B/_search?from=0&amp;size=10000"</span>
-</code></pre><a id="more"></a>
-<h3 id="理解深度分页为什么慢">理解深度分页为什么慢</h3><p>让我们假设在一个有5个主分片的索引中搜索。当我们请求结果的第一页（结果1到10）时，每个分片产生自己最顶端10个结果然后返回它们给请求节点(requesting node)，它再排序这所有的50个结果以选出顶端的10个结果。</p>
-<p>现在假设我们请求第1000页——结果10001到10010。工作方式都相同，不同的是每个分片都必须产生顶端的10010个结果。然后请求节点排序这50050个结果并丢弃50040个！</p>
-<p>在分布式系统中，排序结果的花费随着分页的深入而成倍增长。</p>
-<p>ps: 我曾经在一个14亿条记录的type中使用from/size进行分页，多么痛的领悟。。。</p>
-<h2 id="scan/scroll">scan/scroll</h2><p>scan（扫描）搜索类型是和scroll（滚屏）API一起使用来从es里高效地取回巨大数量的结果而不需要付出深分页的代价。</p>
-<p><code>scroll</code> 做一个初始阶段搜索并且持续批量从es里拉取结果直到没有结果剩下，类似传统数据库里的cursors。</p>
-<p><code>scan</code> es查询将不再进行排序。</p>
-<p>因为size作用在每个shard上，所以每次GET的数据量为<code>shard_num*size</code>条:</p>
-<pre><code><span class="title">curl</span> -XGET <span class="string">"hostname:9200/A/B/_search?search_type=scan&amp;scroll=5m&amp;size=200000"</span>
-</code></pre><p>将会返回一个过期时间为5分钟scroll_id</p>
-<pre><code><span class="string">"_scroll_id"</span>: 
-<span class="string">"c2Nhbjs1OzkwODg5OmEta2lMZlJJUmFxMDVvdWNLWXR0dUE7NDI5</span>
-NTA1OnFjcVZSQUdnU3hpdy15XzRYT0lYWVE7OTA4OTA6YS1raUxmUklSYXEw
-NW91Y0tZdHR1QTs5MDg5MTphLWtpTGZSSVJhcTA1b3VjS1l0dHVBOzkwODkyO
-mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="string">"</span>
-</code></pre><p>根据该scroll_id从es中检索数据，每次调用都会检索下一批数据，并将scroll_id的过期时间重置为5m，直到所有数据检索完毕或者scroll_id过期:</p>
-<pre><code>curl -XGET <span class="string">"hostname:9200/_search/scroll?scroll=5m"</span> <span class="operator">-d</span>
- <span class="string">'c2Nhbjs1OzkwODg5OmEta2lMZlJJUmFxMDVvdWNLWXR0dUE7NDI5NTA1OnFjc
- VZSQUdnU3hpdy15XzRYT0lYWVE7OTA4OTA6YS1raUxmUklSYXEwNW91Y0tZdHR1QTs5
- MDg5MTphLWtpTGZSSVJhcTA1b3VjS1l0dHVBOzkwODkyOmEta2lMZlJJUmFxMDVvdWNLWXR
- 0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7'</span>    
-</code></pre></span>
+        <span itemprop="articleBody"><h2 id="spree">spree</h2><p><img src="http://img.blog.csdn.net/20151215130215985" alt="这里写图片描述"></p>
+<p>spree从<code>spark web ui</code>中获取正在运行的任务状态，从<code>history server</code>中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。</p>
+<p>因为把运行日志进行了聚合，这意味着再也不用为了看到正在运行的任务必须要去ssh端口转发了，只要把该页面配置个代理就OK了。</p>
+<a id="more"></a>
+<h2 id="spree安装部署">spree安装部署</h2><h3 id="环境">环境</h3><p>已安装<code>git</code>,<code>npm</code></p>
+<h3 id="安装Spree">安装<code>Spree</code></h3><pre><code>git <span class="keyword">clone</span> <span class="title">--recursive</span> https://github.com/hammerlab/spree.git
+cd spree/ui   <span class="comment"># the Spree Meteor app lives in ui/ in this repo.</span>
+meteor        <span class="comment"># 安装meteor后运行</span>
+</code></pre><p>开启后可以访问<code>http://localhost:3000</code></p>
+<p><img src="http://img.blog.csdn.net/20151215130255921" alt="这里写图片描述"></p>
+<h3 id="安装Meteor">安装<code>Meteor</code></h3><p>将会被安装在<code>~/.meteor</code> </p>
+<p>启动脚本在<code>/usr/local/bin/meteor</code>，因此可以直接输入<code>meteor</code>使用</p>
+<pre><code>curl http<span class="variable">s:</span>//install.meteor.<span class="keyword">com</span>/ | <span class="keyword">sh</span>
+</code></pre><h3 id="安装slim">安装<code>slim</code></h3><pre><code>npm <span class="operator"><span class="keyword">install</span> -<span class="keyword">g</span> slim.js
+slim</span>
+</code></pre><p>如果在启动meteor前启动slim，则会报错:</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">node_modules</span>/<span class="title">slim</span>.<span class="title">js</span>/<span class="title">node_modules</span>/<span class="title">mongodb</span>/<span class="title">lib</span>/<span class="title">server</span>.<span class="title">js</span>:228</span></span><br><span class="line">        process.nextTick(function() &#123; throw err; &#125;)</span><br><span class="line">                                      ^</span><br><span class="line"><span class="constant">AssertionError</span>: null == &#123; [<span class="constant">MongoError</span>: connect <span class="constant">ECONNREFUSED</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">3001</span>]</span><br><span class="line">  <span class="symbol">name:</span> <span class="string">'MongoError'</span>,</span><br><span class="line">  <span class="symbol">message:</span> <span class="string">'connect ECONNREFUSED 127.0.0.1:3001'</span> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用spree">使用spree</h3><h4 id="spark1-5版本">spark1.5版本</h4><pre><code>spark-shell/spark-submit --packages org<span class="class">.hammerlab</span>:spark-json-relay:<span class="number">2.0</span>.<span class="number">0</span> --conf spark.extraListeners=org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.JsonRelay</span> ...
+</code></pre><h4 id="其余版本">其余版本</h4><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wget <span class="keyword">https</span>://repo1.maven.org/maven2/org/hammerlab/spark-json-relay/<span class="number">2.0</span><span class="number">.0</span>/spark-json-relay-<span class="number">2.0</span><span class="number">.0</span>.jar</span><br><span class="line">	</span><br><span class="line"><span class="comment"># Include JsonRelay on the driver's classpath</span></span><br><span class="line"><span class="comment">--driver-class-path /path/to/json-relay-2.0.0.jar</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Register your JsonRelay as a SparkListener</span></span><br><span class="line"><span class="comment">--conf spark.extraListeners=org.apache.spark.JsonRelay</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Point it at your `slim` instance; default: localhost:8123</span></span><br><span class="line"><span class="comment">--conf spark.slim.host=…</span></span><br><span class="line"><span class="comment">--conf spark.slim.port=…</span></span><br></pre></td></tr></table></figure>
+<h3 id="运行效果">运行效果</h3><p><a href="https://github.com/hammerlab/spree/blob/master/screencasts.md" target="_blank" rel="external">更多运行截图</a></p>
+<p><a href="https://github.com/hammerlab/spree" target="_blank" rel="external">项目地址</a></p>
+</span>
       
     </div>
 
@@ -346,7 +335,9 @@ mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="stri
       
         <div class="post-tags">
           
-            <a href="/tags/elasticsearch/" rel="tag">#elasticsearch</a>
+            <a href="/tags/spark/" rel="tag">#spark</a>
+          
+            <a href="/tags/spress/" rel="tag">#spress</a>
           
         </div>
       
@@ -355,8 +346,8 @@ mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="stri
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/06/使用Hexo搭建github博客/" rel="next" title="使用Hexo搭建github博客">
-                <i class="fa fa-chevron-left"></i> 使用Hexo搭建github博客
+              <a href="/2015/12/13/elasticsearch分页查询/" rel="next" title="elasticsearch分页查询">
+                <i class="fa fa-chevron-left"></i> elasticsearch分页查询
               </a>
             
           </div>
@@ -388,8 +379,8 @@ mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="stri
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/12/16/elasticsearch分页查询/"
-           data-title="elasticsearch分页查询" data-url="http://yoursite.com/2015/12/16/elasticsearch分页查询/">
+      <div class="ds-thread" data-thread-key="2015/12/14/spark任务进度实时更新与聚合/"
+           data-title="spark任务进度实时更新与聚合" data-url="http://yoursite.com/2015/12/14/spark任务进度实时更新与聚合/">
       </div>
     
   </div>
@@ -433,7 +424,7 @@ mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="stri
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -447,7 +438,7 @@ mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="stri
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -479,7 +470,7 @@ mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="stri
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#from/size"><span class="nav-number">1.</span> <span class="nav-text">from/size</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#理解深度分页为什么慢"><span class="nav-number">1.1.</span> <span class="nav-text">理解深度分页为什么慢</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scan/scroll"><span class="nav-number">2.</span> <span class="nav-text">scan/scroll</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#spree"><span class="nav-number">1.</span> <span class="nav-text">spree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spree安装部署"><span class="nav-number">2.</span> <span class="nav-text">spree安装部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境"><span class="nav-number">2.1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Spree"><span class="nav-number">2.2.</span> <span class="nav-text">安装Spree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Meteor"><span class="nav-number">2.3.</span> <span class="nav-text">安装Meteor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装slim"><span class="nav-number">2.4.</span> <span class="nav-text">安装slim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用spree"><span class="nav-number">2.5.</span> <span class="nav-text">使用spree</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#spark1-5版本"><span class="nav-number">2.5.1.</span> <span class="nav-text">spark1.5版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其余版本"><span class="nav-number">2.5.2.</span> <span class="nav-text">其余版本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行效果"><span class="nav-number">2.6.</span> <span class="nav-text">运行效果</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

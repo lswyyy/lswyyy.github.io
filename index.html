@@ -228,6 +228,15 @@
 
     
     
+      
+      
+        
+        
+        
+      
+
+      
+    
 
     
       
@@ -309,7 +318,9 @@
 
       
         
-          <p>下文以 <code>mysql</code> 为例</p>
+          <blockquote>
+<p>下文以 <code>mysql</code> 为例</p>
+</blockquote>
 <h2 id="在spark中使用jdbc">在spark中使用jdbc</h2><p>在 <code>spark-env.sh</code> 文件中加入:</p>
 <pre><code><span class="keyword">export</span> SPARK_CLASSPATH=/path/mysql-connector-java-<span class="number">5.1</span><span class="number">.34</span>.jar
 </code></pre><p>任务提交时加入:</p>
@@ -960,114 +971,6 @@ sudo rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8<
 </code></pre>
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/09/26/部署ganglia3.7/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/24/spark-join-broadcast优化/" itemprop="url">
-                  spark join broadcast优化
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2015-09-24T23:06:53+08:00" content="2015-09-24">
-              2015-09-24
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/09/24/spark-join-broadcast优化/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/24/spark-join-broadcast优化/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>在大量数据中对一些字段进行关联。</p>
-<h2 id="举例">举例</h2><p>ipTable：需要进行关联的几千条ip数据(70k)<br>hist：历史数据（百亿级别） </p>
-<p>直接join将会对所有数据进行shuffle，需要大量的io操作，相同的key会在同一个partition中进行处理，任务的并发度也收到了限制。</p>
-<p><img src="http://img.blog.csdn.net/20151209234633986" alt="这里写图片描述"></p>
-<p>使用broadcast将会把小表分发到每台执行节点上，因此，关联操作都在本地完成，基本就取消了shuffle的过程，运行效率大幅度提高。</p>
-<p><img src="http://img.blog.csdn.net/20151209233338252" alt="这里写图片描述"></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/24/spark-join-broadcast优化/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

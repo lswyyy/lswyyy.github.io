@@ -71,7 +71,7 @@ export SPARK_CLASSPATH=/path/mysql-connector-java-5.1.34.jar
 --jars /path/mysql-connector-java-5.1.34.jar
 1. 单partition(无并发)调用函数
 def jdbc(url:">
-<meta property="og:updated_time" content="2015-12-17T03:24:29.000Z">
+<meta property="og:updated_time" content="2015-12-17T03:25:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="提高spark jdbc操作并发度">
 <meta name="twitter:description" content="下文以 mysql 为例
@@ -365,7 +365,7 @@ connectionProperties: Properties)</span>:</span> DataFrame
 <pre><code><span class="tag">jdbcDF</span><span class="class">.rdd</span><span class="class">.partitions</span><span class="class">.size</span> # 结果返回 6
 </code></pre><p>该操作的每个分区数据都由该段时间的分区组成，这种方式适合各种场景，较为推荐。</p>
 <h2 id="结语">结语</h2><blockquote>
-<p>以3000W数据表为例，单分区<code>count</code>，僵死若干分钟报OOM。</p>
+<p>以 <code>mysql</code> 3000W 数据量表为例，单分区<code>count</code>，僵死若干分钟报OOM。</p>
 <p>分成5－20个分区后，<code>count</code> 操作只需要 <code>2s</code></p>
 <p>高并发度可以大幅度提高读取，处理数据的速度，但是过高的并发度会将数据源数据库弄挂，原因想必大家都懂。。。</p>
 </blockquote>

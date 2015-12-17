@@ -71,7 +71,7 @@ export SPARK_CLASSPATH=/path/mysql-connector-java-5.1.34.jar
 --jars /path/mysql-connector-java-5.1.34.jar
 1. 单partition(无并发)调用函数
 def jdbc(url:">
-<meta property="og:updated_time" content="2015-12-17T03:16:37.000Z">
+<meta property="og:updated_time" content="2015-12-17T03:24:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="提高spark jdbc操作并发度">
 <meta name="twitter:description" content="下文以 mysql 为例
@@ -334,7 +334,7 @@ def jdbc(url:">
 <p>查看并发度</p>
 <pre><code><span class="tag">jdbcDF</span><span class="class">.rdd</span><span class="class">.partitions</span><span class="class">.size</span> # 结果返回 1
 </code></pre><p>该操作的并发度为1，你所有的数据都会在一个partition中进行操作，意味着无论你给的资源有多少，只有一个task会执行任务，执行效率可想而之，并且在稍微大点的表中进行操作分分钟就会OOM。</p>
-<p>更直观的说法是，达到千万级别的表就不要使用该操作，<code>count</code>操作就要等一万年，no zuo no die !</p>
+<p>更直观的说法是，达到千万级别的表就不要使用该操作，<code>count</code>操作就要等一万年，no zuo no die ,don’t to try !</p>
 <pre><code>WARN TaskSetManager: Lost task <span class="number">0.0</span> <span class="keyword">in</span> stage <span class="number">6.0</span> (TID <span class="number">56</span>, spark047219):
  java<span class="class">.lang</span><span class="class">.OutOfMemoryError</span>: GC overhead limit exceeded
 at com<span class="class">.mysql</span><span class="class">.jdbc</span><span class="class">.MysqlIO</span><span class="class">.reuseAndReadPacket</span>(MysqlIO<span class="class">.java</span>:<span class="number">3380</span>)
@@ -344,7 +344,7 @@ url: String,
 table: String,
 columnName: String,    # 根据该字段分区，需要为整形，比如id等
 lowerBound: Long,      # 分区的下界
-upperBound: Long,          # 分区的上界
+upperBound: Long,      # 分区的上界
 numPartitions: Int,    # 分区的个数
 connectionProperties: Properties)</span>:</span> DataFrame
 </code></pre><p>使用:</p>
@@ -352,6 +352,7 @@ connectionProperties: Properties)</span>:</span> DataFrame
 <p>查看并发度</p>
 <pre><code><span class="tag">jdbcDF</span><span class="class">.rdd</span><span class="class">.partitions</span><span class="class">.size</span> # 结果返回 10
 </code></pre><p>该操作将字段 <code>colName</code> 中1-10000000条数据分到10个partition中，使用很方便，缺点也很明显，只能使用整形数据字段作为分区关键字。</p>
+<p>3000w数据的表 <code>count</code> 跨集群操作只要2s。</p>
 <h2 id="3-_根据任意类型字段分区">3. 根据任意类型字段分区</h2><p>调用函数</p>
 <pre><code>jdbc(
   url: <span class="keyword">String</span>,
@@ -364,7 +365,9 @@ connectionProperties: Properties)</span>:</span> DataFrame
 <pre><code><span class="tag">jdbcDF</span><span class="class">.rdd</span><span class="class">.partitions</span><span class="class">.size</span> # 结果返回 6
 </code></pre><p>该操作的每个分区数据都由该段时间的分区组成，这种方式适合各种场景，较为推荐。</p>
 <h2 id="结语">结语</h2><blockquote>
-<p>提高并发度可以大幅度提高读取，处理数据的速度，但是过高的并发度会将数据源数据库弄挂，原因想必大家都懂。。。</p>
+<p>以3000W数据表为例，单分区<code>count</code>，僵死若干分钟报OOM。</p>
+<p>分成5－20个分区后，<code>count</code> 操作只需要 <code>2s</code></p>
+<p>高并发度可以大幅度提高读取，处理数据的速度，但是过高的并发度会将数据源数据库弄挂，原因想必大家都懂。。。</p>
 </blockquote>
 </span>
       

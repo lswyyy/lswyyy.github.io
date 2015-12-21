@@ -54,7 +54,7 @@
 <meta name="description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
 解决1.增加Master的内存占用，在Master节点spark-env.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark常见问题解决及优">
+<meta property="og:title" content="spark常见问题解决及优化（不定期更新）">
 <meta property="og:url" content="http://yoursite.com/2015/10/15/spark常见问题解决及优化/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
 <meta property="og:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
@@ -66,9 +66,9 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
 <meta property="og:image" content="http://img.blog.csdn.net/20151210161217631">
-<meta property="og:updated_time" content="2015-12-21T03:23:20.000Z">
+<meta property="og:updated_time" content="2015-12-21T03:24:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark常见问题解决及优">
+<meta name="twitter:title" content="spark常见问题解决及优化（不定期更新）">
 <meta name="twitter:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
 解决1.增加Master的内存占用，在Master节点spark-env.">
 
@@ -82,7 +82,7 @@
   };
 </script>
 
-  <title> spark常见问题解决及优 | LSW'S BLOG </title>
+  <title> spark常见问题解决及优化（不定期更新） | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -253,7 +253,7 @@
             
             
               
-                spark常见问题解决及优
+                spark常见问题解决及优化（不定期更新）
               
             
           </h1>
@@ -314,7 +314,8 @@
 </code></pre><p>2.减少保存在Master内存中的作业信息</p>
 <pre><code>spark.ui.retainedJobs <span class="number">500</span>   <span class="preprocessor"># 默认都是<span class="number">1000</span></span>
 spark.ui.retainedStages <span class="number">500</span>
-</code></pre><h3 id="2-_worker挂掉或假死">2. worker挂掉或假死</h3><p>有时候我们还会在web ui中看到worker节点消失或处于dead状态，在该节点运行的任务则会报各种 <code>lost worker</code> 的错误，引发原因和上述大体相同，worker内存中保存了大量的ui信息导致gc时失去和master之间的心跳。</p>
+</code></pre><a id="more"></a>
+<h3 id="2-_worker挂掉或假死">2. worker挂掉或假死</h3><p>有时候我们还会在web ui中看到worker节点消失或处于dead状态，在该节点运行的任务则会报各种 <code>lost worker</code> 的错误，引发原因和上述大体相同，worker内存中保存了大量的ui信息导致gc时失去和master之间的心跳。</p>
 <h4 id="解决-1">解决</h4><p>1.增加Master的内存占用，在Worker节点<code>spark-env.sh</code> 中设置：</p>
 <pre><code><span class="keyword">export</span> SPARK_DAEMON_MEMORY <span class="number">2</span>g <span class="preprocessor"># 根据你的实际情况</span>
 </code></pre><p>2.减少保存在Worker内存中的Driver,Executor信息</p>
@@ -486,7 +487,7 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2015/10/15/spark常见问题解决及优化/"
-           data-title="spark常见问题解决及优" data-url="http://yoursite.com/2015/10/15/spark常见问题解决及优化/">
+           data-title="spark常见问题解决及优化（不定期更新）" data-url="http://yoursite.com/2015/10/15/spark常见问题解决及优化/">
       </div>
     
   </div>

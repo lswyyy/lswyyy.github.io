@@ -66,7 +66,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
 <meta property="og:image" content="http://img.blog.csdn.net/20151210161217631">
-<meta property="og:updated_time" content="2015-12-21T16:08:51.000Z">
+<meta property="og:updated_time" content="2015-12-21T16:11:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark常见问题解决及优化（不定期更新）">
 <meta name="twitter:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
@@ -419,8 +419,7 @@ mysql － 按读入时的分区规则分<span class="keyword">partition</span>
 es - 分区数即为 es 的 分片数（shard）
 </code></pre><p>(2) 数据本地性的副作用</p>
 <p>taskSetManager在分发任务之前会先计算数据本地性，优先级依次是：</p>
-<pre><code><span class="function"><span class="title">process</span><span class="params">(同一个executor)</span></span> -&gt; <span class="function"><span class="title">node_local</span><span class="params">(同一个节点)</span></span>
- -&gt; <span class="function"><span class="title">rack_local</span><span class="params">(同一个机架)</span></span> -&gt; <span class="function"><span class="title">any</span><span class="params">(任何节点)</span></span>
+<pre><code><span class="function"><span class="title">process</span><span class="params">(同一个executor)</span></span> -&gt; <span class="function"><span class="title">node_local</span><span class="params">(同一个节点)</span></span> -&gt; <span class="function"><span class="title">rack_local</span><span class="params">(同一个机架)</span></span> -&gt; <span class="function"><span class="title">any</span><span class="params">(任何节点)</span></span>
 </code></pre><p>会优先执行其它 <code>executor</code> 上高优先级的任务，这几台数据本地性没做好的机器在这个阶段经常处于干瞪眼的状态（不执行任务）。</p>
 <p>判断的公式为：</p>
 <pre><code>curTime – lastLaunchTime &gt;= <span class="function"><span class="title">localityWaits</span><span class="params">(currentLocalityIndex)</span></span>

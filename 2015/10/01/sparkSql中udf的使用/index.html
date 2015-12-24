@@ -72,7 +72,7 @@ travel,dance
 
 
 
-1234# 将某个字段中逗号分隔的数量统计出来sqlContext.udf.register">
+1234// 将某个字段中逗号分隔的数量统计出来sqlContext.udf.registe">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sparkSQL中udf的使用">
 <meta property="og:url" content="http://yoursite.com/2015/10/01/sparkSql中udf的使用/index.html">
@@ -98,8 +98,8 @@ travel,dance
 
 
 
-1234# 将某个字段中逗号分隔的数量统计出来sqlContext.udf.register">
-<meta property="og:updated_time" content="2015-12-24T15:37:37.000Z">
+1234// 将某个字段中逗号分隔的数量统计出来sqlContext.udf.registe">
+<meta property="og:updated_time" content="2015-12-24T15:39:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sparkSQL中udf的使用">
 <meta name="twitter:description" content="在spark中使用sql时可能会想自定义一些函数，可以使 udf 来实现，下面举了几个简单易懂的例子。
@@ -123,7 +123,7 @@ travel,dance
 
 
 
-1234# 将某个字段中逗号分隔的数量统计出来sqlContext.udf.register">
+1234// 将某个字段中逗号分隔的数量统计出来sqlContext.udf.registe">
 
 
 
@@ -383,7 +383,7 @@ travel,dance
 </tr>
 </tbody>
 </table>
-<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将某个字段中逗号分隔的数量统计出来</span></span><br><span class="line">sqlContext.udf.register(<span class="string">"hobby_num"</span>, <span class="function"><span class="params">(s: String)</span> =&gt;</span> s.split(<span class="string">','</span>).size)</span><br><span class="line"></span><br><span class="line">sqlContext.sql(<span class="string">"select *,hobby_num(hobbies) as hobby_num from table"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将某个字段中逗号分隔的数量统计出来</span></span><br><span class="line">sqlContext<span class="class">.udf</span><span class="class">.register</span>(<span class="string">"hobby_num"</span>, (s: String) =&gt; s.<span class="function"><span class="title">split</span><span class="params">(<span class="string">','</span>)</span></span>.size)</span><br><span class="line"></span><br><span class="line">sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"select *,hobby_num(hobbies) as hobby_num from table"</span>)</span></span></span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>结果</p>
 <table>
@@ -428,7 +428,7 @@ travel,dance
 </tr>
 </tbody>
 </table>
-<pre><code># 填补第一个字段的空值
+<pre><code>// 填补第一个字段的空值
 <span class="label">sqlContext.udf.register</span>(<span class="string">"combine"</span>, (<span class="literal">s1</span>: <span class="keyword">String,s2: </span><span class="keyword">String)=&gt; </span>{<span class="preprocessor">if</span>(<span class="literal">s1</span> == null) <span class="literal">s2</span> <span class="preprocessor">else</span> <span class="literal">s1</span>})
 
 <span class="label">sqlContext.sql</span>(<span class="string">"select combine(A,B) as A from table"</span>)

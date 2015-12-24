@@ -99,7 +99,7 @@ travel,dance
 
 
 1234// 将某个字段中逗号分隔的数量统计出来sqlContext.udf.registe">
-<meta property="og:updated_time" content="2015-12-24T15:39:24.000Z">
+<meta property="og:updated_time" content="2015-12-24T15:43:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sparkSQL中udf的使用">
 <meta name="twitter:description" content="在spark中使用sql时可能会想自定义一些函数，可以使 udf 来实现，下面举了几个简单易懂的例子。
@@ -407,9 +407,7 @@ travel,dance
 </tr>
 </tbody>
 </table>
-<h3 id="类型转化">类型转化</h3><p>类型转化,将 <code>String</code> 转化为 <code>Int</code></p>
-<pre><code>sqlContext.udf.register(<span class="string">"str2Int"</span>, <span class="function"><span class="params">(s: String)</span> =&gt;</span> s.toInt)
-</code></pre><h3 id="空值填补">空值填补</h3><p>表结构如下</p>
+<h3 id="空值填补">空值填补</h3><p>表结构如下</p>
 <table>
 <thead>
 <tr>
@@ -428,28 +426,8 @@ travel,dance
 </tr>
 </tbody>
 </table>
-<pre><code>// 填补第一个字段的空值
-<span class="label">sqlContext.udf.register</span>(<span class="string">"combine"</span>, (<span class="literal">s1</span>: <span class="keyword">String,s2: </span><span class="keyword">String)=&gt; </span>{<span class="preprocessor">if</span>(<span class="literal">s1</span> == null) <span class="literal">s2</span> <span class="preprocessor">else</span> <span class="literal">s1</span>})
-
-<span class="label">sqlContext.sql</span>(<span class="string">"select combine(A,B) as A from table"</span>)
-</code></pre><p>结果</p>
-<table>
-<thead>
-<tr>
-<th>A</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>123456</td>
-<td></td>
-</tr>
-<tr>
-<td>234234</td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 填补第一个字段的空值</span></span><br><span class="line">sqlContext.udf.register(<span class="string">"combine"</span>, (s1: <span class="built_in">String</span>,s2: <span class="built_in">String</span>)=&gt; &#123;<span class="keyword">if</span>(s1 == <span class="literal">null</span>) s2 <span class="keyword">else</span> s1&#125;)</span><br><span class="line">	   </span><br><span class="line">sqlContext.sql(<span class="string">"select combine(A,B) as A from table"</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">`	   </span><br><span class="line"></span><br><span class="line">结果</span><br><span class="line"></span><br><span class="line">A | </span><br><span class="line">------ | </span><br><span class="line">123456 | </span><br><span class="line">234234 | </span><br><span class="line"></span><br><span class="line">### 类型转化</span><br><span class="line"></span><br><span class="line">类型转化,将 `</span><span class="built_in">String</span><span class="string">` 转化为 `</span>Int<span class="string">`</span></span><br></pre></td></tr></table></figure>
+<p>sqlContext.udf.register(“str2Int”, (s: String) =&gt; s.toInt)<br>```</p>
 </span>
       
     </div>
@@ -597,7 +575,7 @@ travel,dance
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Example"><span class="nav-number">1.</span> <span class="nav-text">Example</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个数统计"><span class="nav-number">1.1.</span> <span class="nav-text">个数统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型转化"><span class="nav-number">1.2.</span> <span class="nav-text">类型转化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空值填补"><span class="nav-number">1.3.</span> <span class="nav-text">空值填补</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Example"><span class="nav-number">1.</span> <span class="nav-text">Example</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个数统计"><span class="nav-number">1.1.</span> <span class="nav-text">个数统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空值填补"><span class="nav-number">1.2.</span> <span class="nav-text">空值填补</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

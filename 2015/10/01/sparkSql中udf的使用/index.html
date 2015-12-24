@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="elasticsearch," />
+  <meta name="keywords" content="spark,sparkSQL," />
 
 
 
@@ -51,28 +51,79 @@
 
 
 
-<meta name="description" content="主要有两种方式
-from/sizefrom 偏移，默认为0
-size 返回的结果数，默认为10
-在数据量不大的情况下我们一般会使用from/size，而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。
-从index A的type B中搜索">
+<meta name="description" content="在spark中使用sql时可能会想自定义一些函数，可以使 udf 来实现，下面举了几个简单易懂的例子。
+
+Example个数统计表结构如下，统计出每个人的爱好个数
+
+
+
+name
+hobbies
+
+
+
+
+alice
+jogging,Coding,cooking
+
+
+lina
+travel,dance
+
+
+
+1234# 将某个字段中逗号分隔的数量统计出来sqlContext.udf.register">
 <meta property="og:type" content="article">
-<meta property="og:title" content="elasticsearch分页查询">
-<meta property="og:url" content="http://yoursite.com/2015/12/13/elasticsearch分页查询/index.html">
+<meta property="og:title" content="sparkSQL中udf的使用">
+<meta property="og:url" content="http://yoursite.com/2015/10/01/sparkSql中udf的使用/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
-<meta property="og:description" content="主要有两种方式
-from/sizefrom 偏移，默认为0
-size 返回的结果数，默认为10
-在数据量不大的情况下我们一般会使用from/size，而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。
-从index A的type B中搜索">
-<meta property="og:updated_time" content="2015-12-15T05:13:50.000Z">
+<meta property="og:description" content="在spark中使用sql时可能会想自定义一些函数，可以使 udf 来实现，下面举了几个简单易懂的例子。
+
+Example个数统计表结构如下，统计出每个人的爱好个数
+
+
+
+name
+hobbies
+
+
+
+
+alice
+jogging,Coding,cooking
+
+
+lina
+travel,dance
+
+
+
+1234# 将某个字段中逗号分隔的数量统计出来sqlContext.udf.register">
+<meta property="og:updated_time" content="2015-12-24T15:37:37.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="elasticsearch分页查询">
-<meta name="twitter:description" content="主要有两种方式
-from/sizefrom 偏移，默认为0
-size 返回的结果数，默认为10
-在数据量不大的情况下我们一般会使用from/size，而在深度分页的情况下效率极低，该命令会把from+size条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。
-从index A的type B中搜索">
+<meta name="twitter:title" content="sparkSQL中udf的使用">
+<meta name="twitter:description" content="在spark中使用sql时可能会想自定义一些函数，可以使 udf 来实现，下面举了几个简单易懂的例子。
+
+Example个数统计表结构如下，统计出每个人的爱好个数
+
+
+
+name
+hobbies
+
+
+
+
+alice
+jogging,Coding,cooking
+
+
+lina
+travel,dance
+
+
+
+1234# 将某个字段中逗号分隔的数量统计出来sqlContext.udf.register">
 
 
 
@@ -84,7 +135,7 @@ size 返回的结果数，默认为10
   };
 </script>
 
-  <title> elasticsearch分页查询 | LSW'S BLOG </title>
+  <title> sparkSQL中udf的使用 | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -255,7 +306,7 @@ size 返回的结果数，默认为10
             
             
               
-                elasticsearch分页查询
+                sparkSQL中udf的使用
               
             
           </h1>
@@ -264,8 +315,8 @@ size 返回的结果数，默认为10
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-13T22:00:00+08:00" content="2015-12-13">
-              2015-12-13
+            <time itemprop="dateCreated" datetime="2015-10-01T22:00:00+08:00" content="2015-10-01">
+              2015-10-01
             </time>
           </span>
 
@@ -274,8 +325,8 @@ size 返回的结果数，默认为10
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
                   </a>
                 </span>
 
@@ -290,8 +341,8 @@ size 返回的结果数，默认为10
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/13/elasticsearch分页查询/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/13/elasticsearch分页查询/" itemprop="commentsCount"></span>
+                <a href="/2015/10/01/sparkSql中udf的使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/01/sparkSql中udf的使用/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -310,35 +361,96 @@ size 返回的结果数，默认为10
       
 
       
-        <span itemprop="articleBody"><p>主要有两种方式</p>
-<h2 id="from/size">from/size</h2><p><code>from</code> 偏移，默认为0</p>
-<p><code>size</code> 返回的结果数，默认为10</p>
-<p>在数据量不大的情况下我们一般会使用<code>from/size</code>，而在深度分页的情况下效率极低，该命令会把<code>from+size</code>条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。</p>
-<p>从index <code>A</code>的type <code>B</code>中搜索出从0开始的1w条数据:</p>
-<pre><code><span class="title">curl</span> -XGET <span class="string">"hostname:9200/A/B/_search?from=0&amp;size=10000"</span>
-</code></pre><a id="more"></a>
-<h3 id="理解深度分页为什么慢">理解深度分页为什么慢</h3><p>让我们假设在一个有5个主分片的索引中搜索。当我们请求结果的第一页（结果1到10）时，每个分片产生自己最顶端10个结果然后返回它们给请求节点(requesting node)，它再排序这所有的50个结果以选出顶端的10个结果。</p>
-<p>现在假设我们请求第1000页——结果10001到10010。工作方式都相同，不同的是每个分片都必须产生顶端的10010个结果。然后请求节点排序这50050个结果并丢弃50040个！</p>
-<p>在分布式系统中，排序结果的花费随着分页的深入而成倍增长。</p>
-<p>ps: 我曾经在一个14亿条记录的type中使用from/size进行分页，多么痛的领悟。。。</p>
-<h2 id="scan/scroll">scan/scroll</h2><p>scan（扫描）搜索类型是和scroll（滚屏）API一起使用来从es里高效地取回巨大数量的结果而不需要付出深分页的代价。</p>
-<p><code>scroll</code> 做一个初始阶段搜索并且持续批量从es里拉取结果直到没有结果剩下，类似传统数据库里的cursors。</p>
-<p><code>scan</code> es查询将不再进行排序。</p>
-<p>因为size作用在每个shard上，所以每次GET的数据量为<code>shard_num*size</code>条:</p>
-<pre><code><span class="title">curl</span> -XGET <span class="string">"hostname:9200/A/B/_search?search_type=scan&amp;scroll=5m&amp;size=200000"</span>
-</code></pre><p>将会返回一个过期时间为5分钟scroll_id</p>
-<pre><code><span class="string">"_scroll_id"</span>: 
-<span class="string">"c2Nhbjs1OzkwODg5OmEta2lMZlJJUmFxMDVvdWNLWXR0dUE7NDI5</span>
-NTA1OnFjcVZSQUdnU3hpdy15XzRYT0lYWVE7OTA4OTA6YS1raUxmUklSYXEw
-NW91Y0tZdHR1QTs5MDg5MTphLWtpTGZSSVJhcTA1b3VjS1l0dHVBOzkwODkyO
-mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="string">"</span>
-</code></pre><p>根据该scroll_id从es中检索数据，每次调用都会检索下一批数据，并将scroll_id的过期时间重置为5m，直到所有数据检索完毕或者scroll_id过期:</p>
-<pre><code>curl -XGET <span class="string">"hostname:9200/_search/scroll?scroll=5m"</span> <span class="operator">-d</span>
- <span class="string">'c2Nhbjs1OzkwODg5OmEta2lMZlJJUmFxMDVvdWNLWXR0dUE7NDI5NTA1OnFjc
- VZSQUdnU3hpdy15XzRYT0lYWVE7OTA4OTA6YS1raUxmUklSYXEwNW91Y0tZdHR1QTs5
- MDg5MTphLWtpTGZSSVJhcTA1b3VjS1l0dHVBOzkwODkyOmEta2lMZlJJUmFxMDVvdWNLWXR
- 0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7'</span>    
-</code></pre></span>
+        <span itemprop="articleBody"><blockquote>
+<p>在spark中使用sql时可能会想自定义一些函数，可以使 <code>udf</code> 来实现，下面举了几个简单易懂的例子。</p>
+</blockquote>
+<h2 id="Example">Example</h2><h3 id="个数统计">个数统计</h3><p>表结构如下，统计出每个人的爱好个数</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>hobbies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>alice</td>
+<td>jogging,Coding,cooking</td>
+</tr>
+<tr>
+<td>lina</td>
+<td>travel,dance</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将某个字段中逗号分隔的数量统计出来</span></span><br><span class="line">sqlContext.udf.register(<span class="string">"hobby_num"</span>, <span class="function"><span class="params">(s: String)</span> =&gt;</span> s.split(<span class="string">','</span>).size)</span><br><span class="line"></span><br><span class="line">sqlContext.sql(<span class="string">"select *,hobby_num(hobbies) as hobby_num from table"</span>)</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>结果</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>hobbies</th>
+<th>hobby_num</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>alice</td>
+<td>read book,coding,cooking</td>
+<td>3</td>
+</tr>
+<tr>
+<td>lina</td>
+<td>travel,dance</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="类型转化">类型转化</h3><p>类型转化,将 <code>String</code> 转化为 <code>Int</code></p>
+<pre><code>sqlContext.udf.register(<span class="string">"str2Int"</span>, <span class="function"><span class="params">(s: String)</span> =&gt;</span> s.toInt)
+</code></pre><h3 id="空值填补">空值填补</h3><p>表结构如下</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>null</td>
+<td>123456</td>
+</tr>
+<tr>
+<td>234234</td>
+<td>234234</td>
+</tr>
+</tbody>
+</table>
+<pre><code># 填补第一个字段的空值
+<span class="label">sqlContext.udf.register</span>(<span class="string">"combine"</span>, (<span class="literal">s1</span>: <span class="keyword">String,s2: </span><span class="keyword">String)=&gt; </span>{<span class="preprocessor">if</span>(<span class="literal">s1</span> == null) <span class="literal">s2</span> <span class="preprocessor">else</span> <span class="literal">s1</span>})
+
+<span class="label">sqlContext.sql</span>(<span class="string">"select combine(A,B) as A from table"</span>)
+</code></pre><p>结果</p>
+<table>
+<thead>
+<tr>
+<th>A</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>123456</td>
+<td></td>
+</tr>
+<tr>
+<td>234234</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</span>
       
     </div>
 
@@ -346,7 +458,9 @@ mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="stri
       
         <div class="post-tags">
           
-            <a href="/tags/elasticsearch/" rel="tag">#elasticsearch</a>
+            <a href="/tags/spark/" rel="tag">#spark</a>
+          
+            <a href="/tags/sparkSQL/" rel="tag">#sparkSQL</a>
           
         </div>
       
@@ -355,16 +469,16 @@ mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="stri
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/26/磁盘IO对spark的影响/" rel="next" title="磁盘IO对spark的影响">
-                <i class="fa fa-chevron-left"></i> 磁盘IO对spark的影响
+              <a href="/2015/09/26/部署ganglia3.7/" rel="next" title="部署ganglia3.7">
+                <i class="fa fa-chevron-left"></i> 部署ganglia3.7
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/12/14/spark任务进度实时更新与聚合/" rel="prev" title="spark任务进度实时更新与聚合">
-                spark任务进度实时更新与聚合 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/10/15/spark常见问题解决及优化/" rel="prev" title="spark常见问题解决及优化（不定期更新）">
+                spark常见问题解决及优化（不定期更新） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -392,8 +506,8 @@ mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="stri
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/12/13/elasticsearch分页查询/"
-           data-title="elasticsearch分页查询" data-url="http://yoursite.com/2015/12/13/elasticsearch分页查询/">
+      <div class="ds-thread" data-thread-key="2015/10/01/sparkSql中udf的使用/"
+           data-title="sparkSQL中udf的使用" data-url="http://yoursite.com/2015/10/01/sparkSql中udf的使用/">
       </div>
     
   </div>
@@ -483,7 +597,7 @@ mEta2lMZlJJUmFxMDVvdWNLWXR0dUE7MTt0b3RhbF9oaXRzOjE0NDk0MDM4NTI7<span class="stri
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#from/size"><span class="nav-number">1.</span> <span class="nav-text">from/size</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#理解深度分页为什么慢"><span class="nav-number">1.1.</span> <span class="nav-text">理解深度分页为什么慢</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scan/scroll"><span class="nav-number">2.</span> <span class="nav-text">scan/scroll</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Example"><span class="nav-number">1.</span> <span class="nav-text">Example</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个数统计"><span class="nav-number">1.1.</span> <span class="nav-text">个数统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型转化"><span class="nav-number">1.2.</span> <span class="nav-text">类型转化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空值填补"><span class="nav-number">1.3.</span> <span class="nav-text">空值填补</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

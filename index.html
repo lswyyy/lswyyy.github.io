@@ -228,6 +228,15 @@
 
     
     
+      
+      
+        
+        
+        
+      
+
+      
+    
 
     
       
@@ -323,131 +332,6 @@
 <h3 id="启动新节点">启动新节点</h3><p>将原节点上的 kafka 目录通过 scp 命令拷贝到新节点，只需要修改配置文件中的 broker_id 和 ip 地址，然后依次启动 kafka 服务。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/12/29/kafka集群扩容/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/24/sparkSql中udf的使用/" itemprop="url">
-                  sparkSQL中udf的使用
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2015-12-24T22:00:00+08:00" content="2015-12-24">
-              2015-12-24
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/12/24/sparkSql中udf的使用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/24/sparkSql中udf的使用/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>在spark中使用sql时可能会想自定义一些函数，可以使 <code>udf</code> 来实现，下面举了几个简单易懂的例子。</p>
-</blockquote>
-<h2 id="Example">Example</h2><h3 id="个数统计">个数统计</h3><p>表结构如下，统计出每个人的爱好个数</p>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th>hobbies</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>alice</td>
-<td>jogging,Coding,cooking</td>
-</tr>
-<tr>
-<td>lina</td>
-<td>travel,dance</td>
-</tr>
-</tbody>
-</table>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将某个字段中逗号分隔的数量统计出来</span></span><br><span class="line">sqlContext<span class="class">.udf</span><span class="class">.register</span>(<span class="string">"hobby_num"</span>, (s: String) =&gt; s.<span class="function"><span class="title">split</span><span class="params">(<span class="string">','</span>)</span></span>.size)</span><br><span class="line"></span><br><span class="line">sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"select *,hobby_num(hobbies) as hobby_num from table"</span>)</span></span></span><br></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/24/sparkSql中udf的使用/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

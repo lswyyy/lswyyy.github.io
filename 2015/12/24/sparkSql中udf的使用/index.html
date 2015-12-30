@@ -99,7 +99,7 @@ travel,dance
 
 
 1234// 将某个字段中逗号分隔的数量统计出来sqlContext.udf.registe">
-<meta property="og:updated_time" content="2015-12-30T05:40:51.000Z">
+<meta property="og:updated_time" content="2015-12-30T05:42:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sparkSQL中udf的使用">
 <meta name="twitter:description" content="在spark中使用sql时可能会想自定义一些函数，可以使 udf 来实现，下面举了几个简单易懂的例子。
@@ -447,9 +447,68 @@ travel,dance
 </table>
 <h3 id="类型转化">类型转化</h3><p>类型转化,将 <code>String</code> 转化为 <code>Int</code></p>
 <figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlContext.udf.register(<span class="string">"str2Int"</span>, <span class="function"><span class="params">(s: String)</span> =&gt;</span> s.toInt)</span><br></pre></td></tr></table></figure>
-<h2 id="综合运用">综合运用</h2><p>原始数据，ID(用户名)，loginIP(帐号登录的ip地址)<br>tableA:<br>ID | loginIP<br>———— |<br>alice | ip1<br>lina | ip2<br>sven | ip3<br>alice | ip1<br>sven | ip2<br>alice | ip4</p>
+<h2 id="综合运用">综合运用</h2><p>原始数据，ID(用户名)，loginIP(帐号登录的ip地址)</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>loginIP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>alice</td>
+<td>ip1 </td>
+</tr>
+<tr>
+<td>lina</td>
+<td>ip2 </td>
+</tr>
+<tr>
+<td>sven</td>
+<td>ip3</td>
+</tr>
+<tr>
+<td>alice</td>
+<td>ip1</td>
+</tr>
+<tr>
+<td>sven</td>
+<td>ip2 </td>
+</tr>
+<tr>
+<td>alice</td>
+<td>ip4</td>
+</tr>
+</tbody>
+</table>
 <p><strong>计算每个用户在哪些ip登录过，并统计数量</strong></p>
-<p>tableA:<br>ID | ip_list | loginIP_num<br>———— | ————-<br>alice | ip1,ip4 | 2<br>lina | ip2 | 1<br>sven | ip2,ip3 | 2</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>ip_list</th>
+<th>loginIP_num</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>alice</td>
+<td>ip1,ip4</td>
+<td>2</td>
+</tr>
+<tr>
+<td>lina</td>
+<td>ip2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>sven</td>
+<td>ip2,ip3</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
 <figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//统计数量</span></span><br><span class="line">sqlContext.udf.register(<span class="string">"list_size"</span>, (s: String) =&gt; s.split(<span class="string">','</span>).size)</span><br><span class="line"></span><br><span class="line">val sql =</span><br><span class="line">    <span class="string">"""select ID,ip_list,list_size(ip_list) as loginIP_num</span><br><span class="line">      |from (select ID,concat_ws(',',collect_set(loginIP)) as ip_list from table)"""</span>.stripMargin</span><br><span class="line"></span><br><span class="line">sqlContext.sql(sql)</span><br></pre></td></tr></table></figure>
 </span>
       

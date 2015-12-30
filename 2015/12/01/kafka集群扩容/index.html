@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="jdbc,mysql,spark," />
+  <meta name="keywords" content="kafka," />
 
 
 
@@ -51,37 +51,31 @@
 
 
 
-<meta name="description" content="下文以 mysql 为例
+<meta name="description" content="文章开始前推荐使用 kafka-manager 工具，可以实时查看kafka同步状态，broker实时读写流量，topic分区情况等信息，提供重选最优leader等操作。
 
-在spark中使用jdbc在 spark-env.sh 文件中加入:
-export SPARK_CLASSPATH=/path/mysql-connector-java-5.1.34.jar
-任务提交时加入:
---jars /path/mysql-connector-java-5.1.34.jar
-1. 单partition(无并发)调用函数
-def jdbc(url:">
+kafka的集群扩容实际上就是把 topic 的 partition 移动到新加的集群上。
+生成 topic,partition 分配的json文件有两种方式:
+
+通过 --topics-to-move-json-file 和">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark jdbc(mysql) 并发度优化">
-<meta property="og:url" content="http://yoursite.com/2015/12/16/提高spark-jdbc操作并发度/index.html">
+<meta property="og:title" content="kafka集群扩容">
+<meta property="og:url" content="http://yoursite.com/2015/12/01/kafka集群扩容/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
-<meta property="og:description" content="下文以 mysql 为例
+<meta property="og:description" content="文章开始前推荐使用 kafka-manager 工具，可以实时查看kafka同步状态，broker实时读写流量，topic分区情况等信息，提供重选最优leader等操作。
 
-在spark中使用jdbc在 spark-env.sh 文件中加入:
-export SPARK_CLASSPATH=/path/mysql-connector-java-5.1.34.jar
-任务提交时加入:
---jars /path/mysql-connector-java-5.1.34.jar
-1. 单partition(无并发)调用函数
-def jdbc(url:">
-<meta property="og:updated_time" content="2015-12-17T08:19:56.000Z">
+kafka的集群扩容实际上就是把 topic 的 partition 移动到新加的集群上。
+生成 topic,partition 分配的json文件有两种方式:
+
+通过 --topics-to-move-json-file 和">
+<meta property="og:updated_time" content="2015-12-30T03:02:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark jdbc(mysql) 并发度优化">
-<meta name="twitter:description" content="下文以 mysql 为例
+<meta name="twitter:title" content="kafka集群扩容">
+<meta name="twitter:description" content="文章开始前推荐使用 kafka-manager 工具，可以实时查看kafka同步状态，broker实时读写流量，topic分区情况等信息，提供重选最优leader等操作。
 
-在spark中使用jdbc在 spark-env.sh 文件中加入:
-export SPARK_CLASSPATH=/path/mysql-connector-java-5.1.34.jar
-任务提交时加入:
---jars /path/mysql-connector-java-5.1.34.jar
-1. 单partition(无并发)调用函数
-def jdbc(url:">
+kafka的集群扩容实际上就是把 topic 的 partition 移动到新加的集群上。
+生成 topic,partition 分配的json文件有两种方式:
+
+通过 --topics-to-move-json-file 和">
 
 
 
@@ -93,7 +87,7 @@ def jdbc(url:">
   };
 </script>
 
-  <title> spark jdbc(mysql) 并发度优化 | LSW'S BLOG </title>
+  <title> kafka集群扩容 | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -264,7 +258,7 @@ def jdbc(url:">
             
             
               
-                spark jdbc(mysql) 并发度优化
+                kafka集群扩容
               
             
           </h1>
@@ -273,8 +267,8 @@ def jdbc(url:">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-16T22:00:00+08:00" content="2015-12-16">
-              2015-12-16
+            <time itemprop="dateCreated" datetime="2015-12-01T22:00:00+08:00" content="2015-12-01">
+              2015-12-01
             </time>
           </span>
 
@@ -283,8 +277,8 @@ def jdbc(url:">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
+                  <a href="/categories/kafka/" itemprop="url" rel="index">
+                    <span itemprop="name">kafka</span>
                   </a>
                 </span>
 
@@ -299,8 +293,8 @@ def jdbc(url:">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/16/提高spark-jdbc操作并发度/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/16/提高spark-jdbc操作并发度/" itemprop="commentsCount"></span>
+                <a href="/2015/12/01/kafka集群扩容/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/01/kafka集群扩容/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -320,55 +314,68 @@ def jdbc(url:">
 
       
         <span itemprop="articleBody"><blockquote>
-<p>下文以 <code>mysql</code> 为例</p>
+<p>文章开始前推荐使用 <a href="http://blog.csdn.net/lsshlsw/article/details/47300145" target="_blank" rel="external">kafka-manager</a> 工具，可以实时查看kafka同步状态，broker实时读写流量，topic分区情况等信息，提供重选最优leader等操作。</p>
 </blockquote>
-<h2 id="在spark中使用jdbc">在spark中使用jdbc</h2><p>在 <code>spark-env.sh</code> 文件中加入:</p>
-<pre><code><span class="keyword">export</span> SPARK_CLASSPATH=/path/mysql-connector-java-<span class="number">5.1</span><span class="number">.34</span>.jar
-</code></pre><p>任务提交时加入:</p>
-<pre><code>--jars /path/mysql-connector-java-<span class="number">5.1</span><span class="number">.34</span>.jar
-</code></pre><h2 id="1-_单partition(无并发)">1. 单partition(无并发)</h2><p>调用函数</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">jdbc</span><span class="params">(url: String, table: String, properties: Properties)</span>:</span> DataFrame
-</code></pre><a id="more"></a>
-<p>使用:</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">val url = <span class="string">"jdbc:mysql://mysqlHost:3306/database"</span></span><br><span class="line">val tableName = <span class="string">"table"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置连接用户&amp;密码</span></span><br><span class="line">val prop = new java<span class="class">.util</span><span class="class">.Properties</span></span><br><span class="line">prop.<span class="function"><span class="title">setProperty</span><span class="params">(<span class="string">"user"</span>,<span class="string">"username"</span>)</span></span></span><br><span class="line">prop.<span class="function"><span class="title">setProperty</span><span class="params">(<span class="string">"password"</span>,<span class="string">"pwd"</span>)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得该表数据</span></span><br><span class="line">val jdbcDF = sqlContext<span class="class">.read</span><span class="class">.jdbc</span>(url,tableName,prop)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一些操作</span></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
-<p>查看并发度</p>
-<pre><code><span class="tag">jdbcDF</span><span class="class">.rdd</span><span class="class">.partitions</span><span class="class">.size</span> # 结果返回 1
-</code></pre><p>该操作的并发度为1，你所有的数据都会在一个partition中进行操作，意味着无论你给的资源有多少，只有一个task会执行任务，执行效率可想而之，并且在稍微大点的表中进行操作分分钟就会OOM。</p>
-<p>更直观的说法是，达到千万级别的表就不要使用该操作，<code>count</code>操作就要等一万年，no zuo no die ,don’t to try !</p>
-<pre><code>WARN TaskSetManager: Lost task <span class="number">0.0</span> <span class="keyword">in</span> stage <span class="number">6.0</span> (TID <span class="number">56</span>, spark047219):
- java<span class="class">.lang</span><span class="class">.OutOfMemoryError</span>: GC overhead limit exceeded
-at com<span class="class">.mysql</span><span class="class">.jdbc</span><span class="class">.MysqlIO</span><span class="class">.reuseAndReadPacket</span>(MysqlIO<span class="class">.java</span>:<span class="number">3380</span>)
-</code></pre><h2 id="2-_根据Long类型字段分区">2. 根据Long类型字段分区</h2><p>调用函数</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">jdbc</span><span class="params">(
-url: String,
-table: String,
-columnName: String,    # 根据该字段分区，需要为整形，比如id等
-lowerBound: Long,      # 分区的下界
-upperBound: Long,      # 分区的上界
-numPartitions: Int,    # 分区的个数
-connectionProperties: Properties)</span>:</span> DataFrame
-</code></pre><p>使用:</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable"><span class="keyword">val</span> url</span> = <span class="string">"jdbc:mysql://mysqlHost:3306/database"</span></span><br><span class="line"><span class="variable"><span class="keyword">val</span> tableName</span> = <span class="string">"table"</span></span><br><span class="line"></span><br><span class="line"><span class="variable"><span class="keyword">val</span> columnName</span> = <span class="string">"colName"</span></span><br><span class="line"><span class="variable"><span class="keyword">val</span> lowerBound</span> = <span class="number">1</span>,</span><br><span class="line"><span class="variable"><span class="keyword">val</span> upperBound</span> = <span class="number">10000000</span>,</span><br><span class="line"><span class="variable"><span class="keyword">val</span> numPartitions</span> = <span class="number">10</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置连接用户&amp;密码</span></span><br><span class="line"><span class="variable"><span class="keyword">val</span> prop</span> = new java.util.Properties</span><br><span class="line">prop.setProperty(<span class="string">"user"</span>,<span class="string">"username"</span>)</span><br><span class="line">prop.setProperty(<span class="string">"password"</span>,<span class="string">"pwd"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得该表数据</span></span><br><span class="line"><span class="variable"><span class="keyword">val</span> jdbcDF</span> = sqlContext.read.jdbc(url,tableName,columnName,lowerBound,upperBound,numPartitions,prop)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一些操作</span></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
-<p>查看并发度</p>
-<pre><code><span class="tag">jdbcDF</span><span class="class">.rdd</span><span class="class">.partitions</span><span class="class">.size</span> # 结果返回 10
-</code></pre><p>该操作将字段 <code>colName</code> 中1-10000000条数据分到10个partition中，使用很方便，缺点也很明显，只能使用整形数据字段作为分区关键字。</p>
-<p>3000w数据的表 <code>count</code> 耗时15s左右。</p>
-<h2 id="3-_根据任意类型字段分区">3. 根据任意类型字段分区</h2><p>调用函数</p>
-<pre><code>jdbc(
-  url: <span class="keyword">String</span>,
-  table: <span class="keyword">String</span>,
-  predicates: <span class="keyword">Array</span>[<span class="keyword">String</span>],
-  connectionProperties: <span class="keyword">Properties</span>): DataFrame
-</code></pre><p>下面以使用最多的时间字段分区为例:</p>
-<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">val url = <span class="string">"jdbc:mysql://mysqlHost:3306/database"</span></span><br><span class="line">val tableName = <span class="string">"table"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置连接用户&amp;密码</span></span><br><span class="line">val prop = <span class="literal">new</span> java<span class="built_in">.</span>util<span class="built_in">.</span>Properties</span><br><span class="line">prop<span class="built_in">.</span>setProperty(<span class="string">"user"</span>,<span class="string">"username"</span>)</span><br><span class="line">prop<span class="built_in">.</span>setProperty(<span class="string">"password"</span>,<span class="string">"pwd"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line">* 将9月16-12月15三个月的数据取出，按时间分为6个partition</span><br><span class="line">* 为了减少事例代码，这里的时间都是写死的</span><br><span class="line">* modified_time 为时间字段</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">val predicates =</span><br><span class="line">    <span class="built_in">Array</span>(</span><br><span class="line">      <span class="string">"2015-09-16"</span> <span class="subst">-&gt; </span><span class="string">"2015-09-30"</span>,</span><br><span class="line">      <span class="string">"2015-10-01"</span> <span class="subst">-&gt; </span><span class="string">"2015-10-15"</span>,</span><br><span class="line">      <span class="string">"2015-10-16"</span> <span class="subst">-&gt; </span><span class="string">"2015-10-31"</span>,</span><br><span class="line">      <span class="string">"2015-11-01"</span> <span class="subst">-&gt; </span><span class="string">"2015-11-14"</span>,</span><br><span class="line">      <span class="string">"2015-11-15"</span> <span class="subst">-&gt; </span><span class="string">"2015-11-30"</span>,</span><br><span class="line">      <span class="string">"2015-12-01"</span> <span class="subst">-&gt; </span><span class="string">"2015-12-15"</span></span><br><span class="line">    )<span class="built_in">.</span><span class="built_in">map</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> (start, end) =&gt;</span><br><span class="line">        s<span class="string">"cast(modified_time as date) &gt;= date '$start' "</span> + s<span class="string">"AND cast(modified_time as date) &lt;= date '$end'"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得该表数据</span></span><br><span class="line">val jdbcDF = sqlContext<span class="built_in">.</span>read<span class="built_in">.</span>jdbc(url,tableName,predicates,prop)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一些操作</span></span><br><span class="line"><span class="attribute">...</span><span class="built_in">.</span></span><br></pre></td></tr></table></figure>
-<p>查看并发度</p>
-<pre><code><span class="tag">jdbcDF</span><span class="class">.rdd</span><span class="class">.partitions</span><span class="class">.size</span> # 结果返回 6
-</code></pre><p>该操作的每个分区数据都由该段时间的分区组成，这种方式适合各种场景，较为推荐。</p>
-<h2 id="结语">结语</h2><blockquote>
-<p>以 <code>mysql</code> 3000W 数据量表为例，单分区<code>count</code>，僵死若干分钟报OOM。</p>
-<p>分成5－20个分区后，<code>count</code> 耗时 <code>15s</code>左右</p>
-<p>高并发度可以大幅度提高读取，处理数据的速度，但是过高的并发度(大量的partition同时读取)会将数据源数据库弄挂，原因想必大家都懂。。。</p>
-</blockquote>
+<p>kafka的集群扩容实际上就是把 topic 的 partition 移动到新加的集群上。</p>
+<p>生成 topic,partition 分配的json文件有两种方式:</p>
+<ol>
+<li><p>通过 <code>--topics-to-move-json-file</code> 和 <code>--broker-list</code> 批量生成新的topic分区信息，然后根据该信息执行转移操作。</p>
+</li>
+<li><p>手动写要移动的topic信息，更灵活，但是在大量 topic 和 partition 的情况下非常繁琐并且容易出错。</p>
+</li>
+</ol>
+<h3 id="启动新节点">启动新节点</h3><p>将原节点上的 kafka 目录通过 scp 命令拷贝到新节点，只需要修改配置文件中的 broker_id 和 ip 地址，然后依次启动 kafka 服务。</p>
+<a id="more"></a>
+<h3 id="移动topic">移动topic</h3><p>移动 topicA , topicB</p>
+<pre><code>sudo vim topics-to-move.json
+
+{<span class="string">"topics"</span>: [{<span class="string">"topic"</span>: <span class="string">"topicA"</span>},
+               {<span class="string">"topic"</span>: <span class="string">"topicB"</span>}],
+<span class="string">"version"</span>:<span class="number">1</span>
+}
+</code></pre><p>将上述 <code>topic</code> 移动到 <code>broker</code> 3,4,5上，用 <code>generate</code> 命令生成 partition 分配 json 串。</p>
+<pre><code>bin/kafka-reassign-partitions.<span class="keyword">sh</span> --zookeeper zk1:2181 
+--topics-to-<span class="keyword">move</span>-json-<span class="keyword">file</span> topics-to-<span class="keyword">move</span>.json --broker-<span class="keyword">list</span> <span class="string">"3,4,5"</span> --<span class="keyword">generate</span>    
+</code></pre><p>将看到如下：</p>
+<pre><code>Current partition replica assignment
+{<span class="string">"version"</span>:<span class="number">1</span>,<span class="string">"partitions"</span>:[{<span class="string">"topic"</span>:<span class="string">"topicA"</span>,<span class="string">"partition"</span>:<span class="number">2</span>,<span class="string">"replicas"</span>:[<span class="number">0</span>,<span class="number">2</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicA"</span>,<span class="string">"partition"</span>:<span class="number">1</span>,<span class="string">"replicas"</span>:[<span class="number">1</span>,<span class="number">0</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicB"</span>,<span class="string">"partition"</span>:<span class="number">1</span>,<span class="string">"replicas"</span>:[<span class="number">0</span>,<span class="number">1</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicA"</span>,<span class="string">"partition"</span>:<span class="number">0</span>,<span class="string">"replicas"</span>:[<span class="number">2</span>,<span class="number">1</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicB"</span>,<span class="string">"partition"</span>:<span class="number">0</span>,<span class="string">"replicas"</span>:[<span class="number">2</span>,<span class="number">0</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicB"</span>,<span class="string">"partition"</span>:<span class="number">2</span>,<span class="string">"replicas"</span>:[<span class="number">1</span>,<span class="number">2</span>]}]}
+
+Proposed partition reassignment configuration
+
+{<span class="string">"version"</span>:<span class="number">1</span>,<span class="string">"partitions"</span>:[{<span class="string">"topic"</span>:<span class="string">"topicA"</span>,<span class="string">"partition"</span>:<span class="number">2</span>,<span class="string">"replicas"</span>:[<span class="number">3</span>,<span class="number">4</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicA"</span>,<span class="string">"partition"</span>:<span class="number">1</span>,<span class="string">"replicas"</span>:[<span class="number">5</span>,<span class="number">3</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicB"</span>,<span class="string">"partition"</span>:<span class="number">1</span>,<span class="string">"replicas"</span>:[<span class="number">3</span>,<span class="number">4</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicA"</span>,<span class="string">"partition"</span>:<span class="number">0</span>,<span class="string">"replicas"</span>:[<span class="number">4</span>,<span class="number">5</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicB"</span>,<span class="string">"partition"</span>:<span class="number">0</span>,<span class="string">"replicas"</span>:[<span class="number">5</span>,<span class="number">3</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicB"</span>,<span class="string">"partition"</span>:<span class="number">2</span>,<span class="string">"replicas"</span>:[<span class="number">4</span>,<span class="number">5</span>]}]}
+</code></pre><p>将 <code>Proposed partition reassignment configuration</code> 下方的数据写入 <code>expand-cluster-reassignment.json</code></p>
+<p>上文说的第二种方式其实就是手动写该文件，而不用命令生成的。</p>
+<pre><code>vim expand-cluster-reassignment.json
+
+{<span class="string">"version"</span>:<span class="number">1</span>,<span class="string">"partitions"</span>:[{<span class="string">"topic"</span>:<span class="string">"topicA"</span>,<span class="string">"partition"</span>:<span class="number">2</span>,<span class="string">"replicas"</span>:[<span class="number">3</span>,<span class="number">4</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicA"</span>,<span class="string">"partition"</span>:<span class="number">1</span>,<span class="string">"replicas"</span>:[<span class="number">5</span>,<span class="number">3</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicB"</span>,<span class="string">"partition"</span>:<span class="number">1</span>,<span class="string">"replicas"</span>:[<span class="number">3</span>,<span class="number">4</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicA"</span>,<span class="string">"partition"</span>:<span class="number">0</span>,<span class="string">"replicas"</span>:[<span class="number">4</span>,<span class="number">5</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicB"</span>,<span class="string">"partition"</span>:<span class="number">0</span>,<span class="string">"replicas"</span>:[<span class="number">5</span>,<span class="number">3</span>]},
+{<span class="string">"topic"</span>:<span class="string">"topicB"</span>,<span class="string">"partition"</span>:<span class="number">2</span>,<span class="string">"replicas"</span>:[<span class="number">4</span>,<span class="number">5</span>]}]}
+</code></pre><p>用 <code>execute</code> 命令开始正式执行，将会把上述2个topic按    <code>expand-cluster-reassignment</code> 中的设置进行分配，该过程可能会影响其它topic的读取（延时）</p>
+<pre><code>bin/kafka-reassign-partitions.<span class="keyword">sh</span> --zookeeper zk1:2181 
+--reassignment-json-<span class="keyword">file</span> <span class="keyword">expand</span>-<span class="keyword">cluster</span>-reassignment.json --execute
+</code></pre><h3 id="执行状态查询">执行状态查询</h3><p>查询执行状态</p>
+<pre><code>bin/kafka-reassign-partitions.<span class="keyword">sh</span> --zookeeper zk1:2181 
+--reassignment-json-<span class="keyword">file</span> <span class="keyword">expand</span>-<span class="keyword">cluster</span>-reassignment.json --verify
+</code></pre><p>主要有几种状态</p>
+<pre><code>Reassignment <span class="keyword">of</span> partition [topicA,<span class="number">4</span>] <span class="keyword">is</span> still <span class="keyword">in</span> progress <span class="comment"># 转移中</span>
+Reassignment <span class="keyword">of</span> partition [topicB,<span class="number">2</span>] completed successfully <span class="comment"># 转移结束</span>
+</code></pre><p>如果你看到一大堆的 <code>ERROR</code> 信息：</p>
+<pre><code><span class="type">ERROR</span>: <span class="type">Assigned</span> replicas (<span class="number">0</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>) don't <span class="keyword">match</span> the <span class="built_in">list</span> <span class="keyword">of</span> replicas <span class="keyword">for</span> reassignment (<span class="number">5</span>,<span class="number">3</span>,<span class="number">4</span>) <span class="keyword">for</span> partition [topicA,<span class="number">3</span>]
+<span class="type">Reassignment</span> <span class="keyword">of</span> partition [topicA,<span class="number">3</span>] failed
+</code></pre><p>不要方，不要关闭节点，过会再看看就正常了。</p>
 </span>
       
     </div>
@@ -377,11 +384,7 @@ connectionProperties: Properties)</span>:</span> DataFrame
       
         <div class="post-tags">
           
-            <a href="/tags/jdbc/" rel="tag">#jdbc</a>
-          
-            <a href="/tags/mysql/" rel="tag">#mysql</a>
-          
-            <a href="/tags/spark/" rel="tag">#spark</a>
+            <a href="/tags/kafka/" rel="tag">#kafka</a>
           
         </div>
       
@@ -390,16 +393,16 @@ connectionProperties: Properties)</span>:</span> DataFrame
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/14/spark任务进度实时更新与聚合/" rel="next" title="spark任务进度实时更新与聚合">
-                <i class="fa fa-chevron-left"></i> spark任务进度实时更新与聚合
+              <a href="/2015/11/26/磁盘IO对spark的影响/" rel="next" title="磁盘IO对spark的影响">
+                <i class="fa fa-chevron-left"></i> 磁盘IO对spark的影响
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/12/24/sparkSql中udf的使用/" rel="prev" title="sparkSQL中udf的使用">
-                sparkSQL中udf的使用 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/12/13/elasticsearch分页查询/" rel="prev" title="elasticsearch分页查询">
+                elasticsearch分页查询 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -427,8 +430,8 @@ connectionProperties: Properties)</span>:</span> DataFrame
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/12/16/提高spark-jdbc操作并发度/"
-           data-title="spark jdbc(mysql) 并发度优化" data-url="http://yoursite.com/2015/12/16/提高spark-jdbc操作并发度/">
+      <div class="ds-thread" data-thread-key="2015/12/01/kafka集群扩容/"
+           data-title="kafka集群扩容" data-url="http://yoursite.com/2015/12/01/kafka集群扩容/">
       </div>
     
   </div>
@@ -518,7 +521,7 @@ connectionProperties: Properties)</span>:</span> DataFrame
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在spark中使用jdbc"><span class="nav-number">1.</span> <span class="nav-text">在spark中使用jdbc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-_单partition(无并发)"><span class="nav-number">2.</span> <span class="nav-text">1. 单partition(无并发)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-_根据Long类型字段分区"><span class="nav-number">3.</span> <span class="nav-text">2. 根据Long类型字段分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-_根据任意类型字段分区"><span class="nav-number">4.</span> <span class="nav-text">3. 根据任意类型字段分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">5.</span> <span class="nav-text">结语</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动新节点"><span class="nav-number">1.</span> <span class="nav-text">启动新节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移动topic"><span class="nav-number">2.</span> <span class="nav-text">移动topic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行状态查询"><span class="nav-number">3.</span> <span class="nav-text">执行状态查询</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

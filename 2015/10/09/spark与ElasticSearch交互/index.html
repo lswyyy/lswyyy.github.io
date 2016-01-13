@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="spark," />
+  <meta name="keywords" content="spark,elasticsearch," />
 
 
 
@@ -51,24 +51,22 @@
 
 
 
-<meta name="description" content="一.动态资源调配这是spark1.5以后新加入的功能
-为standalone模式和mesos的粗粒度模式提供了executor的动态管理，具体表现为：如果executor在一段时间内空闲就会移除这个executor。
-动态申请executor如果有新任务处于等待状态，并且等待时间超过spark.dynamicAllocation.schedulerBacklogTimeout(默认1s)，则会依次">
+<meta name="description" content="使用 elasticsearch-hadoop 包，可在 github 中搜索到该项目
+项目地址
+example12345678910111213141516171819202122232425262728import org.elasticsearch.spark._import org.elasticsearch.spark.sql._&amp;lt;!--more--&amp;gt;val conf = n">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark dynamicAllocation">
-<meta property="og:url" content="http://yoursite.com/2015/11/17/spark-dynamicAllocation/index.html">
+<meta property="og:title" content="spark与ElasticSearch交互">
+<meta property="og:url" content="http://yoursite.com/2015/10/09/spark与ElasticSearch交互/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
-<meta property="og:description" content="一.动态资源调配这是spark1.5以后新加入的功能
-为standalone模式和mesos的粗粒度模式提供了executor的动态管理，具体表现为：如果executor在一段时间内空闲就会移除这个executor。
-动态申请executor如果有新任务处于等待状态，并且等待时间超过spark.dynamicAllocation.schedulerBacklogTimeout(默认1s)，则会依次">
-<meta property="og:image" content="http://img.blog.csdn.net/20151117160106618">
-<meta property="og:image" content="http://img.blog.csdn.net/20151117160128026">
-<meta property="og:updated_time" content="2015-12-14T04:50:18.000Z">
+<meta property="og:description" content="使用 elasticsearch-hadoop 包，可在 github 中搜索到该项目
+项目地址
+example12345678910111213141516171819202122232425262728import org.elasticsearch.spark._import org.elasticsearch.spark.sql._&amp;lt;!--more--&amp;gt;val conf = n">
+<meta property="og:updated_time" content="2016-01-13T14:05:07.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark dynamicAllocation">
-<meta name="twitter:description" content="一.动态资源调配这是spark1.5以后新加入的功能
-为standalone模式和mesos的粗粒度模式提供了executor的动态管理，具体表现为：如果executor在一段时间内空闲就会移除这个executor。
-动态申请executor如果有新任务处于等待状态，并且等待时间超过spark.dynamicAllocation.schedulerBacklogTimeout(默认1s)，则会依次">
+<meta name="twitter:title" content="spark与ElasticSearch交互">
+<meta name="twitter:description" content="使用 elasticsearch-hadoop 包，可在 github 中搜索到该项目
+项目地址
+example12345678910111213141516171819202122232425262728import org.elasticsearch.spark._import org.elasticsearch.spark.sql._&amp;lt;!--more--&amp;gt;val conf = n">
 
 
 
@@ -80,7 +78,7 @@
   };
 </script>
 
-  <title> spark dynamicAllocation | LSW'S BLOG </title>
+  <title> spark与ElasticSearch交互 | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -251,7 +249,7 @@
             
             
               
-                spark dynamicAllocation
+                spark与ElasticSearch交互
               
             
           </h1>
@@ -260,8 +258,8 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-11-17T22:00:00+08:00" content="2015-11-17">
-              2015-11-17
+            <time itemprop="dateCreated" datetime="2015-10-09T22:00:00+08:00" content="2015-10-09">
+              2015-10-09
             </time>
           </span>
 
@@ -286,8 +284,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/11/17/spark-dynamicAllocation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/17/spark-dynamicAllocation/" itemprop="commentsCount"></span>
+                <a href="/2015/10/09/spark与ElasticSearch交互/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/09/spark与ElasticSearch交互/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -306,76 +304,10 @@
       
 
       
-        <span itemprop="articleBody"><h2 id="一-动态资源调配">一.动态资源调配</h2><p>这是spark1.5以后新加入的功能</p>
-<p>为standalone模式和mesos的粗粒度模式提供了executor的动态管理，具体表现为：如果executor在一段时间内空闲就会移除这个executor。</p>
-<h3 id="动态申请executor">动态申请executor</h3><p>如果有新任务处于等待状态，并且等待时间超过<code>spark.dynamicAllocation.schedulerBacklogTimeout</code>(默认1s)，则会依次启动executor,每次启动1,2,4,8…个executor（如果有的话）。启动的间隔由<code>spark.dynamicAllocation.sustainedSchedulerBacklogTimeout</code>控制(默认与schedulerBacklogTimeout相同)。</p>
-<h3 id="动态移除executor">动态移除executor</h3><p>executor空闲时间超过<code>spark.dynamicAllocation.executorIdleTimeout</code>设置的值(默认60s )，该executor会被移除，除非有缓存数据。</p>
-<a id="more"></a>
-<h2 id="二-配置">二.配置</h2><p><code>conf/spark-default.conf</code>中配置</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spark<span class="class">.dynamicAllocation</span><span class="class">.enabled</span> true</span><br><span class="line">spark<span class="class">.shuffle</span><span class="class">.service</span><span class="class">.enabled</span> true</span><br></pre></td></tr></table></figure>
-<p>开启shuffle service(每个worker节点)</p>
-<pre><code>sbin/<span class="literal">start</span>-shuffle-service.sh
-</code></pre><p>启动worker</p>
-<pre><code>sbin/<span class="literal">start</span>-<span class="literal">slave</span>.sh -h hostname sparkURL
-</code></pre><p>如果有节点没开，运行任务时该节点就报错</p>
-<pre><code>ExecutorLostFailure
-</code></pre><h3 id="相关配置">相关配置</h3><table>
-<thead>
-<tr>
-<th>参数名</th>
-<th>默认值</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>spark.dynamicAllocation.executorIdleTimeout</td>
-<td>60s</td>
-<td>executor空闲时间达到规定值，则将该executor移除。</td>
-</tr>
-<tr>
-<td>spark.dynamicAllocation.cachedExecutorIdleTimeout</td>
-<td>infinity</td>
-<td>缓存了数据的executor默认不会被移除</td>
-</tr>
-<tr>
-<td>spark.dynamicAllocation.maxExecutors</td>
-<td>infinity</td>
-<td>最多使用的executor数，默认为你申请的最大executor数</td>
-</tr>
-<tr>
-<td>spark.dynamicAllocation.minExecutors</td>
-<td>0</td>
-<td>最少保留的executor数</td>
-</tr>
-<tr>
-<td>spark.dynamicAllocation.schedulerBacklogTimeout</td>
-<td>1s</td>
-<td>有task等待运行时间超过该值后开始启动executor</td>
-</tr>
-<tr>
-<td>spark.dynamicAllocation.executorIdleTimeout</td>
-<td>schedulerBacklogTimeout</td>
-<td>动态启动executor的间隔</td>
-</tr>
-<tr>
-<td>spark.dynamicAllocation.initialExecutors</td>
-<td>spark.dynamicAllocation.minExecutors</td>
-<td>如果所有的executor都移除了，重新请求时启动的初始executor数</td>
-</tr>
-</tbody>
-</table>
-<h2 id="三-使用">三.使用</h2><p>启动一个spark-shell,有5个executor,每个executor使用2个core</p>
-<pre><code><span class="comment">bin/spark</span><span class="literal">-</span><span class="comment">shell</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">total</span><span class="literal">-</span><span class="comment">executor</span><span class="literal">-</span><span class="comment">cores</span> <span class="comment">10</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">executor</span><span class="literal">-</span><span class="comment">cores</span> <span class="comment">2</span>
-</code></pre><p>如果在60s内无动作，在终端会看到如下提示</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="number">15</span>/<span class="number">11</span>/<span class="number">17</span> <span class="number">15</span>:<span class="number">40</span>:<span class="number">47</span> ERROR TaskSchedulerImpl: Lost executor <span class="number">0</span> on spark047213: remote Rpc client disassociated</span><br><span class="line"><span class="number">15</span>/<span class="number">11</span>/<span class="number">17</span> <span class="number">15</span>:<span class="number">40</span>:<span class="number">47</span> WARN ReliableDeliverySupervisor: Association with remote system [akka.tcp:<span class="comment">//sparkExecutor@spark047213:50015] has failed, address is now gated for [5000] ms. Reason: [Disassociated] </span></span><br><span class="line"><span class="number">15</span>/<span class="number">11</span>/<span class="number">17</span> <span class="number">15</span>:<span class="number">40</span>:<span class="number">50</span> ERROR TaskSchedulerImpl: Lost executor <span class="number">1</span> on spark047213: remote Rpc client disassociated</span><br><span class="line"><span class="number">15</span>/<span class="number">11</span>/<span class="number">17</span> <span class="number">15</span>:<span class="number">40</span>:<span class="number">50</span> WARN ReliableDeliverySupervisor: Association with remote system [akka.tcp:<span class="comment">//sparkExecutor@spark047213:49847] has failed, address is now gated for [5000] ms. Reason: [Disassociated]</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>吐槽一下，executor移除后会提示你和executor断开连接，给的提示居然是ERROR….</p>
-<p>然后可以在web ui上看到使用的10个core已经处于left状态</p>
-<p><img src="http://img.blog.csdn.net/20151117160106618" alt="这里写图片描述"></p>
-<p>提交一个只需要2个core的任务</p>
-<pre><code>sc.<span class="function"><span class="title">parallelize</span><span class="params">(<span class="number">1</span> to <span class="number">2</span>)</span></span>.count
-</code></pre><p>看到有2个core开始进入注册状态，提供服务</p>
-<p><img src="http://img.blog.csdn.net/20151117160128026" alt="这里写图片描述"></p>
+        <span itemprop="articleBody"><p>使用 <code>elasticsearch-hadoop</code> 包，可在 github 中搜索到该项目</p>
+<p><a href="https://github.com/elastic/elasticsearch-hadoop" target="_blank" rel="external">项目地址</a></p>
+<h2 id="example">example</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">import org<span class="class">.elasticsearch</span><span class="class">.spark</span>._</span><br><span class="line">import org<span class="class">.elasticsearch</span><span class="class">.spark</span><span class="class">.sql</span>._</span><br><span class="line"></span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line">val conf = new <span class="function"><span class="title">SparkConf</span><span class="params">()</span></span></span><br><span class="line">	.<span class="function"><span class="title">set</span><span class="params">(<span class="string">"es.nodes"</span>,<span class="string">"192.168.47.155"</span>)</span></span></span><br><span class="line">	.<span class="function"><span class="title">set</span><span class="params">(<span class="string">"es.port"</span>,<span class="string">"9200"</span>)</span></span></span><br><span class="line">	.<span class="function"><span class="title">setMaster</span><span class="params">(<span class="string">"spark://..."</span>)</span></span></span><br><span class="line">	.<span class="function"><span class="title">setAppName</span><span class="params">(<span class="string">"es_hdfs"</span>)</span></span></span><br><span class="line"></span><br><span class="line">val sc = new <span class="function"><span class="title">SparkConf</span><span class="params">(sc)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//查询合作方为abc的数据</span></span><br><span class="line">val query = <span class="string">""</span><span class="string">"&#123;"</span>query<span class="string">":&#123;"</span>match<span class="string">":&#123;"</span>activity.partnerCode<span class="string">": "</span>abc<span class="string">"&#125;&#125;&#125;"</span><span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//将在es中的查询结果转化为rdd/dataFrame</span></span><br><span class="line">val esRdd = sc.<span class="function"><span class="title">esRDD</span><span class="params">(s<span class="string">"index/type"</span>,query)</span></span></span><br><span class="line"><span class="comment">//直接读入全部数据</span></span><br><span class="line">val esDf = sqlContext.<span class="function"><span class="title">esDF</span><span class="params">(s<span class="string">"index/type"</span>)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//对读入rdd/dataFrame进行操作</span></span><br><span class="line">esRdd.<span class="function"><span class="title">map</span><span class="params">(r=&gt;&#123;...&#125;)</span></span></span><br><span class="line">esDf.<span class="function"><span class="title">flatMap</span><span class="params">(r=&gt;&#123;......&#125;)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//将dataFrame/rdd写入es</span></span><br><span class="line">esRdd.<span class="function"><span class="title">saveToEs</span><span class="params">(<span class="string">"index/type"</span>)</span></span></span><br><span class="line">resultDf.<span class="function"><span class="title">saveToEs</span><span class="params">(<span class="string">"index/type"</span>)</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="Tips">Tips</h2><p>从es读入数据时，读取的并发度由es的分片数决定。</p>
 </span>
       
     </div>
@@ -384,7 +316,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/spark/" rel="tag">#spark</a>
+            <a href="/tags/spark-elasticsearch/" rel="tag">#spark,elasticsearch</a>
           
         </div>
       
@@ -393,16 +325,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/15/spark常见问题解决及优化/" rel="next" title="spark常见问题解决及优化">
-                <i class="fa fa-chevron-left"></i> spark常见问题解决及优化
+              <a href="/2015/09/26/部署ganglia3.7/" rel="next" title="部署ganglia3.7">
+                <i class="fa fa-chevron-left"></i> 部署ganglia3.7
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/11/26/磁盘IO对spark的影响/" rel="prev" title="磁盘IO对spark的影响">
-                磁盘IO对spark的影响 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/10/15/spark常见问题解决及优化/" rel="prev" title="spark常见问题解决及优化">
+                spark常见问题解决及优化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -430,8 +362,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/11/17/spark-dynamicAllocation/"
-           data-title="spark dynamicAllocation" data-url="http://yoursite.com/2015/11/17/spark-dynamicAllocation/">
+      <div class="ds-thread" data-thread-key="2015/10/09/spark与ElasticSearch交互/"
+           data-title="spark与ElasticSearch交互" data-url="http://yoursite.com/2015/10/09/spark与ElasticSearch交互/">
       </div>
     
   </div>
@@ -521,7 +453,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-动态资源调配"><span class="nav-number">1.</span> <span class="nav-text">一.动态资源调配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态申请executor"><span class="nav-number">1.1.</span> <span class="nav-text">动态申请executor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态移除executor"><span class="nav-number">1.2.</span> <span class="nav-text">动态移除executor</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-配置"><span class="nav-number">2.</span> <span class="nav-text">二.配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关配置"><span class="nav-number">2.1.</span> <span class="nav-text">相关配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-使用"><span class="nav-number">3.</span> <span class="nav-text">三.使用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#example"><span class="nav-number">1.</span> <span class="nav-text">example</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tips"><span class="nav-number">2.</span> <span class="nav-text">Tips</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -716,6 +716,115 @@
             
               
                 
+                <a class="post-title-link" href="/2015/12/13/elasticsearch分页查询/" itemprop="url">
+                  ElasticSearch分页查询
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-12-13T22:00:00+08:00" content="2015-12-13">
+              2015-12-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/13/elasticsearch分页查询/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/13/elasticsearch分页查询/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>主要有两种方式</p>
+<h2 id="from/size">from/size</h2><p><code>from</code> 偏移，默认为0</p>
+<p><code>size</code> 返回的结果数，默认为10</p>
+<p>在数据量不大的情况下我们一般会使用<code>from/size</code>，而在深度分页的情况下效率极低，该命令会把<code>from+size</code>条记录全部加在到内存中，对结果返回前进行全局排序，然后丢弃掉范围外的结果，并且每次执行都会重复这样的操作，运行速度极慢而且往往还会造成es内存不足而挂掉。</p>
+<p>从index <code>A</code>的type <code>B</code>中搜索出从0开始的1w条数据:</p>
+<pre><code><span class="title">curl</span> -XGET <span class="string">"hostname:9200/A/B/_search?from=0&amp;size=10000"</span>
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/13/elasticsearch分页查询/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/11/26/磁盘IO对spark的影响/" itemprop="url">
                   磁盘IO对spark的影响
                 </a>
@@ -1038,110 +1147,6 @@ spark.ui.retainedStages <span class="number">500</span>
             
               
                 
-                <a class="post-title-link" href="/2015/10/09/spark与ElasticSearch交互/" itemprop="url">
-                  使用spark与ElasticSearch交互
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2015-10-09T22:00:00+08:00" content="2015-10-09">
-              2015-10-09
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark-elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">spark,elasticsearch</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/10/09/spark与ElasticSearch交互/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/09/spark与ElasticSearch交互/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>使用 <code>elasticsearch-hadoop</code> 包，可在 github 中搜索到该项目</p>
-<p><a href="https://github.com/elastic/elasticsearch-hadoop">项目地址</a></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/09/spark与ElasticSearch交互/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2015/09/26/部署ganglia3.7/" itemprop="url">
                   部署ganglia3.7
                 </a>
@@ -1283,7 +1288,7 @@ sudo rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8<
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>

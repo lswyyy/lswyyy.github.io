@@ -228,6 +228,15 @@
 
     
     
+      
+      
+        
+        
+        
+      
+
+      
+    
 
     
       
@@ -312,120 +321,6 @@
           <p>因为业务需求，要将多个jsonArray合并，使用scala分分钟实现，代码异常简洁。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/01/01/将多个jsonArray合并_scala/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/29/kafka集群扩容/" itemprop="url">
-                  kafka集群扩容
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            发表于
-            <time itemprop="dateCreated" datetime="2015-12-29T22:00:00+08:00" content="2015-12-29">
-              2015-12-29
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/kafka/" itemprop="url" rel="index">
-                    <span itemprop="name">kafka</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/12/29/kafka集群扩容/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/29/kafka集群扩容/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>文章开始前推荐使用 <a href="http://blog.csdn.net/lsshlsw/article/details/47300145">kafka-manager</a> 工具，可以实时查看kafka同步状态，broker实时读写流量，topic分区情况等信息，提供重选最优leader等操作。</p>
-</blockquote>
-<p>kafka的集群扩容实际上就是把 topic 的 partition 移动到新加的集群上。</p>
-<p>生成 topic,partition 分配的json文件有两种方式:</p>
-<ol>
-<li><p>通过 <code>--topics-to-move-json-file</code> 和 <code>--broker-list</code> 批量生成新的topic分区信息，然后根据该信息执行转移操作。</p>
-</li>
-<li><p>手动写要移动的topic信息，更灵活，但是在大量 topic 和 partition 的情况下非常繁琐并且容易出错。</p>
-</li>
-</ol>
-<h3 id="启动新节点">启动新节点</h3><p>将原节点上的 kafka 目录通过 scp 命令拷贝到新节点，只需要修改配置文件中的 broker_id 和 ip 地址，然后依次启动 kafka 服务。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/29/kafka集群扩容/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

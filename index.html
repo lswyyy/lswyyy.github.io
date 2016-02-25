@@ -602,6 +602,118 @@
             
               
                 
+                <a class="post-title-link" href="/2015/12/16/提高spark-jdbc操作并发度/" itemprop="url">
+                  spark jdbc(mysql) 操作并发度优化
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2015-12-16T22:00:00+08:00" content="2015-12-16">
+              2015-12-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/16/提高spark-jdbc操作并发度/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/16/提高spark-jdbc操作并发度/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>下文以 <code>mysql</code> 为例</p>
+</blockquote>
+<h2 id="在spark中使用jdbc">在spark中使用jdbc</h2><p>在 <code>spark-env.sh</code> 文件中加入:</p>
+<pre><code><span class="keyword">export</span> SPARK_CLASSPATH=/path/mysql-connector-java-<span class="number">5.1</span><span class="number">.34</span>.jar
+</code></pre><p>任务提交时加入:</p>
+<pre><code>--jars /path/mysql-connector-java-<span class="number">5.1</span><span class="number">.34</span>.jar
+</code></pre><h2 id="1-_单partition(无并发)">1. 单partition(无并发)</h2><p>调用函数</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">jdbc</span><span class="params">(url: String, table: String, properties: Properties)</span>:</span> DataFrame
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/16/提高spark-jdbc操作并发度/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/12/14/spark任务进度实时更新与聚合/" itemprop="url">
                   spark任务进度实时更新与聚合
                 </a>

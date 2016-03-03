@@ -68,7 +68,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
 <meta property="og:image" content="http://img.blog.csdn.net/20151210161217631">
-<meta property="og:updated_time" content="2016-03-03T07:48:16.000Z">
+<meta property="og:updated_time" content="2016-03-03T07:54:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark常见问题解决及优化">
 <meta name="twitter:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
@@ -465,15 +465,13 @@ java<span class="class">.lang</span><span class="class">.reflect</span><span cla
 <h2 id="四-_一些优化">四. 一些优化</h2><h3 id="1-_部分Executor不执行任务">1. 部分Executor不执行任务</h3><blockquote>
 <p>有时候你会看到部分executor并没有在执行任务，为什么呢？</p>
 </blockquote>
-<ol>
-<li><p>任务partition数过少，要知道每个partition只会在一个task上执行任务。<br>提高分区数，通过 <code>repartition</code> 方法，即使这样，在 <code>repartition</code> 前还是要从数据源读取数据，此时的并发度根据不同的数据源受到不同限制，常用的大概有以下几种：</p>
-<p> hdfs － block数就是partition数<br> mysql － 按读入时的分区规则分partition<br> es - 分区数即为 es 的 分片数（shard）</p>
-</li>
-<li><p>数据本地性的副作用<br>taskSetManager在分发任务之前会先计算数据本地性，优先级依次是：</p>
+<p>(1) 任务partition数过少，要知道每个partition只会在一个task上执行任务。<br>提高分区数，通过 <code>repartition</code> 方法，即使这样，在 <code>repartition</code> 前还是要从数据源读取数据，此时的并发度根据不同的数据源受到不同限制，常用的大概有以下几种：</p>
+<pre><code>hdfs － block数就是<span class="keyword">partition</span>数
+mysql － 按读入时的分区规则分<span class="keyword">partition</span>
+es - 分区数即为 es 的 分片数（shard）
+</code></pre><p>(2) 数据本地性的副作用<br>taskSetManager在分发任务之前会先计算数据本地性，优先级依次是：</p>
 <pre><code><span class="function"><span class="title">process</span><span class="params">(同一个executor)</span></span> -&gt; <span class="function"><span class="title">node_local</span><span class="params">(同一个节点)</span></span> -&gt; <span class="function"><span class="title">rack_local</span><span class="params">(同一个机架)</span></span> -&gt; <span class="function"><span class="title">any</span><span class="params">(任何节点)</span></span>
-</code></pre></li>
-</ol>
-<p>会优先执行其它 <code>executor</code> 上高优先级的任务，这几台数据本地性没做好的机器在这个阶段经常处于干瞪眼的状态（不执行任务）。<br>判断的公式为：</p>
+</code></pre><p>会优先执行其它 <code>executor</code> 上高优先级的任务，这几台数据本地性没做好的机器在这个阶段经常处于干瞪眼的状态（不执行任务）。<br>判断的公式为：</p>
 <pre><code>curTime – lastLaunchTime &gt;= <span class="function"><span class="title">localityWaits</span><span class="params">(currentLocalityIndex)</span></span>
 </code></pre><p>其中 <code>curTime</code> 为系统当前时间，<code>lastLaunchTime</code> 为在某优先级下最后一次启动task的时间<br>如果满足这个条件则会进入下一个优先级的时间判断，直到 <code>any</code>，不满足则分配当前优先级的任务。<br>数据本地性任务分配的源码在 <code>taskSetManager.scala</code> ，有兴趣的同学可以去看看。<br>如果该问题很严重，可以降低以下参数的值，默认都是3s。</p>
 <pre><code>spark<span class="class">.locality</span><span class="class">.wait</span><span class="class">.process</span>

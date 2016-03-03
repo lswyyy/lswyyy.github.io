@@ -68,7 +68,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
 <meta property="og:image" content="http://img.blog.csdn.net/20151210161217631">
-<meta property="og:updated_time" content="2016-03-03T07:45:19.000Z">
+<meta property="og:updated_time" content="2016-03-03T07:45:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark常见问题解决及优化">
 <meta name="twitter:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
@@ -413,9 +413,14 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
 <ol>
 <li><p>driver OOM<br>一般是使用了collect操作将所有executor的数据聚合到driver导致。尽量不要使用collect操作即可。</p>
 </li>
-<li><p>executor OOM<br>(1)可以按下面的内存优化的方法增加code使用内存空间<br>(2)增加executor内存总量,也就是说增加spark.executor.memory的值<br>(3)增加任务并行度（大任务就被分成小任务了)，参考下面优化并行度的方法</p>
+<li><p>executor OOM</p>
 </li>
 </ol>
+<ul>
+<li>可以按下面的内存优化的方法增加code使用内存空间</li>
+<li>增加executor内存总量,也就是说增加spark.executor.memory的值</li>
+<li>增加任务并行度（大任务就被分成小任务了)，参考下面优化并行度的方法</li>
+</ul>
 <h3 id="5-task_not_serializable">5.task not serializable</h3><h4 id="错误提示-4">错误提示</h4><pre><code>org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.SparkException</span>: Task not serializable
 </code></pre><h4 id="解决-6">解决</h4><p>报错提示任务没有序列化，常见于map,filter,foreach,foreachPartition等闭包内部引用了一些外部变量，典型例子就是在foreachPartition中使用数据库创建连接方法。这些变量没有序列化导致的任务报错。</p>
 <p>解决方法很多，下面提供三种：</p>

@@ -68,7 +68,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
 <meta property="og:image" content="http://img.blog.csdn.net/20151210161217631">
-<meta property="og:updated_time" content="2016-03-03T07:40:12.000Z">
+<meta property="og:updated_time" content="2016-03-03T07:45:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark常见问题解决及优化">
 <meta name="twitter:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
@@ -396,8 +396,8 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
 <h4 id="解决-4">解决</h4><p>大多数任务都完成了，还有那么一两个任务怎么都跑不完或者跑的很慢，又分为数据倾斜和task倾斜两种。</p>
 <ol>
 <li><p>数据倾斜<br>数据倾斜大多数情况是由于大量<code>null</code>值或者<code>&quot;&quot;</code>引起，在计算前过滤掉这些数据既可。<br>例如：    </p>
-<p> sqlContext.sql(“…where col is not null and col != ‘’”)</p>
-</li>
+<pre><code>sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"...where col is not null and col != ''"</span>)</span></span>
+</code></pre></li>
 <li><p>任务倾斜<br>task倾斜原因比较多，网络io,cpu,mem都有可能造成这个节点上的任务执行缓慢，可以去看该节点的性能监控来分析原因。以前遇到过同事在spark的一台worker上跑R的任务导致该节点spark task运行缓慢。<br>也可以开启spark的推测机制，开启推测机制后如果某一台机器的几个task特别慢，推测机制会将任务分配到其他机器执行，最后Spark会选取最快的作为最终结果。</p>
 </li>
 </ol>
@@ -413,12 +413,8 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
 <ol>
 <li><p>driver OOM<br>一般是使用了collect操作将所有executor的数据聚合到driver导致。尽量不要使用collect操作即可。</p>
 </li>
-<li><p>executor OOM</p>
+<li><p>executor OOM<br>(1)可以按下面的内存优化的方法增加code使用内存空间<br>(2)增加executor内存总量,也就是说增加spark.executor.memory的值<br>(3)增加任务并行度（大任务就被分成小任务了)，参考下面优化并行度的方法</p>
 </li>
-<li><p>可以按下面的内存优化的方法增加code使用内存空间</p>
-</li>
-<li>增加executor内存总量,也就是说增加spark.executor.memory的值</li>
-<li>增加任务并行度（大任务就被分成小任务了)，参考下面优化并行度的方法</li>
 </ol>
 <h3 id="5-task_not_serializable">5.task not serializable</h3><h4 id="错误提示-4">错误提示</h4><pre><code>org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.SparkException</span>: Task not serializable
 </code></pre><h4 id="解决-6">解决</h4><p>报错提示任务没有序列化，常见于map,filter,foreach,foreachPartition等闭包内部引用了一些外部变量，典型例子就是在foreachPartition中使用数据库创建连接方法。这些变量没有序列化导致的任务报错。</p>
@@ -436,12 +432,11 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
 <p>将值调大即可</p>
 <pre><code>spark<span class="class">.driver</span><span class="class">.maxResultSize</span> <span class="number">2</span>g
 </code></pre><h3 id="7-环境报错">7.环境报错</h3><ol>
-<li><p>driver节点内存不足</p>
+<li><p>driver节点内存不足<br>driver内存不足导致无法启动application,将driver分配到内存足够的机器上或减少driver-memory的使用。</p>
 <pre><code>Java HotSpot(TM) 64-Bit Server VM warning: INFO:
  os<span class="number">::c</span>ommit_memory(<span class="number">0x00000006</span><span class="number">80000000</span>, <span class="number">4294967296</span>, 0) failed<span class="comment">; </span>
  error='Cannot allocate memory' (errno=12)
-</code></pre><p> driver内存不足导致无法启动application,将driver分配到内存足够的机器上或减少driver-memory的使用。</p>
-</li>
+</code></pre></li>
 <li><p>hdfs空间不够<br>hdfs空间不足，event_log无法写入，所以 <code>ListenerBus会报错</code> ,增加hdfs空间（删除无用数据或增加节点）</p>
 <pre><code>Caused by: org<span class="class">.apache</span><span class="class">.hadoop</span><span class="class">.ipc</span><span class="class">.RemoteException</span>(java<span class="class">.io</span><span class="class">.IOException</span>):
  File /tmp/spark-history/app-<span class="number">20151228095652</span>-<span class="number">0072</span><span class="class">.inprogress</span> 
@@ -450,11 +445,10 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
 ERROR LiveListenerBus: Listener EventLoggingListener threw an exception
 java<span class="class">.lang</span><span class="class">.reflect</span><span class="class">.InvocationTargetException</span>
 </code></pre></li>
-<li><p>spark编译包与hadoop版本不一致</p>
+<li><p>spark编译包与hadoop版本不一致<br>下载对应hadoop版本的spark包或自己编译。</p>
 <p> java.io.InvalidClassException: org.apache.spark.rdd.RDD;<br>  local class incompatible: stream classdesc serialVersionUID</p>
 </li>
 </ol>
-<p>下载对应hadoop版本的spark包或自己编译。</p>
 <h2 id="三-_一些python错误">三. 一些python错误</h2><h3 id="1-python权限不够">1.python权限不够</h3><h4 id="错误提示-6">错误提示</h4><p>部分节点上有错误提示</p>
 <pre><code>java.io.IOExeception: Cannot <span class="keyword">run</span> <span class="keyword">program</span> <span class="string">"python2.7"</span>: <span class="keyword">error</span>=13, 权限不够
 </code></pre><h4 id="解决-8">解决</h4><p> 新加的节点运维装2.7版本的python,python命令是正确的,python2.7却无法调用，只要改改环境变量就好了。</p>
@@ -466,15 +460,19 @@ java<span class="class">.lang</span><span class="class">.reflect</span><span cla
 <h2 id="四-_一些优化">四. 一些优化</h2><h3 id="1-_部分Executor不执行任务">1. 部分Executor不执行任务</h3><blockquote>
 <p>有时候你会看到部分executor并没有在执行任务，为什么呢？</p>
 </blockquote>
-<p>(1) 任务partition数过少，要知道每个partition只会在一个task上执行任务。</p>
+<ol>
+<li>任务partition数过少，要知道每个partition只会在一个task上执行任务。</li>
+</ol>
 <p>提高分区数，通过 <code>repartition</code> 方法，即使这样，在 <code>repartition</code> 前还是要从数据源读取数据，此时的并发度根据不同的数据源受到不同限制，常用的大概有以下几种：</p>
 <pre><code>hdfs － block数就是<span class="keyword">partition</span>数
 mysql － 按读入时的分区规则分<span class="keyword">partition</span>
 es - 分区数即为 es 的 分片数（shard）
-</code></pre><p>(2) 数据本地性的副作用</p>
-<p>taskSetManager在分发任务之前会先计算数据本地性，优先级依次是：</p>
-<pre><code><span class="function"><span class="title">process</span><span class="params">(同一个executor)</span></span> -&gt; <span class="function"><span class="title">node_local</span><span class="params">(同一个节点)</span></span> -&gt; <span class="function"><span class="title">rack_local</span><span class="params">(同一个机架)</span></span> -&gt; <span class="function"><span class="title">any</span><span class="params">(任何节点)</span></span>
-</code></pre><p>会优先执行其它 <code>executor</code> 上高优先级的任务，这几台数据本地性没做好的机器在这个阶段经常处于干瞪眼的状态（不执行任务）。</p>
+</code></pre><ol>
+<li><p>数据本地性的副作用<br>taskSetManager在分发任务之前会先计算数据本地性，优先级依次是：</p>
+<p> process(同一个executor) -&gt; node_local(同一个节点) -&gt; rack_local(同一个机架) -&gt; any(任何节点)</p>
+</li>
+</ol>
+<p>会优先执行其它 <code>executor</code> 上高优先级的任务，这几台数据本地性没做好的机器在这个阶段经常处于干瞪眼的状态（不执行任务）。</p>
 <p>判断的公式为：</p>
 <pre><code>curTime – lastLaunchTime &gt;= <span class="function"><span class="title">localityWaits</span><span class="params">(currentLocalityIndex)</span></span>
 </code></pre><p>其中 <code>curTime</code> 为系统当前时间，<code>lastLaunchTime</code> 为在某优先级下最后一次启动task的时间<br>如果满足这个条件则会进入下一个优先级的时间判断，直到 <code>any</code>，不满足则分配当前优先级的任务。<br>数据本地性任务分配的源码在 <code>taskSetManager.scala</code> ，有兴趣的同学可以去看看。<br>如果该问题很严重，可以降低以下参数的值，默认都是3s。</p>
@@ -491,14 +489,10 @@ spark<span class="class">.locality</span><span class="class">.wait</span><span c
 <pre><code>spark<span class="class">.scheduler</span><span class="class">.executorTaskBlacklistTime</span> <span class="number">30000</span>
 </code></pre><p>当 <code>task</code> 在该 <code>executor</code> 运行失败后会在其它 <code>executor</code> 中启动，同时此 <code>executor</code> 会进入黑名单30s（不会分发任务到该executor）。</p>
 <h3 id="3-_内存">3. 内存</h3><p>如果你的任务shuffle量特别大，同时rdd缓存比较少可以更改下面的参数进一步提高任务运行速度。</p>
-<p><code>spark.storage.memoryFraction</code> － 分配给rdd缓存的比例，默认为0.6(60%)，如果缓存的数据较少可以降低该值。<br><code>spark.shuffle.memoryFraction</code> - 分配给shuffle数据的内存比例，默认为0.2(20%)</p>
-<p>剩下的20%内存空间则是分配给代码生成对象等。</p>
-<p>如果任务运行缓慢，jvm进行频繁gc或者内存空间不足，或者可以降低上述的两个值。</p>
-<p><code>&quot;spark.rdd.compress&quot;,&quot;true&quot;</code> － 默认为false，压缩序列化的RDD分区,消耗一些cpu减少空间的使用</p>
-<h3 id="4-_并发">4. 并发</h3><p><code>spark.default.parallelism</code></p>
-<p>发生shuffle时的并行度，在standalone模式下的数量默认为core的个数，也可手动调整，数量设置太大会造成很多小任务，增加启动任务的开销，太小，运行大数据量的任务时速度缓慢。</p>
-<p><code>spark.sql.shuffle.partitions</code></p>
-<p>sql聚合操作(发生shuffle)时的并行度，默认为200。<br>如果该值太小会导致OOM,executor丢失，任务执行时间过长的问题</p>
+<p><code>spark.storage.memoryFraction</code> － 分配给rdd缓存的比例，默认为0.6(60%)，如果缓存的数据较少可以降低该值。<br><code>spark.shuffle.memoryFraction</code> - 分配给shuffle数据的内存比例，默认为0.2(20%)<br>剩下的20%内存空间则是分配给代码生成对象等。</p>
+<p>如果任务运行缓慢，jvm进行频繁gc或者内存空间不足，或者可以降低上述的两个值。<br><code>&quot;spark.rdd.compress&quot;,&quot;true&quot;</code> － 默认为false，压缩序列化的RDD分区,消耗一些cpu减少空间的使用</p>
+<h3 id="4-_并发">4. 并发</h3><p><code>spark.default.parallelism</code>,发生shuffle时的并行度，在standalone模式下的数量默认为core的个数，也可手动调整，数量设置太大会造成很多小任务，增加启动任务的开销，太小，运行大数据量的任务时速度缓慢。</p>
+<p><code>spark.sql.shuffle.partitions</code>,sql聚合操作(发生shuffle)时的并行度，默认为200。<br>如果该值太小会导致OOM,executor丢失，任务执行时间过长的问题</p>
 <p>相同的两个任务：<br>spark.sql.shuffle.partitions=300:</p>
 <p><img src="http://img.blog.csdn.net/20151015165917751" alt="并行度300"></p>
 <p>spark.sql.shuffle.partitions=500:</p>

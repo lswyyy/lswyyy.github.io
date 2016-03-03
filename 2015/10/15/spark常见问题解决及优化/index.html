@@ -66,7 +66,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
 <meta property="og:image" content="http://img.blog.csdn.net/20151210161217631">
-<meta property="og:updated_time" content="2016-03-03T07:16:17.000Z">
+<meta property="og:updated_time" content="2016-03-03T07:19:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark常见问题解决及优化">
 <meta name="twitter:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
@@ -309,12 +309,9 @@
 
       
         <span itemprop="articleBody"><h2 id="一-_运维">一. 运维</h2><h3 id="1-_Master挂掉,standby重启也失效">1. Master挂掉,standby重启也失效</h3><p>Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。</p>
-<h4 id="解决">解决</h4><p>1.增加Master的内存占用，在Master节点<code>spark-env.sh</code> 中设置：</p>
-<pre><code><span class="keyword">export</span> SPARK_DAEMON_MEMORY <span class="number">10</span>g <span class="preprocessor"># 根据你的实际情况</span>
-</code></pre><p>2.减少保存在Master内存中的作业信息</p>
-<pre><code>spark.ui.retainedJobs <span class="number">500</span>   <span class="preprocessor"># 默认都是<span class="number">1000</span></span>
-spark.ui.retainedStages <span class="number">500</span>
-</code></pre><a id="more"></a>
+<h4 id="解决">解决</h4><p>1.增加Master的内存占用，在Master节点<code>spark-env.sh</code> 中设置：<br>    export SPARK_DAEMON_MEMORY 10g # 根据你的实际情况</p>
+<p>2.减少保存在Master内存中的作业信息<br>    spark.ui.retainedJobs 500   # 默认都是1000<br>    spark.ui.retainedStages 500</p>
+<a id="more"></a>
 <h3 id="2-_worker挂掉或假死">2. worker挂掉或假死</h3><p>有时候我们还会在web ui中看到worker节点消失或处于dead状态，在该节点运行的任务则会报各种 <code>lost worker</code> 的错误，引发原因和上述大体相同，worker内存中保存了大量的ui信息导致gc时失去和master之间的心跳。</p>
 <h4 id="解决-1">解决</h4><p>1.增加Master的内存占用，在Worker节点<code>spark-env.sh</code> 中设置：</p>
 <pre><code><span class="keyword">export</span> SPARK_DAEMON_MEMORY <span class="number">2</span>g <span class="preprocessor"># 根据你的实际情况</span>
@@ -358,9 +355,7 @@ java.io.IOException: Connection from /<span class="number">192.168</span><span c
 has been quiet <span class="keyword">for</span> <span class="number">120000</span> ms <span class="keyword">while</span> there are outstanding requests.
 Assuming connection is dead; please adjust spark.network.
 timeout <span class="keyword">if</span> <span class="keyword">this</span> is wrong</span>
-</code></pre><h4 id="解决-3">解决</h4><p>由网络或者gc引起,worker或executor没有接收到executor或task的心跳反馈</p>
-<p>提高 <code>spark.network.timeout</code> 的值，根据情况改成300(5min)或更高。</p>
-<p>默认为 120(120s),配置所有网络传输的延时，如果没有主动设置以下参数，默认覆盖其属性</p>
+</code></pre><h4 id="解决-3">解决</h4><p>由网络或者gc引起,worker或executor没有接收到executor或task的心跳反馈导致。<br>提高 <code>spark.network.timeout</code> 的值，根据情况改成300(5min)或更高。<br>默认为 120(120s),配置所有网络传输的延时，如果没有主动设置以下参数，默认覆盖其属性</p>
 <ul>
 <li>spark.core.connection.ack.wait.timeout</li>
 <li>spark.akka.timeout</li>
@@ -372,7 +367,7 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
 <p><img src="http://img.blog.csdn.net/20151015152750199" alt="数据倾斜"></p>
 <p>(2) 任务倾斜</p>
 <p>差距不大的几个task,有的运行速度特别慢。</p>
-<h4 id="解决-4">解决</h4><p>大多数任务都完成了，还有那么一两个任务怎么都跑不完或者跑的很慢。<br>分为数据倾斜和task倾斜两种。</p>
+<h4 id="解决-4">解决</h4><p>大多数任务都完成了，还有那么一两个任务怎么都跑不完或者跑的很慢，又分为数据倾斜和task倾斜两种。</p>
 <p>(1) 数据倾斜</p>
 <p>数据倾斜大多数情况是由于大量<code>null</code>值或者<code>&quot;&quot;</code>引起，在计算前过滤掉这些数据既可。<br>例如：    </p>
 <pre><code>sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"...where col is not null and col != ''"</span>)</span></span>
@@ -390,7 +385,11 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
 <p>(1) driver OOM</p>
 <p>一般是使用了collect操作将所有executor的数据聚合到driver导致。尽量不要使用collect操作即可。</p>
 <p>(2) executor OOM</p>
-<p>1.可以按下面的内存优化的方法增加code使用内存空间<br>2.增加executor内存总量,也就是说增加spark.executor.memory的值<br>3.增加任务并行度（大任务就被分成小任务了)，参考下面优化并行度的方法</p>
+<ol>
+<li>可以按下面的内存优化的方法增加code使用内存空间</li>
+<li>增加executor内存总量,也就是说增加spark.executor.memory的值</li>
+<li>增加任务并行度（大任务就被分成小任务了)，参考下面优化并行度的方法</li>
+</ol>
 <h3 id="5-task_not_serializable">5.task not serializable</h3><h4 id="错误提示-4">错误提示</h4><pre><code>org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.SparkException</span>: Task not serializable
 </code></pre><h4 id="解决-6">解决</h4><p>报错提示任务没有序列化，常见于map,filter,foreach,foreachPartition等闭包内部引用了一些外部变量，典型例子就是在foreachPartition中使用数据库创建连接方法。这些变量没有序列化导致的任务报错。</p>
 <p>解决方法很多，下面提供三种：</p>

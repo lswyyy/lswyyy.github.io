@@ -52,13 +52,15 @@
 
 
 <meta name="description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
-解决1.增加Master的内存占用，在Master节点spark-env.">
+解决
+增加Master的内存占用，在Master节点spark-env.s">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spark常见问题解决及优化">
 <meta property="og:url" content="http://yoursite.com/2015/10/15/spark常见问题解决及优化/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
 <meta property="og:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
-解决1.增加Master的内存占用，在Master节点spark-env.">
+解决
+增加Master的内存占用，在Master节点spark-env.s">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015114309842">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015114008642">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015114958881">
@@ -66,11 +68,12 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
 <meta property="og:image" content="http://img.blog.csdn.net/20151210161217631">
-<meta property="og:updated_time" content="2016-03-03T07:21:53.000Z">
+<meta property="og:updated_time" content="2016-03-03T07:25:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark常见问题解决及优化">
 <meta name="twitter:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
-解决1.增加Master的内存占用，在Master节点spark-env.">
+解决
+增加Master的内存占用，在Master节点spark-env.s">
 
 
 
@@ -309,12 +312,15 @@
 
       
         <span itemprop="articleBody"><h2 id="一-_运维">一. 运维</h2><h3 id="1-_Master挂掉,standby重启也失效">1. Master挂掉,standby重启也失效</h3><p>Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。</p>
-<h4 id="解决">解决</h4><p>1.增加Master的内存占用，在Master节点<code>spark-env.sh</code> 中设置：</p>
-<pre><code><span class="keyword">export</span> SPARK_DAEMON_MEMORY <span class="number">10</span>g <span class="preprocessor"># 根据你的实际情况</span>
-</code></pre><p>2.减少保存在Master内存中的作业信息</p>
-<pre><code>spark.ui.retainedJobs <span class="number">500</span>   <span class="preprocessor"># 默认都是<span class="number">1000</span></span>
-spark.ui.retainedStages <span class="number">500</span>
-</code></pre><a id="more"></a>
+<h4 id="解决">解决</h4><ol>
+<li><p>增加Master的内存占用，在Master节点<code>spark-env.sh</code> 中设置：</p>
+<p> export SPARK_DAEMON_MEMORY 10g # 根据你的实际情况</p>
+</li>
+<li><p>减少保存在Master内存中的作业信息</p>
+<p> spark.ui.retainedJobs 500   # 默认都是1000<br> spark.ui.retainedStages 500</p>
+</li>
+</ol>
+<a id="more"></a>
 <h3 id="2-_worker挂掉或假死">2. worker挂掉或假死</h3><p>有时候我们还会在web ui中看到worker节点消失或处于dead状态，在该节点运行的任务则会报各种 <code>lost worker</code> 的错误，引发原因和上述大体相同，worker内存中保存了大量的ui信息导致gc时失去和master之间的心跳。</p>
 <h4 id="解决-1">解决</h4><ol>
 <li><p>增加Master的内存占用，在Worker节点<code>spark-env.sh</code> 中设置：</p>
@@ -371,14 +377,11 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
 </ul>
 <h3 id="3-倾斜">3.倾斜</h3><h4 id="错误提示-2">错误提示</h4><p>(1) 数据倾斜</p>
 <p><img src="http://img.blog.csdn.net/20151015152750199" alt="数据倾斜"></p>
-<p>(2) 任务倾斜</p>
-<p>差距不大的几个task,有的运行速度特别慢。</p>
+<p>(2) 任务倾斜<br>差距不大的几个task,有的运行速度特别慢。</p>
 <h4 id="解决-4">解决</h4><p>大多数任务都完成了，还有那么一两个任务怎么都跑不完或者跑的很慢，又分为数据倾斜和task倾斜两种。</p>
-<p>(1) 数据倾斜</p>
-<p>数据倾斜大多数情况是由于大量<code>null</code>值或者<code>&quot;&quot;</code>引起，在计算前过滤掉这些数据既可。<br>例如：    </p>
+<p>(1) 数据倾斜<br>数据倾斜大多数情况是由于大量<code>null</code>值或者<code>&quot;&quot;</code>引起，在计算前过滤掉这些数据既可。<br>例如：    </p>
 <pre><code>sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"...where col is not null and col != ''"</span>)</span></span>
-</code></pre><p>(2) 任务倾斜</p>
-<p>task倾斜原因比较多，网络io,cpu,mem都有可能造成这个节点上的任务执行缓慢，可以去看该节点的性能监控来分析原因。以前遇到过同事在spark的一台worker上跑R的任务导致该节点spark task运行缓慢。<br>或者可以开启spark的推测机制，开启推测机制后如果某一台机器的几个task特别慢，推测机制会将任务分配到其他机器执行，最后Spark会选取最快的作为最终结果。</p>
+</code></pre><p>(2) 任务倾斜<br>task倾斜原因比较多，网络io,cpu,mem都有可能造成这个节点上的任务执行缓慢，可以去看该节点的性能监控来分析原因。以前遇到过同事在spark的一台worker上跑R的任务导致该节点spark task运行缓慢。<br>或者可以开启spark的推测机制，开启推测机制后如果某一台机器的几个task特别慢，推测机制会将任务分配到其他机器执行，最后Spark会选取最快的作为最终结果。</p>
 <ul>
 <li>spark.speculation true</li>
 <li>spark.speculation.interval 100 - 检测周期，单位毫秒；</li>

@@ -53,18 +53,14 @@
 
 <meta name="description" content="Azkaban是一种类似于Oozie的工作流控制引擎，可以用来解决多个Hadoop（或Spark等）离线计算任务之间的依赖关系问题。
 也可以用其代替cron来对周期性任务进行调度，并且更为直观，可靠，同时提供了美观的可视化管理界面。
-下文将对azkaban对spark离线任务调度进行简要说明。
-
-一. 简介该部分内容可参考官方文档：http://azkaban.github.io/azkaban/">
+下文将对azkaban对spark离线任务调度进行简要说明。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用azkaban调度spark任务">
 <meta property="og:url" content="http://yoursite.com/2016/03/07/使用azkaban调度spark任务/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
 <meta property="og:description" content="Azkaban是一种类似于Oozie的工作流控制引擎，可以用来解决多个Hadoop（或Spark等）离线计算任务之间的依赖关系问题。
 也可以用其代替cron来对周期性任务进行调度，并且更为直观，可靠，同时提供了美观的可视化管理界面。
-下文将对azkaban对spark离线任务调度进行简要说明。
-
-一. 简介该部分内容可参考官方文档：http://azkaban.github.io/azkaban/">
+下文将对azkaban对spark离线任务调度进行简要说明。">
 <meta property="og:image" content="http://img.blog.csdn.net/20160308213952634">
 <meta property="og:image" content="http://img.blog.csdn.net/20160308221224209">
 <meta property="og:image" content="http://img.blog.csdn.net/20160308214040491">
@@ -76,14 +72,12 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160308215430655">
 <meta property="og:image" content="http://img.blog.csdn.net/20160308215409186">
 <meta property="og:image" content="http://img.blog.csdn.net/20160308215453636">
-<meta property="og:updated_time" content="2016-03-08T14:30:01.000Z">
+<meta property="og:updated_time" content="2016-03-08T14:35:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用azkaban调度spark任务">
 <meta name="twitter:description" content="Azkaban是一种类似于Oozie的工作流控制引擎，可以用来解决多个Hadoop（或Spark等）离线计算任务之间的依赖关系问题。
 也可以用其代替cron来对周期性任务进行调度，并且更为直观，可靠，同时提供了美观的可视化管理界面。
-下文将对azkaban对spark离线任务调度进行简要说明。
-
-一. 简介该部分内容可参考官方文档：http://azkaban.github.io/azkaban/">
+下文将对azkaban对spark离线任务调度进行简要说明。">
 
 
 
@@ -326,6 +320,7 @@
 <p>也可以用其代替cron来对周期性任务进行调度，并且更为直观，可靠，同时提供了美观的可视化管理界面。</p>
 <p>下文将对azkaban对spark离线任务调度进行简要说明。</p>
 </blockquote>
+<a id="more"></a>
 <h2 id="一-_简介">一. 简介</h2><p>该部分内容可参考官方文档：<a href="http://azkaban.github.io/azkaban/docs/latest/#overview" target="_blank" rel="external">http://azkaban.github.io/azkaban/docs/latest/#overview</a></p>
 <p>azkaban由三部分构成：</p>
 <ul>
@@ -333,7 +328,6 @@
 <li>Azkaban Web Server</li>
 <li>Azkaban Executor Server</li>
 </ul>
-<a id="more"></a>
 <p><img src="http://img.blog.csdn.net/20160308213952634" alt="这里写图片描述"></p>
 <h3 id="Relational_Database(Mysql)">Relational Database(Mysql)</h3><p>azkaban将大多数状态信息都存于Mysql中,Azkaban Web Server 和 Azkaban Executor Server也需要访问DB。</p>
 <h3 id="Azkaban_Web_Server">Azkaban Web Server</h3><p>提供了Web UI，是azkaband的主要管理者，包括 project 的管理，认证，调度，对工作流执行过程的监控等。</p>

@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="jdbc,mysql,spark," />
+  <meta name="keywords" content="azkaban,spark相关,workflow," />
 
 
 
@@ -51,37 +51,39 @@
 
 
 
-<meta name="description" content="下文以 mysql 为例
+<meta name="description" content="Azkaban是一种类似于Oozie的工作流控制引擎，可以用来解决多个Hadoop（或Spark等）离线计算任务之间的依赖关系问题。
+也可以用其代替cron来对周期性任务进行调度，并且更为直观，可靠，同时提供了美观的可视化管理界面。
+下文将对azkaban对spark离线任务调度进行简要说明。
 
-在spark中使用jdbc在 spark-env.sh 文件中加入:
-export SPARK_CLASSPATH=/path/mysql-connector-java-5.1.34.jar
-任务提交时加入:
---jars /path/mysql-connector-java-5.1.34.jar
-1. 单partition(无并发)调用函数
-def jdbc(url:">
+一. 简介该部分内容可参考官方文档：http://azkaban.github.io/azkaban/">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark jdbc(mysql) 操作并发度优化">
-<meta property="og:url" content="http://yoursite.com/2015/12/16/提高spark-jdbc操作并发度/index.html">
+<meta property="og:title" content="使用azkaban调度spark任务">
+<meta property="og:url" content="http://yoursite.com/2016/03/07/使用azkaban调度spark任务/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
-<meta property="og:description" content="下文以 mysql 为例
+<meta property="og:description" content="Azkaban是一种类似于Oozie的工作流控制引擎，可以用来解决多个Hadoop（或Spark等）离线计算任务之间的依赖关系问题。
+也可以用其代替cron来对周期性任务进行调度，并且更为直观，可靠，同时提供了美观的可视化管理界面。
+下文将对azkaban对spark离线任务调度进行简要说明。
 
-在spark中使用jdbc在 spark-env.sh 文件中加入:
-export SPARK_CLASSPATH=/path/mysql-connector-java-5.1.34.jar
-任务提交时加入:
---jars /path/mysql-connector-java-5.1.34.jar
-1. 单partition(无并发)调用函数
-def jdbc(url:">
-<meta property="og:updated_time" content="2016-02-25T08:48:28.000Z">
+一. 简介该部分内容可参考官方文档：http://azkaban.github.io/azkaban/">
+<meta property="og:image" content="http://img.blog.csdn.net/20160308213952634">
+<meta property="og:image" content="http://img.blog.csdn.net/20160308221224209">
+<meta property="og:image" content="http://img.blog.csdn.net/20160308214040491">
+<meta property="og:image" content="http://img.blog.csdn.net/20160308214241713">
+<meta property="og:image" content="http://img.blog.csdn.net/20160308214310557">
+<meta property="og:image" content="http://img.blog.csdn.net/20160308214353246">
+<meta property="og:image" content="http://img.blog.csdn.net/20160308214733282">
+<meta property="og:image" content="http://img.blog.csdn.net/20160308222312437">
+<meta property="og:image" content="http://img.blog.csdn.net/20160308215430655">
+<meta property="og:image" content="http://img.blog.csdn.net/20160308215409186">
+<meta property="og:image" content="http://img.blog.csdn.net/20160308215453636">
+<meta property="og:updated_time" content="2016-03-08T14:30:01.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark jdbc(mysql) 操作并发度优化">
-<meta name="twitter:description" content="下文以 mysql 为例
+<meta name="twitter:title" content="使用azkaban调度spark任务">
+<meta name="twitter:description" content="Azkaban是一种类似于Oozie的工作流控制引擎，可以用来解决多个Hadoop（或Spark等）离线计算任务之间的依赖关系问题。
+也可以用其代替cron来对周期性任务进行调度，并且更为直观，可靠，同时提供了美观的可视化管理界面。
+下文将对azkaban对spark离线任务调度进行简要说明。
 
-在spark中使用jdbc在 spark-env.sh 文件中加入:
-export SPARK_CLASSPATH=/path/mysql-connector-java-5.1.34.jar
-任务提交时加入:
---jars /path/mysql-connector-java-5.1.34.jar
-1. 单partition(无并发)调用函数
-def jdbc(url:">
+一. 简介该部分内容可参考官方文档：http://azkaban.github.io/azkaban/">
 
 
 
@@ -93,7 +95,7 @@ def jdbc(url:">
   };
 </script>
 
-  <title> spark jdbc(mysql) 操作并发度优化 | LSW'S BLOG </title>
+  <title> 使用azkaban调度spark任务 | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -264,7 +266,7 @@ def jdbc(url:">
             
             
               
-                spark jdbc(mysql) 操作并发度优化
+                使用azkaban调度spark任务
               
             
           </h1>
@@ -273,8 +275,8 @@ def jdbc(url:">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-16T22:00:00+08:00" content="2015-12-16">
-              2015-12-16
+            <time itemprop="dateCreated" datetime="2016-03-07T22:00:00+08:00" content="2016-03-07">
+              2016-03-07
             </time>
           </span>
 
@@ -299,8 +301,8 @@ def jdbc(url:">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/16/提高spark-jdbc操作并发度/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/16/提高spark-jdbc操作并发度/" itemprop="commentsCount"></span>
+                <a href="/2016/03/07/使用azkaban调度spark任务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/07/使用azkaban调度spark任务/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -320,55 +322,76 @@ def jdbc(url:">
 
       
         <span itemprop="articleBody"><blockquote>
-<p>下文以 <code>mysql</code> 为例</p>
+<p>Azkaban是一种类似于Oozie的工作流控制引擎，可以用来解决多个Hadoop（或Spark等）离线计算任务之间的依赖关系问题。</p>
+<p>也可以用其代替cron来对周期性任务进行调度，并且更为直观，可靠，同时提供了美观的可视化管理界面。</p>
+<p>下文将对azkaban对spark离线任务调度进行简要说明。</p>
 </blockquote>
-<h2 id="在spark中使用jdbc">在spark中使用jdbc</h2><p>在 <code>spark-env.sh</code> 文件中加入:</p>
-<pre><code><span class="keyword">export</span> SPARK_CLASSPATH=/path/mysql-connector-java-<span class="number">5.1</span><span class="number">.34</span>.jar
-</code></pre><p>任务提交时加入:</p>
-<pre><code>--jars /path/mysql-connector-java-<span class="number">5.1</span><span class="number">.34</span>.jar
-</code></pre><h2 id="1-_单partition(无并发)">1. 单partition(无并发)</h2><p>调用函数</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">jdbc</span><span class="params">(url: String, table: String, properties: Properties)</span>:</span> DataFrame
-</code></pre><a id="more"></a>
-<p>使用:</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">val url = <span class="string">"jdbc:mysql://mysqlHost:3306/database"</span></span><br><span class="line">val tableName = <span class="string">"table"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置连接用户&amp;密码</span></span><br><span class="line">val prop = new java<span class="class">.util</span><span class="class">.Properties</span></span><br><span class="line">prop.<span class="function"><span class="title">setProperty</span><span class="params">(<span class="string">"user"</span>,<span class="string">"username"</span>)</span></span></span><br><span class="line">prop.<span class="function"><span class="title">setProperty</span><span class="params">(<span class="string">"password"</span>,<span class="string">"pwd"</span>)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得该表数据</span></span><br><span class="line">val jdbcDF = sqlContext<span class="class">.read</span><span class="class">.jdbc</span>(url,tableName,prop)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一些操作</span></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
-<p>查看并发度</p>
-<pre><code><span class="tag">jdbcDF</span><span class="class">.rdd</span><span class="class">.partitions</span><span class="class">.size</span> # 结果返回 1
-</code></pre><p>该操作的并发度为1，你所有的数据都会在一个partition中进行操作，意味着无论你给的资源有多少，只有一个task会执行任务，执行效率可想而之，并且在稍微大点的表中进行操作分分钟就会OOM。</p>
-<p>更直观的说法是，达到千万级别的表就不要使用该操作，<code>count</code>操作就要等一万年，no zuo no die ,don’t to try !</p>
-<pre><code>WARN TaskSetManager: Lost task <span class="number">0.0</span> <span class="keyword">in</span> stage <span class="number">6.0</span> (TID <span class="number">56</span>, spark047219):
- java<span class="class">.lang</span><span class="class">.OutOfMemoryError</span>: GC overhead limit exceeded
-at com<span class="class">.mysql</span><span class="class">.jdbc</span><span class="class">.MysqlIO</span><span class="class">.reuseAndReadPacket</span>(MysqlIO<span class="class">.java</span>:<span class="number">3380</span>)
-</code></pre><h2 id="2-_根据Long类型字段分区">2. 根据Long类型字段分区</h2><p>调用函数</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">jdbc</span><span class="params">(
-url: String,
-table: String,
-columnName: String,    # 根据该字段分区，需要为整形，比如id等
-lowerBound: Long,      # 分区的下界
-upperBound: Long,      # 分区的上界
-numPartitions: Int,    # 分区的个数
-connectionProperties: Properties)</span>:</span> DataFrame
-</code></pre><p>使用:</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable"><span class="keyword">val</span> url</span> = <span class="string">"jdbc:mysql://mysqlHost:3306/database"</span></span><br><span class="line"><span class="variable"><span class="keyword">val</span> tableName</span> = <span class="string">"table"</span></span><br><span class="line"></span><br><span class="line"><span class="variable"><span class="keyword">val</span> columnName</span> = <span class="string">"colName"</span></span><br><span class="line"><span class="variable"><span class="keyword">val</span> lowerBound</span> = <span class="number">1</span>,</span><br><span class="line"><span class="variable"><span class="keyword">val</span> upperBound</span> = <span class="number">10000000</span>,</span><br><span class="line"><span class="variable"><span class="keyword">val</span> numPartitions</span> = <span class="number">10</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置连接用户&amp;密码</span></span><br><span class="line"><span class="variable"><span class="keyword">val</span> prop</span> = new java.util.Properties</span><br><span class="line">prop.setProperty(<span class="string">"user"</span>,<span class="string">"username"</span>)</span><br><span class="line">prop.setProperty(<span class="string">"password"</span>,<span class="string">"pwd"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得该表数据</span></span><br><span class="line"><span class="variable"><span class="keyword">val</span> jdbcDF</span> = sqlContext.read.jdbc(url,tableName,columnName,lowerBound,upperBound,numPartitions,prop)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一些操作</span></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
-<p>查看并发度</p>
-<pre><code><span class="tag">jdbcDF</span><span class="class">.rdd</span><span class="class">.partitions</span><span class="class">.size</span> # 结果返回 10
-</code></pre><p>该操作将字段 <code>colName</code> 中1-10000000条数据分到10个partition中，使用很方便，缺点也很明显，只能使用整形数据字段作为分区关键字。</p>
-<p>3000w数据的表 <code>count</code> 耗时15s左右。</p>
-<h2 id="3-_根据任意类型字段分区">3. 根据任意类型字段分区</h2><p>调用函数</p>
-<pre><code>jdbc(
-  url: <span class="keyword">String</span>,
-  table: <span class="keyword">String</span>,
-  predicates: <span class="keyword">Array</span>[<span class="keyword">String</span>],
-  connectionProperties: <span class="keyword">Properties</span>): DataFrame
-</code></pre><p>下面以使用最多的时间字段分区为例:</p>
-<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">val url = <span class="string">"jdbc:mysql://mysqlHost:3306/database"</span></span><br><span class="line">val tableName = <span class="string">"table"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置连接用户&amp;密码</span></span><br><span class="line">val prop = <span class="literal">new</span> java<span class="built_in">.</span>util<span class="built_in">.</span>Properties</span><br><span class="line">prop<span class="built_in">.</span>setProperty(<span class="string">"user"</span>,<span class="string">"username"</span>)</span><br><span class="line">prop<span class="built_in">.</span>setProperty(<span class="string">"password"</span>,<span class="string">"pwd"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line">* 将9月16-12月15三个月的数据取出，按时间分为6个partition</span><br><span class="line">* 为了减少事例代码，这里的时间都是写死的</span><br><span class="line">* modified_time 为时间字段</span><br><span class="line">*/</span></span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">val predicates =</span><br><span class="line">    <span class="built_in">Array</span>(</span><br><span class="line">      <span class="string">"2015-09-16"</span> <span class="subst">-&gt; </span><span class="string">"2015-09-30"</span>,</span><br><span class="line">      <span class="string">"2015-10-01"</span> <span class="subst">-&gt; </span><span class="string">"2015-10-15"</span>,</span><br><span class="line">      <span class="string">"2015-10-16"</span> <span class="subst">-&gt; </span><span class="string">"2015-10-31"</span>,</span><br><span class="line">      <span class="string">"2015-11-01"</span> <span class="subst">-&gt; </span><span class="string">"2015-11-14"</span>,</span><br><span class="line">      <span class="string">"2015-11-15"</span> <span class="subst">-&gt; </span><span class="string">"2015-11-30"</span>,</span><br><span class="line">      <span class="string">"2015-12-01"</span> <span class="subst">-&gt; </span><span class="string">"2015-12-15"</span></span><br><span class="line">    )<span class="built_in">.</span><span class="built_in">map</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> (start, end) =&gt;</span><br><span class="line">        s<span class="string">"cast(modified_time as date) &gt;= date '$start' "</span> + s<span class="string">"AND cast(modified_time as date) &lt;= date '$end'"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得该表数据</span></span><br><span class="line">val jdbcDF = sqlContext<span class="built_in">.</span>read<span class="built_in">.</span>jdbc(url,tableName,predicates,prop)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一些操作</span></span><br><span class="line"><span class="attribute">...</span><span class="built_in">.</span></span><br></pre></td></tr></table></figure>
-<p>查看并发度</p>
-<pre><code><span class="tag">jdbcDF</span><span class="class">.rdd</span><span class="class">.partitions</span><span class="class">.size</span> # 结果返回 6
-</code></pre><p>该操作的每个分区数据都由该段时间的分区组成，这种方式适合各种场景，较为推荐。</p>
-<h2 id="结语">结语</h2><blockquote>
-<p>以 <code>mysql</code> 3000W 数据量表为例，单分区<code>count</code>，僵死若干分钟报OOM。</p>
-<p>分成5－20个分区后，<code>count</code> 耗时 <code>15s</code>左右</p>
-<p>高并发度可以大幅度提高读取，处理数据的速度，但是过高的并发度(大量的partition同时读取)会将数据源数据库弄挂，原因想必大家都懂。。。</p>
-</blockquote>
+<h2 id="一-_简介">一. 简介</h2><p>该部分内容可参考官方文档：<a href="http://azkaban.github.io/azkaban/docs/latest/#overview" target="_blank" rel="external">http://azkaban.github.io/azkaban/docs/latest/#overview</a></p>
+<p>azkaban由三部分构成：</p>
+<ul>
+<li>Relational Database(Mysql)</li>
+<li>Azkaban Web Server</li>
+<li>Azkaban Executor Server</li>
+</ul>
+<a id="more"></a>
+<p><img src="http://img.blog.csdn.net/20160308213952634" alt="这里写图片描述"></p>
+<h3 id="Relational_Database(Mysql)">Relational Database(Mysql)</h3><p>azkaban将大多数状态信息都存于Mysql中,Azkaban Web Server 和 Azkaban Executor Server也需要访问DB。</p>
+<h3 id="Azkaban_Web_Server">Azkaban Web Server</h3><p>提供了Web UI，是azkaband的主要管理者，包括 project 的管理，认证，调度，对工作流执行过程的监控等。</p>
+<h3 id="Azkaban_Executor_Server">Azkaban Executor Server</h3><p>调度工作流和任务，纪录工作流活任务的日志，之所以将AzkabanWebServer和AzkabanExecutorServer分开，主要是因为在某个任务流失败后，可以更方便的将重新执行。而且也更有利于Azkaban系统的升级。</p>
+<h3 id="可调度任务类型">可调度任务类型</h3><ul>
+<li>linux命令</li>
+<li>脚本</li>
+<li>java程序</li>
+<li>hadoop MR</li>
+<li>hive</li>
+</ul>
+<h3 id="创建工作">创建工作</h3><ol>
+<li><p>创建工作任务<br>创建.job为后缀的文件，type是工作任务类型执行会输出 Hello World</p>
+<pre><code><span class="keyword">vim</span> hello.job
+<span class="built_in">type</span>=<span class="keyword">command</span>
+<span class="keyword">command</span>=<span class="keyword">echo</span> <span class="string">"Hello World"</span>
+</code></pre></li>
+<li><p>创建工作流<br>两个工作任务，通过dependencies进行关联</p>
+<pre><code><span class="keyword">vim</span> foo.job
+<span class="built_in">type</span>=<span class="keyword">command</span>
+<span class="keyword">command</span>=<span class="keyword">echo</span> foo
+
+<span class="keyword">vim</span> bar.job
+<span class="built_in">type</span>=<span class="keyword">command</span>
+dependencies=foo
+<span class="keyword">command</span>=<span class="keyword">echo</span> bar
+</code></pre><p>工作流如下:<br>将会先调用foo再调用bar。</p>
+<p> <img src="http://img.blog.csdn.net/20160308221224209" alt="这里写图片描述"></p>
+</li>
+</ol>
+<h2 id="二-_调度Spark任务Demo">二. 调度Spark任务Demo</h2><p>创建一个新的project</p>
+<p><img src="http://img.blog.csdn.net/20160308214040491" alt="创建新工程"></p>
+<p><strong>编写代码</strong>    写一段简单的Spark代码，将程序打包</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.test</span><br><span class="line"><span class="keyword">import</span> org.apache.spark.&#123;<span class="type">SparkConf</span>, <span class="type">SparkContext</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">AzkabanTest</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">App</span>&#123;</span></span><br><span class="line">  <span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>()</span><br><span class="line">  .setMaster(<span class="string">"local[2]"</span>)</span><br><span class="line">  .setAppName(<span class="string">"azkabanTest"</span>)</span><br><span class="line">  <span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> data = sc.parallelize(<span class="number">1</span> to <span class="number">10</span>)</span><br><span class="line">  data.map&#123;_ * <span class="number">2</span>&#125;.foreach(println)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编写调度命令</p>
+<pre><code>vim <span class="keyword">test</span>.job
+<span class="keyword">type</span>=command
+command=/usr/install/spark/bin/spark-submit --<span class="keyword">class</span> com.<span class="keyword">test</span>.AzkabanTest <span class="keyword">test</span>-1.0-SNAPSHOT.jar
+</code></pre><p>将这两个文件以zip的形式打包在一起</p>
+<pre><code><span class="keyword">zip</span> -r xxx.<span class="keyword">zip</span> azkabanTest    
+</code></pre><p><strong>上传工程</strong></p>
+<p>目前azkaban只支持zip包，其中要包括.job文件以及一些需要的工程和文件。</p>
+<p><img src="http://img.blog.csdn.net/20160308214241713" alt="这里写图片描述"><br><img src="http://img.blog.csdn.net/20160308214310557" alt="这里写图片描述"></p>
+<p><strong>设置离线任务执行周期</strong></p>
+<p>如果需要的话可以设置离线任务的执行周期（类似于cron的功能）</p>
+<p><img src="http://img.blog.csdn.net/20160308214353246" alt="这里写图片描述"></p>
+<p><strong>任务通知</strong>    </p>
+<p>可以设置任务完成或失败进行邮箱通知等操作。</p>
+<p><img src="http://img.blog.csdn.net/20160308214733282" alt="这里写图片描述"></p>
+<p><strong>一些界面</strong></p>
+<p>主界面</p>
+<p><img src="http://img.blog.csdn.net/20160308222312437" alt="这里写图片描述"></p>
+<p>任务完成情况</p>
+<p><img src="http://img.blog.csdn.net/20160308215430655" alt="这里写图片描述"></p>
+<p>任务log详情</p>
+<p><img src="http://img.blog.csdn.net/20160308215409186" alt="这里写图片描述"></p>
+<p>定时任务调用情况图</p>
+<p><img src="http://img.blog.csdn.net/20160308215453636" alt="这里写图片描述"></p>
 </span>
       
     </div>
@@ -377,11 +400,11 @@ connectionProperties: Properties)</span>:</span> DataFrame
       
         <div class="post-tags">
           
-            <a href="/tags/jdbc/" rel="tag">#jdbc</a>
+            <a href="/tags/azkaban/" rel="tag">#azkaban</a>
           
-            <a href="/tags/mysql/" rel="tag">#mysql</a>
+            <a href="/tags/spark相关/" rel="tag">#spark相关</a>
           
-            <a href="/tags/spark/" rel="tag">#spark</a>
+            <a href="/tags/workflow/" rel="tag">#workflow</a>
           
         </div>
       
@@ -390,17 +413,13 @@ connectionProperties: Properties)</span>:</span> DataFrame
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/14/spark任务进度实时更新与聚合/" rel="next" title="spark任务进度实时更新与聚合">
-                <i class="fa fa-chevron-left"></i> spark任务进度实时更新与聚合
+              <a href="/2016/01/01/将多个jsonArray合并_scala/" rel="next" title="将多个jsonArray合并(scala)">
+                <i class="fa fa-chevron-left"></i> 将多个jsonArray合并(scala)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/12/24/sparkSql中udf的使用/" rel="prev" title="sparkSQL中udf的使用">
-                sparkSQL中udf的使用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -427,8 +446,8 @@ connectionProperties: Properties)</span>:</span> DataFrame
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/12/16/提高spark-jdbc操作并发度/"
-           data-title="spark jdbc(mysql) 操作并发度优化" data-url="http://yoursite.com/2015/12/16/提高spark-jdbc操作并发度/">
+      <div class="ds-thread" data-thread-key="2016/03/07/使用azkaban调度spark任务/"
+           data-title="使用azkaban调度spark任务" data-url="http://yoursite.com/2016/03/07/使用azkaban调度spark任务/">
       </div>
     
   </div>
@@ -518,7 +537,7 @@ connectionProperties: Properties)</span>:</span> DataFrame
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在spark中使用jdbc"><span class="nav-number">1.</span> <span class="nav-text">在spark中使用jdbc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-_单partition(无并发)"><span class="nav-number">2.</span> <span class="nav-text">1. 单partition(无并发)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-_根据Long类型字段分区"><span class="nav-number">3.</span> <span class="nav-text">2. 根据Long类型字段分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-_根据任意类型字段分区"><span class="nav-number">4.</span> <span class="nav-text">3. 根据任意类型字段分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">5.</span> <span class="nav-text">结语</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-_简介"><span class="nav-number">1.</span> <span class="nav-text">一. 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Relational_Database(Mysql)"><span class="nav-number">1.1.</span> <span class="nav-text">Relational Database(Mysql)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Azkaban_Web_Server"><span class="nav-number">1.2.</span> <span class="nav-text">Azkaban Web Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Azkaban_Executor_Server"><span class="nav-number">1.3.</span> <span class="nav-text">Azkaban Executor Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可调度任务类型"><span class="nav-number">1.4.</span> <span class="nav-text">可调度任务类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建工作"><span class="nav-number">1.5.</span> <span class="nav-text">创建工作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-_调度Spark任务Demo"><span class="nav-number">2.</span> <span class="nav-text">二. 调度Spark任务Demo</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

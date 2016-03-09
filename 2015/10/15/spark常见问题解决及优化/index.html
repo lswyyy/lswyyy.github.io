@@ -68,7 +68,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
 <meta property="og:image" content="http://img.blog.csdn.net/20151210161217631">
-<meta property="og:updated_time" content="2016-03-03T08:06:31.000Z">
+<meta property="og:updated_time" content="2016-03-09T09:08:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark常见问题解决及优化">
 <meta name="twitter:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
@@ -421,11 +421,15 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
 <li>增加executor内存总量,也就是说增加spark.executor.memory的值</li>
 <li>增加任务并行度（大任务就被分成小任务了)，参考下面优化并行度的方法</li>
 </ul>
-<h3 id="5-task_not_serializable">5.task not serializable</h3><h4 id="错误提示-4">错误提示</h4><pre><code>org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.SparkException</span>: Task not serializable
-</code></pre><h4 id="解决-6">解决</h4><p>报错提示任务没有序列化，常见于map,filter,foreach,foreachPartition等闭包内部引用了一些外部变量，典型例子就是在foreachPartition中使用数据库创建连接方法。这些变量没有序列化导致的任务报错。</p>
+<h3 id="5-task_not_serializable">5.task not serializable</h3><h4 id="错误提示-4">错误提示</h4><pre><code>org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.SparkException</span>: Job aborted due to stage failure: 
+Task not serializable: java<span class="class">.io</span><span class="class">.NotSerializableException</span>: ...
+</code></pre><h4 id="解决-6">解决</h4><p>如果你在worker中调用了driver中定义的一些变量，Spark就会将这些变量传递给Worker，这些变量并没有被序列化，所以就会看到如上提示的错误了。</p>
+<pre><code>val x = <span class="keyword">new</span> X()  <span class="comment">//在driver中的代码</span>
+rdd.<span class="built_in">map</span>{r =&gt; x.doSomething(r) }.collect  <span class="comment">//map中的代码在worker(executor)中执行</span>
+</code></pre><p>除了上文的map,还有filter,foreach,foreachPartition等操作，还有一个典型例子就是在foreachPartition中使用数据库创建连接方法。这些变量没有序列化导致的任务报错。</p>
 <p>解决方法很多，下面提供三种：</p>
 <ol>
-<li>将所有调用到的外部变量直接放入到以上所说的这些算子中。</li>
+<li>将所有调用到的外部变量直接放入到以上所说的这些算子中，这种情况最好使用foreachPartition减少创建变量的消耗。</li>
 <li>将需要使用的外部变量包括<code>sparkConf</code>,<code>SparkContext</code>,都用 <code>@transent</code>进行注解，表示这些变量不需要被序列化</li>
 <li>将外部变量放到某个class中对类进行序列化。</li>
 </ol>
@@ -498,7 +502,7 @@ spark<span class="class">.locality</span><span class="class">.wait</span><span c
 <p>速度变快主要是大量的减少了gc的时间,但是设置过大会导致性能恶化，导致某些task会hang住无法执行。</p>
 <p><img src="http://img.blog.csdn.net/20151210161217631" alt="这里写图片描述"></p>
 <p>修改map阶段并行度主要是在代码中使用<code>rdd.repartition(partitionNum)</code>来操作。</p>
-<h3 id="5-_shuffle">5. shuffle</h3><p><a href="http://lswyyy.github.io/2015/09/24/spark-join-broadcast优化/" target="_blank" rel="external">shuffle join优化</a></p>
+<h3 id="5-_shuffle">5. shuffle</h3><p><a href="http://lswyyy.github.io/2015/09/24/spark-join-broadcast优化/" target="_blank" rel="external">spark-sql join优化</a><br><a href="http://lswyyy.github.io/2016/03/08/map-side-join关联优化/" target="_blank" rel="external">map-side-join 关联优化</a></p>
 <h3 id="6-_磁盘">6. 磁盘</h3><p><a href="http://www.lswyyy.me/2015/11/26/磁盘IO对spark的影响/" target="_blank" rel="external">磁盘IO优化</a></p>
 </span>
       

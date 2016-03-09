@@ -61,7 +61,7 @@
 如果其中有张表较小的话，我们则可以自己实现在 map 端实现数">
 <meta property="og:image" content="http://img.blog.csdn.net/20160309135517842">
 <meta property="og:image" content="http://img.blog.csdn.net/20160309135959099">
-<meta property="og:updated_time" content="2016-03-09T08:13:55.000Z">
+<meta property="og:updated_time" content="2016-03-09T12:30:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark map-side-join关联优化">
 <meta name="twitter:description" content="将多份数据进行关联是数据处理过程中非常普遍的用法，不过在分布式计算系统中，这个问题往往会变的非常麻烦，因为框架提供的 join 操作一般会将所有数据根据 key 发送到所有的 reduce 分区中去，也就是 shuffle 的过程。造成大量的网络以及磁盘IO消耗，运行效率极其低下，这个过程一般被称为 reduce-side-join。
@@ -305,7 +305,7 @@
       
         <span itemprop="articleBody"><blockquote>
 <p>将多份数据进行关联是数据处理过程中非常普遍的用法，不过在分布式计算系统中，这个问题往往会变的非常麻烦，因为框架提供的 join 操作一般会将所有数据根据 key 发送到所有的 reduce 分区中去，也就是 shuffle 的过程。造成大量的网络以及磁盘IO消耗，运行效率极其低下，这个过程一般被称为 reduce-side-join。</p>
-<p>如果其中有张表较小的话，我们则可以自己实现在 map 端实现数据关联，跳过大量数据进行 shuffle 的过程，运行时间得到大量缩短。</p>
+<p>如果其中有张表较小的话，我们则可以自己实现在 map 端实现数据关联，跳过大量数据进行 shuffle 的过程，运行时间得到大量缩短，根据不同数据可能会有几倍到数十倍的性能提升。</p>
 <p>下文将会以一个 demo 对优化过程进行说明。</p>
 </blockquote>
 <a id="more"></a>

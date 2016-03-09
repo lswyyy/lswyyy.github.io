@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="spark,spress," />
+  <meta name="keywords" content="spark," />
 
 
 
@@ -51,24 +51,21 @@
 
 
 
-<meta name="description" content="spree
-spree从spark web ui中获取正在运行的任务状态，从history server中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。
-因为把运行日志进行了聚合，所以查看线上正在运行的任务也不再需要ssh端口转发，只要把该页面配置个代理就OK了">
+<meta name="description" content="将多份数据进行关联是数据处理过程中非常普遍的用法，不过在分布式计算系统中，这个问题往往会变的非常麻烦，因为框架提供的 join 操作一般会将所有数据根据 key 发送到所有的 reduce 分区中去，也就是 shuffle 的过程。造成大量的网络以及磁盘IO消耗，运行效率极其低下，这个过程一般被称为 reduce-side-join。
+如果其中有张表较小的话，我们则可以自己实现在 map 端实现数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark任务进度实时更新与聚合">
-<meta property="og:url" content="http://yoursite.com/2015/12/14/spark任务进度实时更新与聚合/index.html">
+<meta property="og:title" content="Spark map-side-join关联优化">
+<meta property="og:url" content="http://yoursite.com/2016/03/08/map-side-join关联优化/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
-<meta property="og:description" content="spree
-spree从spark web ui中获取正在运行的任务状态，从history server中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。
-因为把运行日志进行了聚合，所以查看线上正在运行的任务也不再需要ssh端口转发，只要把该页面配置个代理就OK了">
-<meta property="og:image" content="http://img.blog.csdn.net/20151215130215985">
-<meta property="og:image" content="http://img.blog.csdn.net/20151215130255921">
-<meta property="og:updated_time" content="2015-12-15T08:49:18.000Z">
+<meta property="og:description" content="将多份数据进行关联是数据处理过程中非常普遍的用法，不过在分布式计算系统中，这个问题往往会变的非常麻烦，因为框架提供的 join 操作一般会将所有数据根据 key 发送到所有的 reduce 分区中去，也就是 shuffle 的过程。造成大量的网络以及磁盘IO消耗，运行效率极其低下，这个过程一般被称为 reduce-side-join。
+如果其中有张表较小的话，我们则可以自己实现在 map 端实现数">
+<meta property="og:image" content="http://img.blog.csdn.net/20160309135517842">
+<meta property="og:image" content="http://img.blog.csdn.net/20160309135959099">
+<meta property="og:updated_time" content="2016-03-09T06:07:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark任务进度实时更新与聚合">
-<meta name="twitter:description" content="spree
-spree从spark web ui中获取正在运行的任务状态，从history server中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。
-因为把运行日志进行了聚合，所以查看线上正在运行的任务也不再需要ssh端口转发，只要把该页面配置个代理就OK了">
+<meta name="twitter:title" content="Spark map-side-join关联优化">
+<meta name="twitter:description" content="将多份数据进行关联是数据处理过程中非常普遍的用法，不过在分布式计算系统中，这个问题往往会变的非常麻烦，因为框架提供的 join 操作一般会将所有数据根据 key 发送到所有的 reduce 分区中去，也就是 shuffle 的过程。造成大量的网络以及磁盘IO消耗，运行效率极其低下，这个过程一般被称为 reduce-side-join。
+如果其中有张表较小的话，我们则可以自己实现在 map 端实现数">
 
 
 
@@ -80,7 +77,7 @@ spree从spark web ui中获取正在运行的任务状态，从history server中�
   };
 </script>
 
-  <title> spark任务进度实时更新与聚合 | LSW'S BLOG </title>
+  <title> Spark map-side-join关联优化 | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -251,7 +248,7 @@ spree从spark web ui中获取正在运行的任务状态，从history server中�
             
             
               
-                spark任务进度实时更新与聚合
+                Spark map-side-join关联优化
               
             
           </h1>
@@ -260,8 +257,8 @@ spree从spark web ui中获取正在运行的任务状态，从history server中�
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-12-14T22:00:00+08:00" content="2015-12-14">
-              2015-12-14
+            <time itemprop="dateCreated" datetime="2016-03-08T22:00:00+08:00" content="2016-03-08">
+              2016-03-08
             </time>
           </span>
 
@@ -286,8 +283,8 @@ spree从spark web ui中获取正在运行的任务状态，从history server中�
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/14/spark任务进度实时更新与聚合/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/14/spark任务进度实时更新与聚合/" itemprop="commentsCount"></span>
+                <a href="/2016/03/08/map-side-join关联优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/08/map-side-join关联优化/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -306,39 +303,56 @@ spree从spark web ui中获取正在运行的任务状态，从history server中�
       
 
       
-        <span itemprop="articleBody"><h2 id="spree">spree</h2><p><img src="http://img.blog.csdn.net/20151215130215985" alt="这里写图片描述"></p>
-<p>spree从<code>spark web ui</code>中获取正在运行的任务状态，从<code>history server</code>中获取已经运行结束的状态信息并将这些数据写入MongoDB，可以实现动态任务更新。</p>
-<p>因为把运行日志进行了聚合，所以查看线上正在运行的任务也不再需要ssh端口转发，只要把该页面配置个代理就OK了</p>
+        <span itemprop="articleBody"><blockquote>
+<p>将多份数据进行关联是数据处理过程中非常普遍的用法，不过在分布式计算系统中，这个问题往往会变的非常麻烦，因为框架提供的 join 操作一般会将所有数据根据 key 发送到所有的 reduce 分区中去，也就是 shuffle 的过程。造成大量的网络以及磁盘IO消耗，运行效率极其低下，这个过程一般被称为 reduce-side-join。</p>
+<p>如果其中有张表较小的话，我们则可以自己实现在 map 端实现数据关联，跳过大量数据进行 shuffle 的过程，运行时间得到大量缩短。</p>
+<p>下文将会以一个 demo 对优化过程进行说明。</p>
+</blockquote>
 <a id="more"></a>
-<h2 id="spree安装部署">spree安装部署</h2><h3 id="环境">环境</h3><p>已安装<code>git</code>,<code>npm</code></p>
-<h3 id="安装Spree">安装<code>Spree</code></h3><pre><code>git <span class="keyword">clone</span> <span class="title">--recursive</span> https://github.com/hammerlab/spree.git
-cd spree/ui   <span class="comment"># the Spree Meteor app lives in ui/ in this repo.</span>
-meteor        <span class="comment"># 安装meteor后运行</span>
-</code></pre><p>开启后可以访问<code>http://localhost:3000</code></p>
-<p><img src="http://img.blog.csdn.net/20151215130255921" alt="这里写图片描述"></p>
-<h3 id="安装Meteor">安装<code>Meteor</code></h3><p>将会被安装在<code>~/.meteor</code> </p>
-<p>启动脚本在<code>/usr/local/bin/meteor</code>，因此可以直接输入<code>meteor</code>使用</p>
-<pre><code>curl http<span class="variable">s:</span>//install.meteor.<span class="keyword">com</span>/ | <span class="keyword">sh</span>
-</code></pre><h3 id="安装slim">安装<code>slim</code></h3><p>启动脚本在<code>/usr/bin/slim</code></p>
-<pre><code>npm <span class="operator"><span class="keyword">install</span> -<span class="keyword">g</span> slim.js
-slim</span>
-</code></pre><p>如果在启动meteor前启动slim，则会报错，因为连不到mongoDB:</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">node_modules</span>/<span class="title">slim</span>.<span class="title">js</span>/<span class="title">node_modules</span>/<span class="title">mongodb</span>/<span class="title">lib</span>/<span class="title">server</span>.<span class="title">js</span>:228</span></span><br><span class="line">        process.nextTick(function() &#123; throw err; &#125;)</span><br><span class="line">                                      ^</span><br><span class="line"><span class="constant">AssertionError</span>: null == &#123; [<span class="constant">MongoError</span>: connect <span class="constant">ECONNREFUSED</span> <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">3001</span>]</span><br><span class="line">  <span class="symbol">name:</span> <span class="string">'MongoError'</span>,</span><br><span class="line">  <span class="symbol">message:</span> <span class="string">'connect ECONNREFUSED 127.0.0.1:3001'</span> &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="使用spree">使用spree</h3><h4 id="spark1-5版本">spark1.5版本</h4><pre><code>spark-shell/spark-submit 
---packages org<span class="class">.hammerlab</span>:spark-json-relay:<span class="number">2.0</span>.<span class="number">0</span> 
---conf spark.extraListeners=org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.JsonRelay</span> 
---conf spark<span class="class">.slim</span><span class="class">.host</span>＝xxx  #启动slim的节点,默认为localhost
-</code></pre><h4 id="其余版本">其余版本</h4><p>获取<code>JsonRelay</code></p>
-<pre><code>wget <span class="string">https:</span><span class="comment">//repo1.maven.org/maven2/org/hammerlab/spark-json-relay/2.0.0/spark-json-relay-2.0.0.jar</span>
-</code></pre><p>将<code>JsonRelay</code>加入driver的classpath</p>
-<pre><code>--driver-<span class="keyword">class</span>-path /path/to/json-relay-<span class="number">2.0</span><span class="number">.0</span>.jar
-</code></pre><h4 id="通用参数">通用参数</h4><p>将<code>JsonRelay</code>注册成SparkListener</p>
-<pre><code>--conf spark.extraListeners=org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.JsonRelay</span>
-</code></pre><p>指向启动<code>slim</code>的实例; 默认为: localhost:8123</p>
-<pre><code>--conf spark<span class="class">.slim</span><span class="class">.host</span>=…
- --conf spark<span class="class">.slim</span><span class="class">.port</span>=…
-</code></pre><h3 id="运行效果">运行效果</h3><p><a href="https://github.com/hammerlab/spree/blob/master/screencasts.md" target="_blank" rel="external">更多运行截图</a></p>
-<p><a href="https://github.com/hammerlab/spree" target="_blank" rel="external">项目地址</a></p>
+<h2 id="原理">原理</h2><p>以前写过一篇关于spark-sql中利用broadcast join进行优化的文章，原理与那篇文章相同，这里重新画了图。</p>
+<p><a href="http://blog.csdn.net/lsshlsw/article/details/48694893" target="_blank" rel="external">http://blog.csdn.net/lsshlsw/article/details/48694893</a></p>
+<p>reduce-side-join 的缺陷在于会将key相同的数据发送到同一个partition中进行运算，大数据集的传输需要长时间的IO，同时任务并发度收到限制，还可能造成数据倾斜。</p>
+<p>reduce-side-join 运行图如下</p>
+<p><img src="http://img.blog.csdn.net/20160309135517842" alt="这里写图片描述"></p>
+<p>map-side-join 运行图如下</p>
+<p><img src="http://img.blog.csdn.net/20160309135959099" alt="这里写图片描述"></p>
+<h2 id="代码说明">代码说明</h2><p>数据1（个别人口信息）:</p>
+<pre><code>身份证 姓名 ...
+<span class="number">110</span>   lsw 
+<span class="number">222</span>   yyy
+</code></pre><p>数据2（全国学生信息）:</p>
+<pre><code>身份证 学校名称 学号 ...            
+<span class="number">110</span>   s1      <span class="number">211</span>
+<span class="number">111</span>   s2      <span class="number">222</span>
+<span class="number">112</span>   s3      <span class="number">233</span>
+<span class="number">113</span>      s2      <span class="number">244</span>
+</code></pre><p>期望得到的数据 :</p>
+<pre><code>身份证 姓名 学校名称
+<span class="number">110</span> lsw <span class="literal">s1</span>
+</code></pre><p>将少量的数据转化为Map，并进行广播，广播会将此 Map 发送到每一个 executor 中</p>
+<pre><code>val people_info = sc.<span class="function"><span class="title">parallelize</span><span class="params">(Array((<span class="string">"110"</span>,<span class="string">"lsw"</span>)</span></span>,
+                                (<span class="string">"222"</span>,<span class="string">"yyy"</span>))).<span class="function"><span class="title">collectAsMap</span><span class="params">()</span></span>
+val people_bc = sc.<span class="function"><span class="title">broadcast</span><span class="params">(people_info)</span></span>
+</code></pre><p>对大数据进行遍历，使用mapPartition而不是map，因为mapPartition是在每个partition中进行操作，因此可以减少遍历时新建broadCastMap.value对象的空间消耗，同时匹配不到的数据也不会返回（）。</p>
+<pre><code>val res = student_all.mapPartitions(iter =&gt;{
+    val stuMap = people_bc.value
+    val arrayBuffer = <span class="type">ArrayBuffer</span>[(<span class="type">String</span>,<span class="type">String</span>,<span class="type">String</span>)]()
+    iter.foreach{<span class="keyword">case</span> (idCard,school,sno) =&gt;{
+          <span class="keyword">if</span>(stuMap.contains(idCard)){
+        arrayBuffer.+= ((idCard, stuMap.getOrElse(idCard,<span class="string">""</span>),school))
+      }
+    }}
+    arrayBuffer.<span class="keyword">iterator</span>
+})
+</code></pre><p>也可以使用 for 的守卫机制来实现上述代码    </p>
+<pre><code><span class="keyword">val</span> res1 = student_all.mapPartitions(iter =&gt; {
+    <span class="keyword">val</span> stuMap = people_bc.<span class="keyword">value</span>
+    <span class="keyword">for</span>{
+          (idCard, school, sno) &lt;- iter
+          <span class="keyword">if</span>(stuMap.contains(idCard))
+        } yield (idCard, stuMap.getOrElse(idCard,<span class="string">""</span>),school)
+})
+</code></pre><h2 id="完整代码">完整代码</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.&#123;<span class="type">SparkContext</span>, <span class="type">SparkConf</span>&#125;</span><br><span class="line"><span class="keyword">import</span> scala.collection.mutable.<span class="type">ArrayBuffer</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">joinTest</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">App</span>&#123;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(<span class="string">"local[2]"</span>).setAppName(<span class="string">"test"</span>)</span><br><span class="line">  <span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * map-side-join</span><br><span class="line">   * 取出小表中出现的用户与大表关联后取出所需要的信息</span><br><span class="line">   * */</span></span><br><span class="line">  <span class="comment">//部分人信息(身份证,姓名)</span></span><br><span class="line">  <span class="keyword">val</span> people_info = sc.parallelize(<span class="type">Array</span>((<span class="string">"110"</span>,<span class="string">"lsw"</span>),</span><br><span class="line">  										(<span class="string">"222"</span>,<span class="string">"yyy"</span>))).collectAsMap()</span><br><span class="line">  <span class="comment">//全国的学生详细信息(身份证,学校名称,学号...)</span></span><br><span class="line">  <span class="keyword">val</span> student_all = sc.parallelize(<span class="type">Array</span>((<span class="string">"110"</span>,<span class="string">"s1"</span>,<span class="string">"211"</span>),</span><br><span class="line">                                              (<span class="string">"111"</span>,<span class="string">"s2"</span>,<span class="string">"222"</span>),</span><br><span class="line">                                              (<span class="string">"112"</span>,<span class="string">"s3"</span>,<span class="string">"233"</span>),</span><br><span class="line">                                              (<span class="string">"113"</span>,<span class="string">"s2"</span>,<span class="string">"244"</span>)))</span><br><span class="line"></span><br><span class="line">  <span class="comment">//将需要关联的小表进行关联</span></span><br><span class="line">  <span class="keyword">val</span> people_bc = sc.broadcast(people_info)</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * 使用mapPartition而不是用map，减少创建broadCastMap.value的空间消耗</span><br><span class="line">   * 同时匹配不到的数据也不需要返回（）</span><br><span class="line">   * */</span></span><br><span class="line">  <span class="keyword">val</span> res = student_all.mapPartitions(iter =&gt;&#123;</span><br><span class="line">    <span class="keyword">val</span> stuMap = people_bc.value</span><br><span class="line">    <span class="keyword">val</span> arrayBuffer = <span class="type">ArrayBuffer</span>[(<span class="type">String</span>,<span class="type">String</span>,<span class="type">String</span>)]()</span><br><span class="line">    iter.foreach&#123;<span class="keyword">case</span> (idCard,school,sno) =&gt;&#123;</span><br><span class="line">      <span class="keyword">if</span>(stuMap.contains(idCard))&#123;</span><br><span class="line">        arrayBuffer.+= ((idCard, stuMap.getOrElse(idCard,<span class="string">""</span>),school))</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;&#125;</span><br><span class="line">    arrayBuffer.iterator</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span><br><span class="line">   * 使用另一种方式实现</span><br><span class="line">   * 使用for的守卫</span><br><span class="line">   * */</span></span><br><span class="line">  <span class="keyword">val</span> res1 = student_all.mapPartitions(iter =&gt; &#123;</span><br><span class="line">    <span class="keyword">val</span> stuMap = people_bc.value</span><br><span class="line">    <span class="keyword">for</span>&#123;</span><br><span class="line">      (idCard, school, sno) &lt;- iter</span><br><span class="line">      <span class="keyword">if</span>(stuMap.contains(idCard))</span><br><span class="line">    &#125; <span class="keyword">yield</span> (idCard, stuMap.getOrElse(idCard,<span class="string">""</span>),school)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  res.foreach(println)</span><br></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -349,8 +363,6 @@ slim</span>
           
             <a href="/tags/spark/" rel="tag">#spark</a>
           
-            <a href="/tags/spress/" rel="tag">#spress</a>
-          
         </div>
       
 
@@ -358,17 +370,13 @@ slim</span>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/13/elasticsearch分页查询/" rel="next" title="ElasticSearch分页查询">
-                <i class="fa fa-chevron-left"></i> ElasticSearch分页查询
+              <a href="/2016/03/07/使用azkaban调度spark任务/" rel="next" title="使用azkaban调度spark任务">
+                <i class="fa fa-chevron-left"></i> 使用azkaban调度spark任务
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/12/16/提高spark-jdbc操作并发度/" rel="prev" title="spark jdbc(mysql) 操作并发度优化">
-                spark jdbc(mysql) 操作并发度优化 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -395,8 +403,8 @@ slim</span>
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/12/14/spark任务进度实时更新与聚合/"
-           data-title="spark任务进度实时更新与聚合" data-url="http://yoursite.com/2015/12/14/spark任务进度实时更新与聚合/">
+      <div class="ds-thread" data-thread-key="2016/03/08/map-side-join关联优化/"
+           data-title="Spark map-side-join关联优化" data-url="http://yoursite.com/2016/03/08/map-side-join关联优化/">
       </div>
     
   </div>
@@ -486,7 +494,7 @@ slim</span>
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#spree"><span class="nav-number">1.</span> <span class="nav-text">spree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spree安装部署"><span class="nav-number">2.</span> <span class="nav-text">spree安装部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境"><span class="nav-number">2.1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Spree"><span class="nav-number">2.2.</span> <span class="nav-text">安装Spree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Meteor"><span class="nav-number">2.3.</span> <span class="nav-text">安装Meteor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装slim"><span class="nav-number">2.4.</span> <span class="nav-text">安装slim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用spree"><span class="nav-number">2.5.</span> <span class="nav-text">使用spree</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#spark1-5版本"><span class="nav-number">2.5.1.</span> <span class="nav-text">spark1.5版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其余版本"><span class="nav-number">2.5.2.</span> <span class="nav-text">其余版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通用参数"><span class="nav-number">2.5.3.</span> <span class="nav-text">通用参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行效果"><span class="nav-number">2.6.</span> <span class="nav-text">运行效果</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码说明"><span class="nav-number">2.</span> <span class="nav-text">代码说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整代码"><span class="nav-number">3.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

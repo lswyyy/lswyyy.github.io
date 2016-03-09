@@ -68,7 +68,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
 <meta property="og:image" content="http://img.blog.csdn.net/20151210161217631">
-<meta property="og:updated_time" content="2016-03-09T09:08:30.000Z">
+<meta property="og:updated_time" content="2016-03-09T09:17:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark常见问题解决及优化">
 <meta name="twitter:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
@@ -424,7 +424,7 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
 <h3 id="5-task_not_serializable">5.task not serializable</h3><h4 id="错误提示-4">错误提示</h4><pre><code>org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.SparkException</span>: Job aborted due to stage failure: 
 Task not serializable: java<span class="class">.io</span><span class="class">.NotSerializableException</span>: ...
 </code></pre><h4 id="解决-6">解决</h4><p>如果你在worker中调用了driver中定义的一些变量，Spark就会将这些变量传递给Worker，这些变量并没有被序列化，所以就会看到如上提示的错误了。</p>
-<pre><code>val x = <span class="keyword">new</span> X()  <span class="comment">//在driver中的代码</span>
+<pre><code>val x = <span class="keyword">new</span> X()  <span class="comment">//在driver中定义的变量</span>
 rdd.<span class="built_in">map</span>{r =&gt; x.doSomething(r) }.collect  <span class="comment">//map中的代码在worker(executor)中执行</span>
 </code></pre><p>除了上文的map,还有filter,foreach,foreachPartition等操作，还有一个典型例子就是在foreachPartition中使用数据库创建连接方法。这些变量没有序列化导致的任务报错。</p>
 <p>解决方法很多，下面提供三种：</p>

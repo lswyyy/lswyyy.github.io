@@ -60,8 +60,8 @@
 <meta property="og:description" content="将多份数据进行关联是数据处理过程中非常普遍的用法，不过在分布式计算系统中，这个问题往往会变的非常麻烦，因为框架提供的 join 操作一般会将所有数据根据 key 发送到所有的 reduce 分区中去，也就是 shuffle 的过程。造成大量的网络以及磁盘IO消耗，运行效率极其低下，这个过程一般被称为 reduce-side-join。
 如果其中有张表较小的话，我们则可以自己实现在 map 端实现数">
 <meta property="og:image" content="http://img.blog.csdn.net/20160309135517842">
-<meta property="og:image" content="http://img.blog.csdn.net/20160310142047332">
-<meta property="og:updated_time" content="2016-03-10T06:27:44.000Z">
+<meta property="og:image" content="http://img.blog.csdn.net/20160310144330502">
+<meta property="og:updated_time" content="2016-03-10T06:49:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark map-side-join关联优化">
 <meta name="twitter:description" content="将多份数据进行关联是数据处理过程中非常普遍的用法，不过在分布式计算系统中，这个问题往往会变的非常麻烦，因为框架提供的 join 操作一般会将所有数据根据 key 发送到所有的 reduce 分区中去，也就是 shuffle 的过程。造成大量的网络以及磁盘IO消耗，运行效率极其低下，这个过程一般被称为 reduce-side-join。
@@ -315,7 +315,7 @@
 <p>reduce-side-join 运行图如下</p>
 <p><img src="http://img.blog.csdn.net/20160309135517842" alt="这里写图片描述"></p>
 <p>map-side-join 运行图如下</p>
-<p><img src="http://img.blog.csdn.net/20160310142047332" alt="这里写图片描述"></p>
+<p><img src="http://img.blog.csdn.net/20160310144330502" alt="这里写图片描述"></p>
 <h2 id="代码说明">代码说明</h2><p>数据1（个别人口信息）:</p>
 <pre><code>身份证 姓名 ...
 <span class="number">110</span>   lsw 

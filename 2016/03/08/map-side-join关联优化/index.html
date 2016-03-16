@@ -61,7 +61,7 @@
 如果其中有张表较小的话，我们则可以自己实现在 map 端实现数">
 <meta property="og:image" content="http://img.blog.csdn.net/20160309135517842">
 <meta property="og:image" content="http://img.blog.csdn.net/20160310144330502">
-<meta property="og:updated_time" content="2016-03-10T06:49:00.000Z">
+<meta property="og:updated_time" content="2016-03-16T07:56:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark map-side-join关联优化">
 <meta name="twitter:description" content="将多份数据进行关联是数据处理过程中非常普遍的用法，不过在分布式计算系统中，这个问题往往会变的非常麻烦，因为框架提供的 join 操作一般会将所有数据根据 key 发送到所有的 reduce 分区中去，也就是 shuffle 的过程。造成大量的网络以及磁盘IO消耗，运行效率极其低下，这个过程一般被称为 reduce-side-join。
@@ -306,9 +306,10 @@
         <span itemprop="articleBody"><blockquote>
 <p>将多份数据进行关联是数据处理过程中非常普遍的用法，不过在分布式计算系统中，这个问题往往会变的非常麻烦，因为框架提供的 join 操作一般会将所有数据根据 key 发送到所有的 reduce 分区中去，也就是 shuffle 的过程。造成大量的网络以及磁盘IO消耗，运行效率极其低下，这个过程一般被称为 reduce-side-join。</p>
 <p>如果其中有张表较小的话，我们则可以自己实现在 map 端实现数据关联，跳过大量数据进行 shuffle 的过程，运行时间得到大量缩短，根据不同数据可能会有几倍到数十倍的性能提升。</p>
-<p>下文将会以一个 demo 对优化过程进行说明。</p>
+<p>下文将以一个 demo 进行说明。</p>
 </blockquote>
 <a id="more"></a>
+<h2 id="何时使用">何时使用</h2><p>在海量数据中匹配少量特定数据。</p>
 <h2 id="原理">原理</h2><p>以前写过一篇关于spark-sql中利用broadcast join进行优化的文章，原理与那篇文章相同，这里重新画了图。</p>
 <p><a href="http://blog.csdn.net/lsshlsw/article/details/48694893" target="_blank" rel="external">http://blog.csdn.net/lsshlsw/article/details/48694893</a></p>
 <p>reduce-side-join 的缺陷在于会将key相同的数据发送到同一个partition中进行运算，大数据集的传输需要长时间的IO，同时任务并发度收到限制，还可能造成数据倾斜。</p>
@@ -493,7 +494,7 @@ val people_bc = sc.<span class="function"><span class="title">broadcast</span><s
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码说明"><span class="nav-number">2.</span> <span class="nav-text">代码说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整代码"><span class="nav-number">3.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#何时使用"><span class="nav-number">1.</span> <span class="nav-text">何时使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码说明"><span class="nav-number">3.</span> <span class="nav-text">代码说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整代码"><span class="nav-number">4.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

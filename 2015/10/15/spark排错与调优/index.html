@@ -56,7 +56,7 @@
 增加Master的内存占用，在Master节点spark-env.s">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spark排错与优化">
-<meta property="og:url" content="http://yoursite.com/2015/10/15/spark常见问题解决及优化/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/10/15/spark排错与调优/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
 <meta property="og:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
 解决
@@ -68,7 +68,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
 <meta property="og:image" content="http://img.blog.csdn.net/20151210161217631">
-<meta property="og:updated_time" content="2016-03-18T02:08:13.000Z">
+<meta property="og:updated_time" content="2016-03-18T04:54:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark排错与优化">
 <meta name="twitter:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
@@ -291,8 +291,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/10/15/spark常见问题解决及优化/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/15/spark常见问题解决及优化/" itemprop="commentsCount"></span>
+                <a href="/2015/10/15/spark排错与调优/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/15/spark排错与调优/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -395,7 +395,7 @@ timeout <span class="keyword">if</span> <span class="keyword">this</span> is wro
 </ol>
 <h4 id="解决-4">解决</h4><p>大多数任务都完成了，还有那么一两个任务怎么都跑不完或者跑的很慢，又分为数据倾斜和task倾斜两种。</p>
 <ol>
-<li><p>数据倾斜<br>数据倾斜大多数情况是由于大量<code>null</code>值或者<code>&quot;&quot;</code>引起，在计算前过滤掉这些数据既可。<br>例如：    </p>
+<li><p>数据倾斜<br>数据倾斜大多数情况是由于大量的无效数据引起，比如null或者””，也有可能是一些异常数据，比如统计用户登录情况时，出现某用户登录过千万次的情况，无效数据在计算前需要过滤掉。<br>数据处理有一个原则，多使用filter，这样你真正需要分析的数据量就越少，处理速度就越快。<br>例如：    </p>
 <pre><code>sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"...where col is not null and col != ''"</span>)</span></span>
 </code></pre></li>
 <li><p>任务倾斜<br>task倾斜原因比较多，网络io,cpu,mem都有可能造成这个节点上的任务执行缓慢，可以去看该节点的性能监控来分析原因。以前遇到过同事在spark的一台worker上跑R的任务导致该节点spark task运行缓慢。<br>也可以开启spark的推测机制，开启推测机制后如果某一台机器的几个task特别慢，推测机制会将任务分配到其他机器执行，最后Spark会选取最快的作为最终结果。</p>
@@ -437,8 +437,7 @@ rdd.<span class="built_in">map</span>{r =&gt; x.doSomething(r) }.collect  <span 
  <span class="tag">Job</span> <span class="tag">aborted</span> <span class="tag">due</span> <span class="tag">to</span> <span class="tag">stage</span> <span class="tag">failure</span>: <span class="tag">Total</span> <span class="tag">size</span> <span class="tag">of</span> <span class="tag">serialized</span> 
  <span class="tag">results</span> <span class="tag">of</span> 374 <span class="tag">tasks</span> (1026<span class="class">.0</span> <span class="tag">MB</span>) <span class="tag">is</span> <span class="tag">bigger</span> <span class="tag">than</span>
   <span class="tag">spark</span><span class="class">.driver</span><span class="class">.maxResultSize</span> (1024<span class="class">.0</span> <span class="tag">MB</span>)
-</code></pre><h4 id="解决-7">解决</h4><p>spark.driver.maxResultSize    每个Spark action(如collect)所有分区的序列化结果的总大小限制,默认大小为1G,报这个错说明需要提高这个值了。</p>
-<p>将值调大即可</p>
+</code></pre><h4 id="解决-7">解决</h4><p>spark.driver.maxResultSize默认大小为1G    每个Spark action(如collect)所有分区的序列化结果的总大小限制，简而言之就是executor给driver返回的结果过大，报这个错说明需要提高这个值了。</p>
 <pre><code>spark<span class="class">.driver</span><span class="class">.maxResultSize</span> <span class="number">2</span>g
 </code></pre><h3 id="7-环境报错">7.环境报错</h3><ol>
 <li><p>driver节点内存不足<br>driver内存不足导致无法启动application,将driver分配到内存足够的机器上或减少driver-memory的使用。</p>
@@ -558,8 +557,8 @@ spark<span class="class">.locality</span><span class="class">.wait</span><span c
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/10/15/spark常见问题解决及优化/"
-           data-title="spark排错与优化" data-url="http://yoursite.com/2015/10/15/spark常见问题解决及优化/">
+      <div class="ds-thread" data-thread-key="2015/10/15/spark排错与调优/"
+           data-title="spark排错与优化" data-url="http://yoursite.com/2015/10/15/spark排错与调优/">
       </div>
     
   </div>

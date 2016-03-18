@@ -68,7 +68,7 @@ gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安�
 
 sudo rpm -ivh epel-release-6-8.">
 <meta property="og:image" content="http://img.blog.csdn.net/20150926203648994">
-<meta property="og:updated_time" content="2015-12-14T05:49:24.000Z">
+<meta property="og:updated_time" content="2016-03-18T06:14:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="部署ganglia3.7">
 <meta name="twitter:description" content="环境
@@ -384,7 +384,11 @@ port = <span class="number">8649</span>
 </code></pre><p>如果服务启动失败，查看</p>
 <pre><code>sudo /usr/sbin/gmond <span class="operator">-d</span> <span class="number">1</span>
 </code></pre><h2 id="五-GUI">五.GUI</h2><p>在网页上通过<code>spark219:80/ganglia</code>访问</p>
-<p>发现目前spark集群处于比较空闲的状态<br><img src="http://img.blog.csdn.net/20150926203648994" alt="spark"></p>
+<p>进入web界面发现报错</p>
+<pre><code><span class="tag">There</span> <span class="tag">was</span> <span class="tag">an</span> <span class="tag">error</span> <span class="tag">collecting</span> <span class="tag">ganglia</span> <span class="tag">data</span> (127<span class="class">.0</span><span class="class">.0</span><span class="class">.1</span><span class="pseudo">:8652)</span>: <span class="tag">fsockopen</span> <span class="tag">error</span>: <span class="tag">Permission</span> <span class="tag">denied</span>
+</code></pre><p>临时关闭SELINUX可解决问题</p>
+<pre><code>sudo setenforce <span class="number">0</span>
+</code></pre><p>发现目前spark集群处于比较空闲的状态<br><img src="http://img.blog.csdn.net/20150926203648994" alt="spark"></p>
 </span>
       
     </div>

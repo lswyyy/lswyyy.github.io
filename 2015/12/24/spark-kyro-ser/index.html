@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ganglia," />
+  <meta name="keywords" content="spark," />
 
 
 
@@ -51,32 +51,23 @@
 
 
 
-<meta name="description" content="环境
-centOS6.6gmetad节点关闭iptable
-gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。
-一.安装epel源sudo wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm 
-
-sudo rpm -ivh epel-release-6-8.">
+<meta name="description" content="序列化在分布式系统中扮演着重要的角色，优化Spark程序时，首当其冲的就是对序列化方式的优化。Spark为使用者提供两种序列化方式：
+Java serialization: 默认的序列化方式。
+Kryo serialization: 相较于 Java serialization 的方式，速度更快，空间占用更小，但并不支持所有的序列化格式，同时使用的时候需要注册class。spark-sql中默认使">
 <meta property="og:type" content="article">
-<meta property="og:title" content="部署ganglia3.7">
-<meta property="og:url" content="http://yoursite.com/2015/09/26/部署ganglia3.7/index.html">
+<meta property="og:title" content="Spark kyro Serialization">
+<meta property="og:url" content="http://yoursite.com/2015/12/24/spark-kyro-ser/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
-<meta property="og:description" content="环境
-centOS6.6gmetad节点关闭iptable
-gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。
-一.安装epel源sudo wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm 
-
-sudo rpm -ivh epel-release-6-8.">
-<meta property="og:image" content="http://img.blog.csdn.net/20150926203648994">
-<meta property="og:updated_time" content="2016-03-18T06:14:50.000Z">
+<meta property="og:description" content="序列化在分布式系统中扮演着重要的角色，优化Spark程序时，首当其冲的就是对序列化方式的优化。Spark为使用者提供两种序列化方式：
+Java serialization: 默认的序列化方式。
+Kryo serialization: 相较于 Java serialization 的方式，速度更快，空间占用更小，但并不支持所有的序列化格式，同时使用的时候需要注册class。spark-sql中默认使">
+<meta property="og:image" content="http://img.blog.csdn.net/20160311160353058">
+<meta property="og:updated_time" content="2016-03-21T05:24:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="部署ganglia3.7">
-<meta name="twitter:description" content="环境
-centOS6.6gmetad节点关闭iptable
-gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。
-一.安装epel源sudo wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm 
-
-sudo rpm -ivh epel-release-6-8.">
+<meta name="twitter:title" content="Spark kyro Serialization">
+<meta name="twitter:description" content="序列化在分布式系统中扮演着重要的角色，优化Spark程序时，首当其冲的就是对序列化方式的优化。Spark为使用者提供两种序列化方式：
+Java serialization: 默认的序列化方式。
+Kryo serialization: 相较于 Java serialization 的方式，速度更快，空间占用更小，但并不支持所有的序列化格式，同时使用的时候需要注册class。spark-sql中默认使">
 
 
 
@@ -88,7 +79,7 @@ sudo rpm -ivh epel-release-6-8.">
   };
 </script>
 
-  <title> 部署ganglia3.7 | LSW'S BLOG </title>
+  <title> Spark kyro Serialization | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -259,7 +250,7 @@ sudo rpm -ivh epel-release-6-8.">
             
             
               
-                部署ganglia3.7
+                Spark kyro Serialization
               
             
           </h1>
@@ -268,8 +259,8 @@ sudo rpm -ivh epel-release-6-8.">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-09-26T20:09:17+08:00" content="2015-09-26">
-              2015-09-26
+            <time itemprop="dateCreated" datetime="2015-12-24T22:00:00+08:00" content="2015-12-24">
+              2015-12-24
             </time>
           </span>
 
@@ -278,8 +269,8 @@ sudo rpm -ivh epel-release-6-8.">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/deploy/" itemprop="url" rel="index">
-                    <span itemprop="name">deploy</span>
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
                   </a>
                 </span>
 
@@ -294,8 +285,8 @@ sudo rpm -ivh epel-release-6-8.">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/09/26/部署ganglia3.7/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/26/部署ganglia3.7/" itemprop="commentsCount"></span>
+                <a href="/2015/12/24/spark-kyro-ser/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/24/spark-kyro-ser/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -314,81 +305,52 @@ sudo rpm -ivh epel-release-6-8.">
       
 
       
-        <span itemprop="articleBody"><p><strong>环境</strong></p>
-<p>centOS6.6<br>gmetad节点关闭iptable</p>
-<p>gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。</p>
-<h2 id="一-安装epel源">一.安装epel源</h2><pre><code>sudo wget http:<span class="comment">//download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm </span>
-
-sudo rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8</span><span class="class">.noarch</span><span class="class">.rpm</span> 
-</code></pre><a id="more"></a>
-<h2 id="二-安装gmetad">二.安装gmetad</h2><p>安装依赖和php,gmetad<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install rrdtool rrdtool-devel ganglia-web ganglia-gmetad ganglia-gmond ganglia-gmond-python httpd apr-devel zlib-devel libconfuse-devel expat-devel pcre-devel php-<span class="built_in">common</span> php-<span class="keyword">cli</span> php-gb php</span><br></pre></td></tr></table></figure></p>
-<p>修改配置</p>
-<pre><code>sudo <span class="keyword">vim</span> /etc/ganglia/gmetad.<span class="keyword">conf</span>
-</code></pre><p>修改其中的date_source属性，第一个参数是集群的名字，第二个是接收数据的节点，可以有多个。</p>
-<p>如果使用的默认端口8649也可以不写端口号</p>
-<pre><code>dat<span class="built_in">a_source</span> <span class="string">"spark"</span> spark219:<span class="number">8649</span>
-</code></pre><p>设置开机启动服务</p>
-<pre><code>sudo chkconfig gmetad <span class="function_start"><span class="keyword">on</span></span>
-</code></pre><p>启动gmetad</p>
-<pre><code>sudo service gmetad <span class="literal">start</span>
-</code></pre><h2 id="三-安装httpd">三.安装httpd</h2><pre><code>vim /etc/httpd/<span class="keyword">conf</span>.<span class="keyword">d</span>/ganglia.<span class="keyword">conf</span>    
-</code></pre><p>修改为</p>
-<pre><code><span class="tag">&lt;Location /ganglia&gt;</span>
-<span class="keyword"><span class="common">Order</span></span> deny,allow
-<span class="keyword"><span class="common">Allow</span></span> from <span class="literal">all</span>
-<span class="tag">&lt;/Location&gt;</span>
-</code></pre><p>如果不修改启动网页时则会看到如下错误</p>
-<pre><code>You don<span class="attribute">'t</span> have permission <span class="keyword">to</span> <span class="keyword">access</span> /ganglia <span class="keyword">on</span> this server
-</code></pre><p>设置开机启动服务</p>
-<pre><code>sudo chkconfig httpd <span class="function_start"><span class="keyword">on</span></span>
-</code></pre><p>启动http服务</p>
-<pre><code>sudo service httpd <span class="literal">start</span>
-</code></pre><h2 id="四-安装gmond">四.安装gmond</h2><p>安装gmond</p>
-<pre><code>sudo yum <span class="keyword">install</span> ganglia-gmond
-</code></pre><p><strong>组播模式</strong><br>ganglia默认使用的就是组播模式，所以要修改的配置不多</p>
-<p>如果使用组播，请增加组播地址</p>
-<pre><code>sudo ip route add <span class="number">239.2</span><span class="number">.11</span><span class="number">.71</span> dev 你的网卡
-</code></pre><p>修改配置</p>
-<pre><code>sudo <span class="keyword">vim</span> /etc/ganglia/gmond.<span class="keyword">conf</span>
-</code></pre><p>修改参数</p>
-<pre><code>cluster{
-<span class="comment">//要发送到的分组名</span>
-name = <span class="string">"spark"</span>
-<span class="attribute">...</span>
-}
-</code></pre><p>启动gmond</p>
-<pre><code>sudo service gmond <span class="literal">start</span>
-</code></pre><p><strong>单播模式</strong></p>
-<p>修改配置</p>
-<pre><code>sudo <span class="keyword">vim</span> /etc/ganglia/gmond.<span class="keyword">conf</span>
-</code></pre><p>修改参数</p>
-<pre><code>cluster{
-name = <span class="string">"spark"</span>
-...
-}
-
-udp_send_channel {
-<span class="comment">//收集数据的节点,不同分组数据要发到不同节点</span>
-host = <span class="number">192.168</span><span class="number">.47</span><span class="number">.209</span>
-port = <span class="number">8649</span>
-ttl = <span class="number">1</span>
-}
-
-udp_recv_channel {
-port = <span class="number">8649</span>
-}
-</code></pre><p>设置开机启动服务</p>
-<pre><code>sudo chkconfig gmond <span class="function_start"><span class="keyword">on</span></span>
-</code></pre><p>启动gmond</p>
-<pre><code>sudo service gmond <span class="literal">start</span>
-</code></pre><p>如果服务启动失败，查看</p>
-<pre><code>sudo /usr/sbin/gmond <span class="operator">-d</span> <span class="number">1</span>
-</code></pre><h2 id="五-GUI">五.GUI</h2><p>在网页上通过<code>spark219:80/ganglia</code>访问</p>
-<p>进入web界面发现报错</p>
-<pre><code><span class="tag">There</span> <span class="tag">was</span> <span class="tag">an</span> <span class="tag">error</span> <span class="tag">collecting</span> <span class="tag">ganglia</span> <span class="tag">data</span> (127<span class="class">.0</span><span class="class">.0</span><span class="class">.1</span><span class="pseudo">:8652)</span>: <span class="tag">fsockopen</span> <span class="tag">error</span>: <span class="tag">Permission</span> <span class="tag">denied</span>
-</code></pre><p>临时关闭SELINUX可解决问题</p>
-<pre><code>sudo setenforce <span class="number">0</span>
-</code></pre><p>发现目前spark集群处于比较空闲的状态<br><img src="http://img.blog.csdn.net/20150926203648994" alt="spark"></p>
+        <span itemprop="articleBody"><blockquote>
+<p>序列化在分布式系统中扮演着重要的角色，优化Spark程序时，首当其冲的就是对序列化方式的优化。Spark为使用者提供两种序列化方式：</p>
+<p>Java serialization: 默认的序列化方式。</p>
+<p>Kryo serialization: 相较于 Java serialization 的方式，速度更快，空间占用更小，但并不支持所有的序列化格式，同时使用的时候需要注册class。spark-sql中默认使用的是kyro的序列化方式。</p>
+<p>下文将会讲解kryo的使用方式并对比性能。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="配置">配置</h2><p>可以在<code>spark-default.conf</code>设置全局参数，也可以代码中初始化时对SparkConf设置 <code>conf.set(&quot;spark.serializer&quot;, &quot;org.apache.spark.serializer.KryoSerializer&quot;)</code> ，该参数会同时作用于机器之间数据的shuffle操作以及序列化rdd到磁盘，内存。</p>
+<p>Spark不将Kyro设置成默认的序列化方式是因为它需要对类进行注册，官方强烈建议在一些网络数据传输很大的应用中使用kyro序列化。</p>
+<pre><code>val conf = new <span class="function"><span class="title">SparkConf</span><span class="params">()</span></span>
+conf.<span class="function"><span class="title">set</span><span class="params">(<span class="string">"spark.serializer"</span>, <span class="string">"org.apache.spark.serializer.KryoSerializer"</span>)</span></span>
+conf.<span class="function"><span class="title">registerKryoClasses</span><span class="params">(Array(classOf[MyClass1],classOf[MyClass2])</span></span>)
+val sc = new <span class="function"><span class="title">SparkContext</span><span class="params">(conf)</span></span>
+</code></pre><p>如果你要序列化的对象比较大，可以增加参数<code>spark.kryoserializer.buffer</code>所设置的值。</p>
+<p>如果你没有注册需要序列化的class，Kyro依然可以照常工作，但会存储每个对象的全类名(full class name)，这样的使用方式往往比默认的 Java serialization 还要浪费更多的空间。</p>
+<p>下面的 demo 将会演示不同方式的序列化对空间占用的情况。</p>
+<h2 id="DEMO">DEMO</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">case class Info(name: String ,age: Int,gender: String,addr: String)</span><br><span class="line"></span><br><span class="line">object KyroTest &#123;</span><br><span class="line">  def main(args: Array[String]) &#123;</span><br><span class="line">  </span><br><span class="line">  val conf = new SparkConf().setMaster("local[2]").setAppName("KyroTest")</span><br><span class="line"><span class="code">      conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")</span></span><br><span class="line"><span class="code">      conf.registerKryoClasses(Array(classOf[Info]))</span></span><br><span class="line">  val sc = new SparkContext(conf)</span><br><span class="line"></span><br><span class="line">  val arr = new ArrayBuffer[<span class="link_label">Info</span>](<span class="link_url"></span>)</span><br><span class="line"></span><br><span class="line">  val nameArr = Array[<span class="link_label">String</span>](<span class="link_url">"lsw","yyy","lss"</span>)</span><br><span class="line">  val genderArr = Array[<span class="link_label">String</span>](<span class="link_url">"male","female"</span>)</span><br><span class="line">  val addressArr = Array[<span class="link_label">String</span>](<span class="link_url">"beijing","shanghai","shengzhen","wenzhou","hangzhou"</span>)</span><br><span class="line"></span><br><span class="line">  for(i <span class="xml"><span class="tag">&lt;<span class="title">-</span> <span class="attribute">1</span> <span class="attribute">to</span> <span class="attribute">1000000</span>)&#123;</span><br><span class="line">  	<span class="attribute">val</span> <span class="attribute">name</span> = <span class="attribute">nameArr</span>(<span class="attribute">Random.nextInt</span>(<span class="attribute">3</span>))</span><br><span class="line">    <span class="attribute">val</span> <span class="attribute">age</span> = <span class="attribute">Random.nextInt</span>(<span class="attribute">100</span>)</span><br><span class="line">    <span class="attribute">val</span> <span class="attribute">gender</span> = <span class="attribute">genderArr</span>(<span class="attribute">Random.nextInt</span>(<span class="attribute">2</span>))</span><br><span class="line">    <span class="attribute">val</span> <span class="attribute">address</span> = <span class="attribute">addressArr</span>(<span class="attribute">Random.nextInt</span>(<span class="attribute">5</span>))</span><br><span class="line">    <span class="attribute">arr.</span>+=<span class="value">(Info(name,age,gender,address))</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="attribute">val</span> <span class="attribute">rdd</span> = <span class="attribute">sc.parallelize</span>(<span class="attribute">arr</span>)</span><br><span class="line"></span><br><span class="line">  //序列化的方式将<span class="attribute">rdd</span>存到内存</span><br><span class="line">  <span class="attribute">rdd.persist</span>(<span class="attribute">StorageLevel.MEMORY_ONLY_SER</span>)</span><br><span class="line">  <span class="attribute">rdd.count</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="结果">结果</h2><p>可以在web ui中看到缓存的rdd大小：</p>
+<p><img src="http://img.blog.csdn.net/20160311160353058" alt="这里写图片描述"></p>
+<table>
+<thead>
+<tr>
+<th>序列化方式</th>
+<th>是否注册</th>
+<th>空间占用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kyro</td>
+<td>是</td>
+<td>21.1 MB</td>
+</tr>
+<tr>
+<td>kyro</td>
+<td>否</td>
+<td>38.3 MB</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>无</td>
+<td>25.1 MB</td>
+</tr>
+</tbody>
+</table>
+<p>有个疑惑，看到别人测试kryo即使不注册，性能也要优于Java原生的方式，这是为什么？</p>
 </span>
       
     </div>
@@ -397,7 +359,7 @@ port = <span class="number">8649</span>
       
         <div class="post-tags">
           
-            <a href="/tags/ganglia/" rel="tag">#ganglia</a>
+            <a href="/tags/spark/" rel="tag">#spark</a>
           
         </div>
       
@@ -406,16 +368,16 @@ port = <span class="number">8649</span>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/24/spark-join-broadcast优化/" rel="next" title="spark join broadcast优化">
-                <i class="fa fa-chevron-left"></i> spark join broadcast优化
+              <a href="/2015/12/24/sparkSql中udf的使用/" rel="next" title="sparkSQL中udf的使用">
+                <i class="fa fa-chevron-left"></i> sparkSQL中udf的使用
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/09/spark与ElasticSearch交互/" rel="prev" title="使用spark与ElasticSearch交互">
-                使用spark与ElasticSearch交互 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/12/29/kafka集群扩容/" rel="prev" title="kafka集群扩容(topic迁移)">
+                kafka集群扩容(topic迁移) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -443,8 +405,8 @@ port = <span class="number">8649</span>
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/09/26/部署ganglia3.7/"
-           data-title="部署ganglia3.7" data-url="http://yoursite.com/2015/09/26/部署ganglia3.7/">
+      <div class="ds-thread" data-thread-key="2015/12/24/spark-kyro-ser/"
+           data-title="Spark kyro Serialization" data-url="http://yoursite.com/2015/12/24/spark-kyro-ser/">
       </div>
     
   </div>
@@ -534,7 +496,7 @@ port = <span class="number">8649</span>
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-安装epel源"><span class="nav-number">1.</span> <span class="nav-text">一.安装epel源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-安装gmetad"><span class="nav-number">2.</span> <span class="nav-text">二.安装gmetad</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-安装httpd"><span class="nav-number">3.</span> <span class="nav-text">三.安装httpd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-安装gmond"><span class="nav-number">4.</span> <span class="nav-text">四.安装gmond</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-GUI"><span class="nav-number">5.</span> <span class="nav-text">五.GUI</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DEMO"><span class="nav-number">2.</span> <span class="nav-text">DEMO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果"><span class="nav-number">3.</span> <span class="nav-text">结果</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

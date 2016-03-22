@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="spark,sparkSQL," />
+  <meta name="keywords" content="spark," />
 
 
 
@@ -57,79 +57,19 @@
 
 
 
-<meta name="description" content="在spark中使用sql时可能会想自定义一些函数，可以使 udf 来实现，下面举了几个简单易懂的例子。
-
-Example个数统计表结构如下，统计出每个人的爱好个数
-
-
-
-name
-hobbies
-
-
-
-
-alice
-jogging,Coding,cooking
-
-
-lina
-travel,dance
-
-
-
-1234// 将某个字段中逗号分隔的数量统计出来sqlContext.udf.registe">
+<meta name="description" content="spark Executor的内存大小设置一直是长期困扰开发人员和分析师的一个大问题。不同应用使用的算法和数据不同，一次内存设置也是难以评估，设置过大会造成资源浪费，其余任务得不到资源而等待。设置过小，计算过程中会带来频繁的GC和磁盘读写，缓存数据比较少，还有可能会带来OOM，也会影响到性能。
+针对上述的问题，spark 1.6 带来了新的内存管理机制，Unified Memory Manager">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sparkSQL中udf的使用">
-<meta property="og:url" content="http://yoursite.com/2015/12/24/sparkSql中udf的使用/index.html">
+<meta property="og:title" content="Spark Unified Memory Manager">
+<meta property="og:url" content="http://yoursite.com/2016/03/22/Spark-Unified-Memory-Manager/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
-<meta property="og:description" content="在spark中使用sql时可能会想自定义一些函数，可以使 udf 来实现，下面举了几个简单易懂的例子。
-
-Example个数统计表结构如下，统计出每个人的爱好个数
-
-
-
-name
-hobbies
-
-
-
-
-alice
-jogging,Coding,cooking
-
-
-lina
-travel,dance
-
-
-
-1234// 将某个字段中逗号分隔的数量统计出来sqlContext.udf.registe">
-<meta property="og:updated_time" content="2015-12-30T06:56:37.000Z">
+<meta property="og:description" content="spark Executor的内存大小设置一直是长期困扰开发人员和分析师的一个大问题。不同应用使用的算法和数据不同，一次内存设置也是难以评估，设置过大会造成资源浪费，其余任务得不到资源而等待。设置过小，计算过程中会带来频繁的GC和磁盘读写，缓存数据比较少，还有可能会带来OOM，也会影响到性能。
+针对上述的问题，spark 1.6 带来了新的内存管理机制，Unified Memory Manager">
+<meta property="og:updated_time" content="2016-03-22T05:09:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sparkSQL中udf的使用">
-<meta name="twitter:description" content="在spark中使用sql时可能会想自定义一些函数，可以使 udf 来实现，下面举了几个简单易懂的例子。
-
-Example个数统计表结构如下，统计出每个人的爱好个数
-
-
-
-name
-hobbies
-
-
-
-
-alice
-jogging,Coding,cooking
-
-
-lina
-travel,dance
-
-
-
-1234// 将某个字段中逗号分隔的数量统计出来sqlContext.udf.registe">
+<meta name="twitter:title" content="Spark Unified Memory Manager">
+<meta name="twitter:description" content="spark Executor的内存大小设置一直是长期困扰开发人员和分析师的一个大问题。不同应用使用的算法和数据不同，一次内存设置也是难以评估，设置过大会造成资源浪费，其余任务得不到资源而等待。设置过小，计算过程中会带来频繁的GC和磁盘读写，缓存数据比较少，还有可能会带来OOM，也会影响到性能。
+针对上述的问题，spark 1.6 带来了新的内存管理机制，Unified Memory Manager">
 
 
 
@@ -147,7 +87,7 @@ travel,dance
   };
 </script>
 
-  <title> sparkSQL中udf的使用 | LSW'S BLOG </title>
+  <title> Spark Unified Memory Manager | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -327,7 +267,7 @@ travel,dance
             
             
               
-                sparkSQL中udf的使用
+                Spark Unified Memory Manager
               
             
           </h1>
@@ -339,8 +279,8 @@ travel,dance
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-12-24T22:00:00+08:00" content="2015-12-24">
-              2015-12-24
+            <time itemprop="dateCreated" datetime="2016-03-22T13:00:00+08:00" content="2016-03-22">
+              2016-03-22
             </time>
           </span>
 
@@ -369,8 +309,8 @@ travel,dance
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/12/24/sparkSql中udf的使用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/24/sparkSql中udf的使用/" itemprop="commentsCount"></span>
+                <a href="/2016/03/22/Spark-Unified-Memory-Manager/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/22/Spark-Unified-Memory-Manager/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -393,154 +333,40 @@ travel,dance
 
       
         <blockquote>
-<p>在spark中使用sql时可能会想自定义一些函数，可以使 <code>udf</code> 来实现，下面举了几个简单易懂的例子。</p>
+<p>spark Executor的内存大小设置一直是长期困扰开发人员和分析师的一个大问题。不同应用使用的算法和数据不同，一次内存设置也是难以评估，设置过大会造成资源浪费，其余任务得不到资源而等待。设置过小，计算过程中会带来频繁的GC和磁盘读写，缓存数据比较少，还有可能会带来OOM，也会影响到性能。</p>
+<p>针对上述的问题，spark 1.6 带来了新的内存管理机制，Unified Memory Manager。</p>
 </blockquote>
-<h2 id="Example">Example</h2><h3 id="个数统计">个数统计</h3><p>表结构如下，统计出每个人的爱好个数</p>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th>hobbies</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>alice</td>
-<td>jogging,Coding,cooking</td>
-</tr>
-<tr>
-<td>lina</td>
-<td>travel,dance</td>
-</tr>
-</tbody>
-</table>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将某个字段中逗号分隔的数量统计出来</span></span><br><span class="line">sqlContext<span class="class">.udf</span><span class="class">.register</span>(<span class="string">"hobby_num"</span>, (s: String) =&gt; s.<span class="function"><span class="title">split</span><span class="params">(<span class="string">','</span>)</span></span>.size)</span><br><span class="line"></span><br><span class="line">sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"select *,hobby_num(hobbies) as hobby_num from table"</span>)</span></span></span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-<p>结果</p>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th>hobbies</th>
-<th>hobby_num</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>alice</td>
-<td>read book,coding,cooking</td>
-<td>3</td>
-</tr>
-<tr>
-<td>lina</td>
-<td>travel,dance</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-<h3 id="空值填补">空值填补</h3><p>表结构如下</p>
-<table>
-<thead>
-<tr>
-<th>A</th>
-<th>B</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>null</td>
-<td>123456</td>
-</tr>
-<tr>
-<td>234234</td>
-<td>234234</td>
-</tr>
-</tbody>
-</table>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 填补第一个字段的空值</span><br><span class="line"><span class="label">sqlContext.udf.register</span>(<span class="string">"combine"</span>, (<span class="literal">s1</span>: <span class="keyword">String,s2: </span><span class="keyword">String)=&gt; </span>&#123;<span class="preprocessor">if</span>(<span class="literal">s1</span> == null) <span class="literal">s2</span> <span class="preprocessor">else</span> <span class="literal">s1</span>&#125;)	   </span><br><span class="line"><span class="label">sqlContext.sql</span>(<span class="string">"select combine(A,B) as A from table"</span>)</span><br></pre></td></tr></table></figure>
-<p>结果</p>
-<table>
-<thead>
-<tr>
-<th>A</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>123456</td>
-<td></td>
-</tr>
-<tr>
-<td>234234</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="类型转化">类型转化</h3><p>类型转化,将 <code>String</code> 转化为 <code>Int</code></p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sqlContext<span class="class">.udf</span><span class="class">.register</span>(<span class="string">"str2Int"</span>, (s: String) =&gt; s.toInt)</span><br><span class="line"></span><br><span class="line">或者直接使用cast</span><br><span class="line">sqlContext.<span class="function"><span class="title">sql</span><span class="params">(<span class="string">"select cast(a AS Int) from table"</span>)</span></span></span><br></pre></td></tr></table></figure>
-<h2 id="综合运用">综合运用</h2><p>原始数据，ID(用户名)，loginIP(帐号登录的ip地址)</p>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>loginIP</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>alice</td>
-<td>ip1 </td>
-</tr>
-<tr>
-<td>lina</td>
-<td>ip2 </td>
-</tr>
-<tr>
-<td>sven</td>
-<td>ip3</td>
-</tr>
-<tr>
-<td>alice</td>
-<td>ip1</td>
-</tr>
-<tr>
-<td>sven</td>
-<td>ip2 </td>
-</tr>
-<tr>
-<td>alice</td>
-<td>ip4</td>
-</tr>
-</tbody>
-</table>
-<p><strong>计算每个用户在哪些ip登录过，并统计数量</strong></p>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>ip_list</th>
-<th>loginIP_num</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>alice</td>
-<td>ip1,ip4</td>
-<td>2</td>
-</tr>
-<tr>
-<td>lina</td>
-<td>ip2</td>
-<td>1</td>
-</tr>
-<tr>
-<td>sven</td>
-<td>ip2,ip3</td>
-<td>2</td>
-</tr>
-</tbody>
-</table>
-<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//统计数量</span></span><br><span class="line">sqlContext.udf.register(<span class="string">"list_size"</span>, (s: String) =&gt; s.split(<span class="string">','</span>).size)</span><br><span class="line"></span><br><span class="line">val sql =</span><br><span class="line">    <span class="string">"""select ID,ip_list,list_size(ip_list) as loginIP_num</span><br><span class="line">      |from (select ID,concat_ws(',',collect_set(loginIP)) as ip_list from table)"""</span>.stripMargin</span><br><span class="line"></span><br><span class="line">sqlContext.sql(sql)</span><br></pre></td></tr></table></figure>
+<h2 id="以前的内存管理">以前的内存管理</h2><p>日常使用中，我们通过<code>spark.executor.memory</code>来控制一个executor最多可以使用的内存大小，实际上是通过设置Executor的JVM的Heap大小实现的。</p>
+<p>在spark1.6之前，Executor的内存界限分明，分别由3部分组成：execution,storage和system。</p>
+<ol>
+<li><p>execution</p>
+<p> execution空间通过设置<code>spark.shuffle.memoryFraction</code>参数来控制大小，默认为0.2。为了避免shuffle，join，排序和聚合这些操作直接将数据写入磁盘，所设置的buffer大小，减少了磁盘读写的次数。</p>
+</li>
+<li><p>storage</p>
+<p> storage空间通过设置<code>spark.storage.memoryFraction</code>参数来控制大小，默认为0.6。用于存储用户显示调用的persist,cache,broadcast等命令存储的数据空间。</p>
+</li>
+<li><p>system</p>
+<p> 程序运行需要的空间，存储一些spark内部的元数据信息，用户的数据结构，避免一些不寻常的大记录带来的OOM。</p>
+</li>
+</ol>
+<p>之前的管理方式，最明显的就是对execution和storage空间进行了明显的划分。举个例子，一些任务可能对数据缓存的需求并不是很高，就会造成storage空间的浪费。</p>
+<p>因此，spark1.6带来了新的内存管理机制。</p>
+<h2 id="Unified_MemoryManager简述">Unified MemoryManager简述</h2><p>为了解决上述出现的问题，新提出的内存管理机制淡化了execution空间和storage空间的边界，让它们之间可以相互“借”内存。</p>
+<p>通过<code>spark.memory.useLegacyMode</code>参数来决定是否开启新的内存管理机制，默认为开启。</p>
+<p>它们总共可用的内存由<code>spark.memory.fraction</code>参数控制（默认为0.75）。在该空间内部，对execution和storage进行了进一步的划分。由<code>spark.memory.storageFraction</code>参数控制（默认为0.5），这意味着strorage空间真实占有的executor空间为：</p>
+<pre><code><span class="number">0.75</span>*<span class="number">0.5</span> = <span class="number">0.375</span>
+</code></pre><h3 id="exetution向storage”借“内存">exetution向storage”借“内存</h3><p>在程序执行过程中，如果execution空间不足，则会向storage空间提出申请，storage会将空闲内存借给execution使用，如果不够，则会释放之前向execution借的内存。</p>
+<p>execution申请在<code>acquireStorageMemory</code>方法中实现。</p>
+<p>每次申请空间前会进行相应判断，在<code>maybeGrowExecutionPool</code>方法中:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//extraMemoryNeeded为需要申请的内存</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">maybeGrowExecutionPool</span><span class="params">(extraMemoryNeeded: Long)</span>:</span> Unit = &#123;</span><br><span class="line"> 	<span class="keyword">if</span> (extraMemoryNeeded &gt; <span class="number">0</span>) &#123; </span><br><span class="line"> 		//判断storage空闲空间和向execution借去的空间，取较大的那个。</span><br><span class="line"> 		//如果需要，storage会将先前向execution借的内存取消缓存进行返还。</span><br><span class="line">		val memoryReclaimableFromStorage =</span><br><span class="line">              math.max(storageMemoryPool.memoryFree, storageMemoryPool.poolSize - storageRegionSize)</span><br><span class="line">      //判断是否还有内存可以借出     </span><br><span class="line">	   <span class="keyword">if</span> (memoryReclaimableFromStorage &gt; <span class="number">0</span>) &#123;</span><br><span class="line">          //如果剩余内存不够申请的，则将可用内存全部借出。</span><br><span class="line">   			val spaceReclaimed = storageMemoryPool.shrinkPoolToFreeSpace(</span><br><span class="line">	   			math.min(extraMemoryNeeded, memoryReclaimableFromStorage))</span><br><span class="line">      			onHeapExecutionMemoryPool.incrementPoolSize(spaceReclaimed)</span><br><span class="line">          &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="storage向execution“借”内存">storage向execution“借”内存</h3><p>同样的，在storage需要内存的时候，execution也会将它的空闲内存借出去。因为实现复杂，所以execution空间不会被storage驱逐。这种机制带来的问题是，如果execution占据了storage大部分空间。这时候对一些数据的缓存可能会失败。</p>
+<p>在下面的方法中可以清楚的看出，storage可使用的最大内存是<code>maxMemory-execution已使用的内存数</code>，意思就是说，即使execution占据了storage的空间也不会被收回，直到execution自己释放。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">override <span class="function"><span class="keyword">def</span> <span class="title">maxStorageMemory</span>:</span> Long = synchronized &#123;</span><br><span class="line">  maxMemory - onHeapExecutionMemoryPool.memoryUsed</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>storage申请在<code>acquireExecutionMemory</code>方法中进行了实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">override <span class="function"><span class="keyword">def</span> <span class="title">acquireStorageMemory</span><span class="params">(</span><br><span class="line">      blockId: BlockId,</span><br><span class="line">      numBytes: Long,</span><br><span class="line">      evictedBlocks: mutable.Buffer[<span class="params">(BlockId, BlockStatus)</span>])</span>:</span> Boolean = synchronized &#123;</span><br><span class="line">    </span><br><span class="line">    //如果需要空间大于Storage现有的最大内存空间，直接返回失败</span><br><span class="line">    <span class="keyword">if</span> (numBytes &gt; maxStorageMemory) &#123;</span><br><span class="line">      <span class="keyword">return</span> false</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //如果需要空间比当前storage剩余空间多，则去借execution的空闲空间。</span><br><span class="line">    <span class="keyword">if</span> (numBytes &gt; storageMemoryPool.memoryFree) &#123;</span><br><span class="line">      val memoryBorrowedFromExecution = Math.min(onHeapExecutionMemoryPool.memoryFree, numBytes)</span><br><span class="line">      onHeapExecutionMemoryPool.decrementPoolSize(memoryBorrowedFromExecution)</span><br><span class="line">      storageMemoryPool.incrementPoolSize(memoryBorrowedFromExecution)</span><br><span class="line">    &#125;</span><br><span class="line">    storageMemoryPool.acquireMemory(blockId, numBytes, evictedBlocks)</span><br></pre></td></tr></table></figure>
+<p>更多实现细节可以去<code>org.apache.spark.memory.UnifiedMemoryManager</code>代码中查看。</p>
+<h2 id="带来的好处">带来的好处</h2><p>除开极端内存使用环境（execution和storage空间都被占满）的情况下，新的内存管理机制能够减少shuffle过程中将数据spill到磁盘的次数或者提高数据的缓存比例，都能对程序运行速度带来一定的提升，同时也减少了调试参数的次数。</p>
 
       
     </div>
@@ -557,8 +383,6 @@ travel,dance
           
             <a href="/tags/spark/" rel="tag">#spark</a>
           
-            <a href="/tags/sparkSQL/" rel="tag">#sparkSQL</a>
-          
         </div>
       
 
@@ -566,17 +390,13 @@ travel,dance
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/12/16/提高spark-jdbc操作并发度/" rel="next" title="spark jdbc(mysql) 操作并发度优化">
-                <i class="fa fa-chevron-left"></i> spark jdbc(mysql) 操作并发度优化
+              <a href="/2016/03/10/spark-kyro-ser/" rel="next" title="Spark kyro Serialization">
+                <i class="fa fa-chevron-left"></i> Spark kyro Serialization
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/12/29/kafka集群扩容/" rel="prev" title="kafka集群扩容(topic迁移)">
-                kafka集群扩容(topic迁移) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -602,8 +422,8 @@ travel,dance
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/12/24/sparkSql中udf的使用/"
-           data-title="sparkSQL中udf的使用" data-url="http://yoursite.com/2015/12/24/sparkSql中udf的使用/">
+      <div class="ds-thread" data-thread-key="2016/03/22/Spark-Unified-Memory-Manager/"
+           data-title="Spark Unified Memory Manager" data-url="http://yoursite.com/2016/03/22/Spark-Unified-Memory-Manager/">
       </div>
     
   </div>
@@ -699,7 +519,7 @@ travel,dance
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Example"><span class="nav-number">1.</span> <span class="nav-text">Example</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#个数统计"><span class="nav-number">1.1.</span> <span class="nav-text">个数统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空值填补"><span class="nav-number">1.2.</span> <span class="nav-text">空值填补</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型转化"><span class="nav-number">1.3.</span> <span class="nav-text">类型转化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#综合运用"><span class="nav-number">2.</span> <span class="nav-text">综合运用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#以前的内存管理"><span class="nav-number">1.</span> <span class="nav-text">以前的内存管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unified_MemoryManager简述"><span class="nav-number">2.</span> <span class="nav-text">Unified MemoryManager简述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#exetution向storage”借“内存"><span class="nav-number">2.1.</span> <span class="nav-text">exetution向storage”借“内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#storage向execution“借”内存"><span class="nav-number">2.2.</span> <span class="nav-text">storage向execution“借”内存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带来的好处"><span class="nav-number">3.</span> <span class="nav-text">带来的好处</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

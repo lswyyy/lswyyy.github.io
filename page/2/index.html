@@ -266,6 +266,127 @@
             
               
                 
+                <a class="post-title-link" href="/2015/11/26/磁盘IO对spark的影响/" itemprop="url">
+                  磁盘IO对spark的影响
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-11-26T14:34:21+08:00" content="2015-11-26">
+              2015-11-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/11/26/磁盘IO对spark的影响/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/26/磁盘IO对spark的影响/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>红框圈起来的是3块硬盘的机器，其余的是单硬盘的机器。</p>
+<p><img src="http://img.blog.csdn.net/20151126132904742" alt="性能"></p>
+<p>可以看到在3硬盘的机器的处理速度是单 硬盘机器的2-3倍。</p>
+<p>同时shuffle的性能也有很大提高<br><img src="http://img.blog.csdn.net/20151208105610212" alt="这里写图片描述"></p>
+<p>为了数据的本地性(减少网络io)，hdfs与spark往往都是在一个集群中。磁盘io不足还会影响到hdfs的读取与结果的存放。导致cpu长期等待浪费计算性能。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/11/26/磁盘IO对spark的影响/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/11/17/spark-dynamicAllocation/" itemprop="url">
                   spark Dynamic Allocation
                 </a>
@@ -1165,7 +1286,7 @@ npm install hexo-deployer-git --<span class="keyword">save</span>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

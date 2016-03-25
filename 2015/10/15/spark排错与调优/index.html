@@ -74,7 +74,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165917751">
 <meta property="og:image" content="http://img.blog.csdn.net/20151015165959710">
 <meta property="og:image" content="http://img.blog.csdn.net/20151210161217631">
-<meta property="og:updated_time" content="2016-03-25T09:50:27.000Z">
+<meta property="og:updated_time" content="2016-03-25T09:53:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spark排错与优化">
 <meta name="twitter:description" content="一. 运维1. Master挂掉,standby重启也失效Master默认使用512M内存，当集群中运行的任务特别多时，就会挂掉，原因是master会读取每个task的event log日志去生成spark ui，内存不足自然会OOM，可以在master的运行日志中看到，通过HA启动的master自然也会因为这个原因失败。
@@ -468,11 +468,11 @@ rdd.<span class="built_in">map</span>{r =&gt; x.doSomething(r) }.collect  <span 
  <span class="tag">Job</span> <span class="tag">aborted</span> <span class="tag">due</span> <span class="tag">to</span> <span class="tag">stage</span> <span class="tag">failure</span>: <span class="tag">Total</span> <span class="tag">size</span> <span class="tag">of</span> <span class="tag">serialized</span> 
  <span class="tag">results</span> <span class="tag">of</span> 374 <span class="tag">tasks</span> (1026<span class="class">.0</span> <span class="tag">MB</span>) <span class="tag">is</span> <span class="tag">bigger</span> <span class="tag">than</span>
   <span class="tag">spark</span><span class="class">.driver</span><span class="class">.maxResultSize</span> (1024<span class="class">.0</span> <span class="tag">MB</span>)
-</code></pre><h4 id="解决-7">解决</h4><p>spark.driver.maxResultSize默认大小为1G    每个Spark action(如collect)所有分区的序列化结果的总大小限制，简而言之就是executor给driver返回的结果过大，报这个错说明需要提高这个值了。</p>
+</code></pre><h4 id="解决-7">解决</h4><p>spark.driver.maxResultSize默认大小为1G    每个Spark action(如collect)所有分区的序列化结果的总大小限制，简而言之就是executor给driver返回的结果过大，报这个错说明需要提高这个值或者避免使用类似的方法，比如countByValue，countByKey等。</p>
 <pre><code>spark<span class="class">.driver</span><span class="class">.maxResultSize</span> <span class="number">2</span>g
 </code></pre><h3 id="7-taskSet_too_large">7.taskSet too large</h3><h4 id="错误提示-6">错误提示</h4><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WARN TaskSetManager: Stage <span class="number">198</span> contains a <span class="keyword">task</span> of very large <span class="keyword">size</span> (<span class="number">5953</span> KB). The maximum recommended <span class="keyword">task</span> <span class="keyword">size</span> is <span class="number">100</span> KB.</span><br></pre></td></tr></table></figure>
 <p>这个WARN可能还会导致ERROR<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java<span class="class">.lang</span><span class="class">.RuntimeException</span>: Failed to commit task</span><br><span class="line"></span><br><span class="line">Caused by: org<span class="class">.apache</span><span class="class">.spark</span><span class="class">.executor</span><span class="class">.CommitDeniedException</span>: attempt_201603251514_0218_m_000245_0: Not committed because the driver did not authorize commit</span><br></pre></td></tr></table></figure></p>
-<h4 id="解决-8">解决</h4><p>提示比较明显了，一个Stage中包含的task过大，一般由于你的transform过程太长，因此driver给executor分发的task就会变的很大。<br>如果你比较了解spark中的stage是如何划分的，这个问题就比较简单了。<br>所以解决这个问题我们可以通过拆分stage解决。也就是在执行过程中调用<code>cache.count</code>缓存一些中间数据从而切断过长的stage。</p>
+<h4 id="解决-8">解决</h4><p>如果你比较了解spark中的stage是如何划分的，这个问题就比较简单了。<br>一个Stage中包含的task过大，一般由于你的transform过程太长，因此driver给executor分发的task就会变的很大。<br>所以解决这个问题我们可以通过拆分stage解决。也就是在执行过程中调用<code>cache.count</code>缓存一些中间数据从而切断过长的stage。</p>
 <h3 id="8-环境报错">8.环境报错</h3><ol>
 <li><p>driver节点内存不足<br>driver内存不足导致无法启动application,将driver分配到内存足够的机器上或减少driver-memory的使用。</p>
 <pre><code>Java HotSpot(TM) 64-Bit Server VM warning: INFO:

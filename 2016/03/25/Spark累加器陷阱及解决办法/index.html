@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="hexo," />
+  <meta name="keywords" content="spark," />
 
 
 
@@ -57,49 +57,27 @@
 
 
 
-<meta name="description" content="环境Git
-Github仓库:xxx.github.io
-hexo 3.x
-安装Hexonpm install -g hexo
-初始化blog框架//创建博客文件夹
-mkdir GitBlog
-cd GitBlog
+<meta name="description" content="程序中可能会使用到spark提供的累加器功能，可是如果你不了解它的运行机制，有时候会带来一些负面作用（错误的累加结果）。
+下文会介绍产生错误结果的原因，并提供一种解决办法。
 
-//初始化    
-hexo init
-npm install
-npm install hexo-deployer-git --save">
+Accumulator简介Accumulator是spark提供的累加器，顾名思义，该变量只能够增加。只有driver能获取到Accumulator的值（使用value方法），Task只能对其做增加操作（使用 +=）。你也可">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用Hexo搭建github博客">
-<meta property="og:url" content="http://yoursite.com/2015/06/09/使用Hexo搭建github博客/index.html">
+<meta property="og:title" content="Spark累加器(Accumulator)陷阱及解决办法">
+<meta property="og:url" content="http://yoursite.com/2016/03/25/Spark累加器陷阱及解决办法/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
-<meta property="og:description" content="环境Git
-Github仓库:xxx.github.io
-hexo 3.x
-安装Hexonpm install -g hexo
-初始化blog框架//创建博客文件夹
-mkdir GitBlog
-cd GitBlog
+<meta property="og:description" content="程序中可能会使用到spark提供的累加器功能，可是如果你不了解它的运行机制，有时候会带来一些负面作用（错误的累加结果）。
+下文会介绍产生错误结果的原因，并提供一种解决办法。
 
-//初始化    
-hexo init
-npm install
-npm install hexo-deployer-git --save">
-<meta property="og:updated_time" content="2015-12-15T15:38:42.000Z">
+Accumulator简介Accumulator是spark提供的累加器，顾名思义，该变量只能够增加。只有driver能获取到Accumulator的值（使用value方法），Task只能对其做增加操作（使用 +=）。你也可">
+<meta property="og:image" content="http://img.blog.csdn.net/20160325142657948">
+<meta property="og:image" content="http://img.blog.csdn.net/20160325143121589">
+<meta property="og:updated_time" content="2016-03-25T06:42:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用Hexo搭建github博客">
-<meta name="twitter:description" content="环境Git
-Github仓库:xxx.github.io
-hexo 3.x
-安装Hexonpm install -g hexo
-初始化blog框架//创建博客文件夹
-mkdir GitBlog
-cd GitBlog
+<meta name="twitter:title" content="Spark累加器(Accumulator)陷阱及解决办法">
+<meta name="twitter:description" content="程序中可能会使用到spark提供的累加器功能，可是如果你不了解它的运行机制，有时候会带来一些负面作用（错误的累加结果）。
+下文会介绍产生错误结果的原因，并提供一种解决办法。
 
-//初始化    
-hexo init
-npm install
-npm install hexo-deployer-git --save">
+Accumulator简介Accumulator是spark提供的累加器，顾名思义，该变量只能够增加。只有driver能获取到Accumulator的值（使用value方法），Task只能对其做增加操作（使用 +=）。你也可">
 
 
 
@@ -117,7 +95,7 @@ npm install hexo-deployer-git --save">
   };
 </script>
 
-  <title> 使用Hexo搭建github博客 | LSW'S BLOG </title>
+  <title> Spark累加器(Accumulator)陷阱及解决办法 | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -297,7 +275,7 @@ npm install hexo-deployer-git --save">
             
             
               
-                使用Hexo搭建github博客
+                Spark累加器(Accumulator)陷阱及解决办法
               
             
           </h1>
@@ -309,8 +287,8 @@ npm install hexo-deployer-git --save">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-06-09T22:00:00+08:00" content="2015-06-09">
-              2015-06-09
+            <time itemprop="dateCreated" datetime="2016-03-25T13:00:00+08:00" content="2016-03-25">
+              2016-03-25
             </time>
           </span>
 
@@ -323,8 +301,8 @@ npm install hexo-deployer-git --save">
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">hexo</span>
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
                   </a>
                 </span>
 
@@ -339,8 +317,8 @@ npm install hexo-deployer-git --save">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/06/09/使用Hexo搭建github博客/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/06/09/使用Hexo搭建github博客/" itemprop="commentsCount"></span>
+                <a href="/2016/03/25/Spark累加器陷阱及解决办法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/25/Spark累加器陷阱及解决办法/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -362,39 +340,25 @@ npm install hexo-deployer-git --save">
       
 
       
-        <h2 id="环境">环境</h2><pre><code><span class="tag">Git</span>
-<span class="tag">Github</span>仓库<span class="pseudo">:xxx</span><span class="class">.github</span><span class="class">.io</span>
-<span class="tag">hexo</span> 3<span class="class">.x</span>
-</code></pre><h2 id="安装Hexo">安装Hexo</h2><pre><code>npm <span class="operator"><span class="keyword">install</span> -<span class="keyword">g</span> hexo</span>
-</code></pre><h2 id="初始化blog框架">初始化blog框架</h2><pre><code><span class="comment">//创建博客文件夹</span>
-<span class="keyword">mkdir</span> GitBlog
-<span class="keyword">cd</span> GitBlog
+        <blockquote>
+<p> 程序中可能会使用到spark提供的累加器功能，可是如果你不了解它的运行机制，有时候会带来一些负面作用（错误的累加结果）。</p>
+<p>下文会介绍产生错误结果的原因，并提供一种解决办法。</p>
+</blockquote>
+<h2 id="Accumulator简介">Accumulator简介</h2><p>Accumulator是spark提供的累加器，顾名思义，该变量只能够增加。<br>只有driver能获取到Accumulator的值（使用value方法），Task只能对其做增加操作（使用 +=）。你也可以在为Accumulator命名(不支持python)，这样就会在spark web ui中显示，可以帮助你了解程序运行的情况。</p>
+<a id="more"></a>
+<h2 id="Accumulator使用">Accumulator使用</h2><h3 id="使用示例">使用示例</h3><p>举个最简单的accumulator的使用例子：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在driver中定义</span></span><br><span class="line">val accum = sc.<span class="function"><span class="title">accumulator</span><span class="params">(<span class="number">0</span>, <span class="string">"Example Accumulator"</span>)</span></span></span><br><span class="line"><span class="comment">//在task中进行累加</span></span><br><span class="line">sc.<span class="function"><span class="title">parallelize</span><span class="params">(<span class="number">1</span> to <span class="number">10</span>)</span></span>.<span class="function"><span class="title">foreach</span><span class="params">(x=&gt; accum += <span class="number">1</span>)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//在driver中输出</span></span><br><span class="line">accum<span class="class">.value</span></span><br><span class="line"><span class="comment">//结果将返回10</span></span><br><span class="line">res: <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<h3 id="累加器的错误用法">累加器的错误用法</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">val accum= sc.accumulator(<span class="number">0</span>, <span class="string">"Error Accumulator"</span>)</span><br><span class="line">val data = sc.parallelize(<span class="number">1</span> to <span class="number">10</span>)</span><br><span class="line"><span class="comment">//用accumulator统计偶数出现的次数，同时偶数返回0，奇数返回1</span></span><br><span class="line">val newData = data.<span class="built_in">map</span>&#123;x =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span>(x%<span class="number">2</span> == <span class="number">0</span>)&#123;</span><br><span class="line">    accum += <span class="number">1</span></span><br><span class="line">      <span class="number">0</span></span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="number">1</span></span><br><span class="line">&#125;&#125;</span><br><span class="line"><span class="comment">//使用action操作触发执行</span></span><br><span class="line">newData.count</span><br><span class="line"><span class="comment">//此时accum的值为5，是我们要的结果</span></span><br><span class="line">accum.value</span><br><span class="line"></span><br><span class="line"><span class="comment">//继续操作，查看刚才变动的数据,foreach也是action操作</span></span><br><span class="line">newData.foreach(println)</span><br><span class="line"><span class="comment">//上个步骤没有进行累计器操作，可是累加器此时的结果已经是10了</span></span><br><span class="line"><span class="comment">//这并不是我们想要的结果</span></span><br><span class="line">accum.value</span><br></pre></td></tr></table></figure>
+<h2 id="原因分析">原因分析</h2><p>我们都知道，spark中的一系列transform操作会构成一串长的任务链，此时需要通过一个action操作来触发，accumulator也是一样。因此在一个action操作之前，你调用value方法查看其数值，肯定是没有任何变化的。</p>
+<p>所以在第一次count(action操作)之后，我们发现累加器的数值变成了5，是我们要的答案。</p>
+<p>之后又对新产生的的newData进行了一次foreach(action操作)，其实这个时候又执行了一次map(transform)操作，所以累加器又增加了5。最终获得的结果变成了10。</p>
+<p><img src="http://img.blog.csdn.net/20160325142657948" alt="这里写图片描述"></p>
+<h2 id="解决办法">解决办法</h2><p>看了上面的分析，大家都有这种印象了，那就是使用累加器的过程中只能使用一次action的操作才能保证结果的准确性。</p>
+<p>事实上，还是有解决方案的，只要将任务之间的依赖关系切断就可以了。什么方法有这种功能呢？你们肯定都想到了，cache，persist。调用这个方法的时候会将之前的依赖切除，后续的累加器就不会再被之前的transfrom操作影响到了。</p>
+<p><img src="http://img.blog.csdn.net/20160325143121589" alt="这里写图片描述"></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="variable"><span class="keyword">val</span> accum</span>= sc.accumulator(<span class="number">0</span>, <span class="string">"Error Accumulator"</span>)</span><br><span class="line"><span class="variable"><span class="keyword">val</span> data</span> = sc.parallelize(<span class="number">1</span> to <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//代码和上方相同</span></span><br><span class="line"><span class="variable"><span class="keyword">val</span> newData</span> = data.map&#123;x =&gt; &#123;...&#125;&#125;</span><br><span class="line"><span class="comment">//使用cache缓存数据，切断依赖。</span></span><br><span class="line">newData.cache.count</span><br><span class="line"><span class="comment">//此时accum的值为5</span></span><br><span class="line">accum.value</span><br><span class="line"></span><br><span class="line">newData.foreach(println)</span><br><span class="line"><span class="comment">//此时的accum依旧是5</span></span><br><span class="line">accum.value</span><br></pre></td></tr></table></figure>
+<h2 id="总结">总结</h2><p>使用Accumulator时，为了保证准确性，只使用一次action操作。如果需要使用多次则使用cache或persist操作切断依赖。</p>
 
-<span class="comment">//初始化    </span>
-hexo init
-npm install
-npm install hexo-deployer-git --<span class="keyword">save</span>
-</code></pre><a id="more"></a>    
-<h2 id="修改_config-yml">修改<code>_config.yml</code></h2><p>使用github ssh地址</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">deploy</span>:</span><br><span class="line">  <span class="attribute">type</span>: git</span><br><span class="line">  <span class="attribute">repository</span>: git<span class="variable">@github</span>.<span class="attribute">com</span>:lswyyy/lswyyy.github.io.git</span><br><span class="line">  <span class="attribute">branch</span>: master</span><br></pre></td></tr></table></figure>
-<h2 id="部署启动">部署启动</h2><p>生成静态页面，自带一个<code>helloworld.md</code></p>
-<pre><code><span class="comment">//hexo generate</span>
-hexo <span class="keyword">g</span> 
-</code></pre><p>部署到git</p>
-<pre><code><span class="comment">//hexo deply</span>
-hexo <span class="literal">d</span>
-</code></pre><p>也可以直接使用</p>
-<pre><code>heo <span class="keyword">d</span> -<span class="keyword">g</span>     
-</code></pre><p>本地预览,启动后在<code>http://localhost:4000/</code>中查看</p>
-<pre><code><span class="comment">//hexo server</span>
-hexo <span class="literal">s</span>
-</code></pre><h2 id="写blog">写blog</h2><p>将写好的md文件放到<code>source/_posts</code>下，在开头添加一些描述信息，分类和标签不是必须的。</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">title</span>: <span class="string">文章名</span></span><br><span class="line"><span class="attribute">date</span>: <span class="string">2015-12-02 11:09:17</span></span><br><span class="line"><span class="attribute">category</span>: <span class="string">"分类名"   </span></span><br><span class="line"><span class="attribute">tags</span>: <span class="string">"标签名"       </span></span><br><span class="line"></span><br><span class="line"><span class="haml">-<span class="ruby">--</span><br><span class="line"></span>你的文章</span></span><br></pre></td></tr></table></figure>
-<p>或者使用命令<code>hexo n</code>,将会生成一个md文件，直接将你的md文件追加进去就行了</p>
-<pre><code><span class="title">hexo</span> n 文章名
-</code></pre><p>将更改部署到git</p>
-<pre><code>hexo <span class="keyword">d</span> -<span class="keyword">g</span>
-</code></pre>
       
     </div>
 
@@ -408,7 +372,7 @@ hexo <span class="literal">s</span>
       
         <div class="post-tags">
           
-            <a href="/tags/hexo/" rel="tag">#hexo</a>
+            <a href="/tags/spark/" rel="tag">#spark</a>
           
         </div>
       
@@ -417,13 +381,13 @@ hexo <span class="literal">s</span>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/03/22/Spark-Unified-Memory-Manager/" rel="next" title="Spark Unified Memory Manager">
+                <i class="fa fa-chevron-left"></i> Spark Unified Memory Manager
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/06/10/Hexo主题使用进阶/" rel="prev" title="Hexo主题使用进阶">
-                Hexo主题使用进阶 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -449,8 +413,8 @@ hexo <span class="literal">s</span>
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/06/09/使用Hexo搭建github博客/"
-           data-title="使用Hexo搭建github博客" data-url="http://yoursite.com/2015/06/09/使用Hexo搭建github博客/">
+      <div class="ds-thread" data-thread-key="2016/03/25/Spark累加器陷阱及解决办法/"
+           data-title="Spark累加器(Accumulator)陷阱及解决办法" data-url="http://yoursite.com/2016/03/25/Spark累加器陷阱及解决办法/">
       </div>
     
   </div>
@@ -546,7 +510,7 @@ hexo <span class="literal">s</span>
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Hexo"><span class="nav-number">2.</span> <span class="nav-text">安装Hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化blog框架"><span class="nav-number">3.</span> <span class="nav-text">初始化blog框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改_config-yml"><span class="nav-number">4.</span> <span class="nav-text">修改_config.yml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署启动"><span class="nav-number">5.</span> <span class="nav-text">部署启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写blog"><span class="nav-number">6.</span> <span class="nav-text">写blog</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Accumulator简介"><span class="nav-number">1.</span> <span class="nav-text">Accumulator简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Accumulator使用"><span class="nav-number">2.</span> <span class="nav-text">Accumulator使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用示例"><span class="nav-number">2.1.</span> <span class="nav-text">使用示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#累加器的错误用法"><span class="nav-number">2.2.</span> <span class="nav-text">累加器的错误用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原因分析"><span class="nav-number">3.</span> <span class="nav-text">原因分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决办法"><span class="nav-number">4.</span> <span class="nav-text">解决办法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

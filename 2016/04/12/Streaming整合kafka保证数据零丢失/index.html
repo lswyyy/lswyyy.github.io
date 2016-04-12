@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="hexo," />
+  <meta name="keywords" content="spark," />
 
 
 
@@ -57,34 +57,19 @@
 
 
 
-<meta name="description" content="更换为next主题进入hexo站点文件夹
-cd your-hexo-site
-clone Next代码并存放到 themes/next 目录下
-git clone https://github.com/iissnan/hexo-theme-next themes/next
-在站点 _config.yml 中修改:
-theme: next
-Next 主题拥有”题中题”，可以在主题的 _config.">
+<meta name="description" content="在使用spark streaming消费kafka数据时，程序异常中断下发现会有数据丢失的情况。
+下文将说明如何避免这种情况。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo主题使用进阶">
-<meta property="og:url" content="http://yoursite.com/2015/06/10/Hexo主题使用进阶/index.html">
+<meta property="og:title" content="Spark Streaming kafka 实现数据零丢失的几种方式">
+<meta property="og:url" content="http://yoursite.com/2016/04/12/Streaming整合kafka保证数据零丢失/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
-<meta property="og:description" content="更换为next主题进入hexo站点文件夹
-cd your-hexo-site
-clone Next代码并存放到 themes/next 目录下
-git clone https://github.com/iissnan/hexo-theme-next themes/next
-在站点 _config.yml 中修改:
-theme: next
-Next 主题拥有”题中题”，可以在主题的 _config.">
-<meta property="og:updated_time" content="2015-12-15T16:08:16.000Z">
+<meta property="og:description" content="在使用spark streaming消费kafka数据时，程序异常中断下发现会有数据丢失的情况。
+下文将说明如何避免这种情况。">
+<meta property="og:updated_time" content="2016-04-12T06:38:05.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo主题使用进阶">
-<meta name="twitter:description" content="更换为next主题进入hexo站点文件夹
-cd your-hexo-site
-clone Next代码并存放到 themes/next 目录下
-git clone https://github.com/iissnan/hexo-theme-next themes/next
-在站点 _config.yml 中修改:
-theme: next
-Next 主题拥有”题中题”，可以在主题的 _config.">
+<meta name="twitter:title" content="Spark Streaming kafka 实现数据零丢失的几种方式">
+<meta name="twitter:description" content="在使用spark streaming消费kafka数据时，程序异常中断下发现会有数据丢失的情况。
+下文将说明如何避免这种情况。">
 
 
 
@@ -102,7 +87,7 @@ Next 主题拥有”题中题”，可以在主题的 _config.">
   };
 </script>
 
-  <title> Hexo主题使用进阶 | LSW'S BLOG </title>
+  <title> Spark Streaming kafka 实现数据零丢失的几种方式 | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -282,7 +267,7 @@ Next 主题拥有”题中题”，可以在主题的 _config.">
             
             
               
-                Hexo主题使用进阶
+                Spark Streaming kafka 实现数据零丢失的几种方式
               
             
           </h1>
@@ -294,8 +279,8 @@ Next 主题拥有”题中题”，可以在主题的 _config.">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-06-10T22:00:00+08:00" content="2015-06-10">
-              2015-06-10
+            <time itemprop="dateCreated" datetime="2016-04-12T13:00:00+08:00" content="2016-04-12">
+              2016-04-12
             </time>
           </span>
 
@@ -308,8 +293,8 @@ Next 主题拥有”题中题”，可以在主题的 _config.">
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">hexo</span>
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
                   </a>
                 </span>
 
@@ -324,8 +309,8 @@ Next 主题拥有”题中题”，可以在主题的 _config.">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/06/10/Hexo主题使用进阶/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/06/10/Hexo主题使用进阶/" itemprop="commentsCount"></span>
+                <a href="/2016/04/12/Streaming整合kafka保证数据零丢失/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/12/Streaming整合kafka保证数据零丢失/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -347,43 +332,38 @@ Next 主题拥有”题中题”，可以在主题的 _config.">
       
 
       
-        <h2 id="更换为next主题">更换为<code>next</code>主题</h2><p>进入hexo站点文件夹</p>
-<pre><code><span class="built_in">cd</span> your-hexo-site
-</code></pre><p>clone <code>Next</code>代码并存放到 <code>themes/next</code> 目录下</p>
-<pre><code>git clone http<span class="variable">s:</span>//github.<span class="keyword">com</span>/iissnan/hexo-theme-<span class="keyword">next</span> themes/<span class="keyword">next</span>
-</code></pre><p>在站点 <code>_config.yml</code> 中修改:</p>
-<pre><code><span class="attribute">theme</span>: <span class="string">next</span>
-</code></pre><p><code>Next</code> 主题拥有”题中题”，可以在主题的 <code>_config.yml</code> 中设置：</p>
-<pre><code><span class="label">scheme:</span> Mist  <span class="preprocessor"># 开启Next.Mist主题</span>
-</code></pre><a id="more"></a>
-<h2 id="设置头像">设置头像</h2><p>在站点 <code>_config.yml</code> 中添加</p>
-<pre><code><span class="string">avatar:</span> <span class="string">http:</span><span class="comment">//....  # 头像的URL</span>
-</code></pre><h2 id="添加分类">添加分类</h2><p>新建一个页面，命名为 <code>categories</code></p>
-<pre><code>hexo <span class="keyword">new</span> page categories
-</code></pre><p>在 <code>source/categories</code> 目录的 <code>index.md</code> 中修改:</p>
-<pre><code>title: 分类
-date: 2015-12-02 12:44:45
-<span class="header">type: "categories"
----</span>
-</code></pre><p>在主题的 <code>_config.yml</code> 中取消注释:</p>
-<pre><code><span class="attribute">categories</span>: <span class="string">/categories</span>
-</code></pre><p>在要分类的文章中加入 <code>category</code> 属性:</p>
-<pre><code><span class="label">category:</span> <span class="string">"hexo"</span>  <span class="preprocessor"># 分类为 hexo </span>
-</code></pre><h2 id="添加标签">添加标签</h2><p>新建一个页面，命名为 <code>tags</code></p>
-<pre><code>hexo <span class="keyword">new</span> page <span class="keyword">tags</span>
-</code></pre><p>在 <code>source/tags</code> 目录的 <code>index.md</code> 中修改:</p>
-<pre><code>title: tags
-date: 2015-12-02 12:10:34
-<span class="header">type: "tags"
----</span>
-</code></pre><p>在主题的 <code>_config.yml</code> 中取消注释:</p>
-<pre><code><span class="keyword">tag</span><span class="variable">s:</span> /<span class="keyword">tags</span>
-</code></pre><p>在需要变迁的文章中加入 <code>tgs</code> 属性:</p>
-<pre><code><span class="label">tags:</span> [spark,sparkSQL]  <span class="preprocessor"># 添加spark和sparkSQL两个标签</span>
-</code></pre><h2 id="添加评论">添加评论</h2><p>在 <a href="&quot;http://duoshuo.com&quot;">多说</a> 创建一个站点，创建时填写的多说域名就是你的 <code>duoshuo_shortname</code></p>
-<p>在站点 <code>_config.yml</code> 中设置：</p>
-<pre><code><span class="attribute">duoshuo_shortname</span>: <span class="string">your_duoshuo_shortname</span>
-</code></pre><h2 id="更多功能">更多功能</h2><p>参考 <a href="&quot;http://theme-next.iissnan.com&quot;">next官方帮助文档</a></p>
+        <blockquote>
+<p>在使用spark streaming消费kafka数据时，程序异常中断下发现会有数据丢失的情况。</p>
+<p>下文将说明如何避免这种情况。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="Definitions">Definitions</h2><p>问题开始之前先解释下流处理中的一些概念：</p>
+<ul>
+<li><code>At most once</code> - 每条数据最多被处理一次（0次或1次）</li>
+<li><code>At least once</code> - 每条数据最少被处理一次 (1次或更多)</li>
+<li><code>Exactly once</code> - 每条数据只会被处理一次（没有数据会丢失，并且没有数据会被多次处理）</li>
+</ul>
+<h2 id="high_level_API">high level API</h2><p><strong>如果不做容错，将会带来数据丢失</strong></p>
+<p>因为receiver一直在接收数据，在其没有处理的时候（已通知zk数据接收到），executor突然挂掉(或是driver挂掉通知executor关闭)，缓存在其中的数据就会丢失。</p>
+<p><strong>因为这个问题，Spark1.2开始加入了WAL（Write ahead log）</strong></p>
+<p>开启 WAL,将receiver获取数据的存储级别修改为<code>StorageLevel.MEMORY_AND_DISK_SER</code></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">val conf = new <span class="function"><span class="title">SparkConf</span><span class="params">()</span></span></span><br><span class="line">conf.<span class="function"><span class="title">set</span><span class="params">(<span class="string">"spark.streaming.receiver.writeAheadLog.enable"</span>,<span class="string">"true"</span>)</span></span></span><br><span class="line">val sc= new <span class="function"><span class="title">SparkContext</span><span class="params">(conf)</span></span></span><br><span class="line">val ssc = new <span class="function"><span class="title">StreamingContext</span><span class="params">(sc,Seconds(<span class="number">5</span>)</span></span>)</span><br><span class="line"></span><br><span class="line">ssc.<span class="function"><span class="title">checkpoint</span><span class="params">(<span class="string">"walDir"</span>)</span></span>  	</span><br><span class="line">val lines = KafkaUtils<span class="class">.createStream</span>[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicMap, StorageLevel.MEMORY_AND_DISK_SER).<span class="function"><span class="title">map</span><span class="params">(_._2)</span></span></span><br></pre></td></tr></table></figure>
+<p><strong>开启WAL后，依旧存在数据丢失问题</strong></p>
+<p>即使按官方说的设置了WAL，依旧会有数据丢失，这是为什么？</p>
+<p>如果只是这样，依旧会有数据丢失，因为在任务中断时<code>receiver</code>也被停止了，将会造成数据丢失，提示如下：</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR ReceiverTracker: Deregistered receiver <span class="keyword">for</span> stream <span class="number">0</span>: Stopped by driver</span><br><span class="line">WARN BlockGenerator: Cannot stop BlockGenerator as its not <span class="keyword">in</span> the Active <span class="keyword">state</span> [<span class="keyword">state</span> = StoppedAll]</span><br><span class="line">WARN BatchedWriteAheadLog: BatchedWriteAheadLog Writer queue interrupted.</span><br></pre></td></tr></table></figure>
+<p>在Streaming程序的最后添加代码，只有在确认所有receiver都关闭的情况下才终止程序。</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sys.addShutdownHook(&#123;</span><br><span class="line">  ssc.<span class="literal">stop</span>(<span class="literal">true</span>,<span class="literal">true</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>调用的方法为：</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">stop</span><span class="params">(stopSparkContext: Boolean, stopGracefully: Boolean)</span>:</span> Unit
+</code></pre><h3 id="WAL带来的问题">WAL带来的问题</h3><p>WAL实现的是<code>At-least-once</code>语义。</p>
+<p>如果在写入到外部存储的数据还没有将offset更新到zookeeper就挂掉，这些数据将会被反复消费。</p>
+<p>同时，降低了程序的吞吐量。</p>
+<h2 id="Kafka_direct_API">Kafka direct API</h2><p>Kafka direct API 的运行方式，将不再使用receiver来读取数据，也不用使用WAL机制。<br>同时保证了<code>exactly-once</code>语义，不会在WAL中消费重复数据。</p>
+<p>不过需要自己完成将offset写入zk的过程，在官方文档中都有相应介绍。</p>
+<p>例如如下的调用方式：</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">messages.foreachRDD<span class="comment">(rdd=&gt;&#123;</span><br><span class="line">	val message = rdd.map(_._2)</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">//对数据进行一些操作</span></span><br><span class="line">	message....</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//更新zk上的offset (自己实现)</span></span><br><span class="line">	updateZKOffsets<span class="comment">(rdd)</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>两种方式的具体数据处理流程可以参考该文章：<br><a href="http://getindata.com/blog/post/recent-evolution-of-zero-data-loss-guarantee-in-spark-streaming-with-kafka/" target="_blank" rel="external">http://getindata.com/blog/post/recent-evolution-of-zero-data-loss-guarantee-in-spark-streaming-with-kafka/</a></p>
 
       
     </div>
@@ -398,7 +378,7 @@ date: 2015-12-02 12:10:34
       
         <div class="post-tags">
           
-            <a href="/tags/hexo/" rel="tag">#hexo</a>
+            <a href="/tags/spark/" rel="tag">#spark</a>
           
         </div>
       
@@ -407,17 +387,13 @@ date: 2015-12-02 12:10:34
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/06/09/使用Hexo搭建github博客/" rel="next" title="使用Hexo搭建github博客">
-                <i class="fa fa-chevron-left"></i> 使用Hexo搭建github博客
+              <a href="/2016/03/25/Spark累加器陷阱及解决办法/" rel="next" title="Spark累加器(Accumulator)陷阱及解决办法">
+                <i class="fa fa-chevron-left"></i> Spark累加器(Accumulator)陷阱及解决办法
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/09/24/spark-join-broadcast优化/" rel="prev" title="spark join broadcast优化">
-                spark join broadcast优化 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -443,8 +419,8 @@ date: 2015-12-02 12:10:34
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/06/10/Hexo主题使用进阶/"
-           data-title="Hexo主题使用进阶" data-url="http://yoursite.com/2015/06/10/Hexo主题使用进阶/">
+      <div class="ds-thread" data-thread-key="2016/04/12/Streaming整合kafka保证数据零丢失/"
+           data-title="Spark Streaming kafka 实现数据零丢失的几种方式" data-url="http://yoursite.com/2016/04/12/Streaming整合kafka保证数据零丢失/">
       </div>
     
   </div>
@@ -540,7 +516,7 @@ date: 2015-12-02 12:10:34
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#更换为next主题"><span class="nav-number">1.</span> <span class="nav-text">更换为next主题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置头像"><span class="nav-number">2.</span> <span class="nav-text">设置头像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加分类"><span class="nav-number">3.</span> <span class="nav-text">添加分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加标签"><span class="nav-number">4.</span> <span class="nav-text">添加标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加评论"><span class="nav-number">5.</span> <span class="nav-text">添加评论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多功能"><span class="nav-number">6.</span> <span class="nav-text">更多功能</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Definitions"><span class="nav-number">1.</span> <span class="nav-text">Definitions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#high_level_API"><span class="nav-number">2.</span> <span class="nav-text">high level API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WAL带来的问题"><span class="nav-number">2.1.</span> <span class="nav-text">WAL带来的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka_direct_API"><span class="nav-number">3.</span> <span class="nav-text">Kafka direct API</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

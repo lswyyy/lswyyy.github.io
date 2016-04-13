@@ -65,7 +65,7 @@
 <meta property="og:site_name" content="LSW'S BLOG">
 <meta property="og:description" content="在使用spark streaming消费kafka数据时，程序异常中断下发现会有数据丢失的情况。
 下文将说明如何避免这种情况。">
-<meta property="og:updated_time" content="2016-04-12T06:38:05.000Z">
+<meta property="og:updated_time" content="2016-04-13T01:29:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark Streaming kafka 实现数据零丢失的几种方式">
 <meta name="twitter:description" content="在使用spark streaming消费kafka数据时，程序异常中断下发现会有数据丢失的情况。
@@ -350,7 +350,7 @@
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">val conf = new <span class="function"><span class="title">SparkConf</span><span class="params">()</span></span></span><br><span class="line">conf.<span class="function"><span class="title">set</span><span class="params">(<span class="string">"spark.streaming.receiver.writeAheadLog.enable"</span>,<span class="string">"true"</span>)</span></span></span><br><span class="line">val sc= new <span class="function"><span class="title">SparkContext</span><span class="params">(conf)</span></span></span><br><span class="line">val ssc = new <span class="function"><span class="title">StreamingContext</span><span class="params">(sc,Seconds(<span class="number">5</span>)</span></span>)</span><br><span class="line"></span><br><span class="line">ssc.<span class="function"><span class="title">checkpoint</span><span class="params">(<span class="string">"walDir"</span>)</span></span>  	</span><br><span class="line">val lines = KafkaUtils<span class="class">.createStream</span>[String, String, StringDecoder, StringDecoder](ssc, kafkaParams, topicMap, StorageLevel.MEMORY_AND_DISK_SER).<span class="function"><span class="title">map</span><span class="params">(_._2)</span></span></span><br></pre></td></tr></table></figure>
 <p><strong>开启WAL后，依旧存在数据丢失问题</strong></p>
 <p>即使按官方说的设置了WAL，依旧会有数据丢失，这是为什么？</p>
-<p>如果只是这样，依旧会有数据丢失，因为在任务中断时<code>receiver</code>也被停止了，将会造成数据丢失，提示如下：</p>
+<p>因为在任务中断时<code>receiver</code>也被强行终止了，将会造成数据丢失，提示如下：</p>
 <figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR ReceiverTracker: Deregistered receiver <span class="keyword">for</span> stream <span class="number">0</span>: Stopped by driver</span><br><span class="line">WARN BlockGenerator: Cannot stop BlockGenerator as its not <span class="keyword">in</span> the Active <span class="keyword">state</span> [<span class="keyword">state</span> = StoppedAll]</span><br><span class="line">WARN BatchedWriteAheadLog: BatchedWriteAheadLog Writer queue interrupted.</span><br></pre></td></tr></table></figure>
 <p>在Streaming程序的最后添加代码，只有在确认所有receiver都关闭的情况下才终止程序。</p>
 <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sys.addShutdownHook(&#123;</span><br><span class="line">  ssc.<span class="literal">stop</span>(<span class="literal">true</span>,<span class="literal">true</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>

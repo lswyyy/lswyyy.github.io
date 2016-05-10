@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ganglia," />
+  <meta name="keywords" content="spark," />
 
 
 
@@ -57,32 +57,22 @@
 
 
 
-<meta name="description" content="环境
-centOS6.6gmetad节点关闭iptable
-gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。
-一.安装epel源sudo wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm 
-
-sudo rpm -ivh epel-release-6-8.">
+<meta name="description" content="虽然spark已经提供了大量简单易用的API，但要想编写出高性能的spark应用，必须要对整体框架有一定的了解，对于Spark初学者来说是比较困难的。
+针对这个这个问题，其实在spark1.6中，已经加入了dataset，官方已经对其进行了一系列的优化，用户可以将rdd转化为dataset操作，减少学习成本。不过目前(1.6版本)依旧存在一些bug。
+下文讲解了使用RDD编程时，常用的几种代码优化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="部署ganglia3.7">
-<meta property="og:url" content="http://yoursite.com/2015/09/26/部署ganglia3.7/index.html">
+<meta property="og:title" content="编写Spark程序的几个优化点">
+<meta property="og:url" content="http://yoursite.com/2016/05/10/编写Spark程序的几个优化点/index.html">
 <meta property="og:site_name" content="LSW'S BLOG">
-<meta property="og:description" content="环境
-centOS6.6gmetad节点关闭iptable
-gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。
-一.安装epel源sudo wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm 
-
-sudo rpm -ivh epel-release-6-8.">
-<meta property="og:image" content="http://img.blog.csdn.net/20150926203648994">
-<meta property="og:updated_time" content="2016-03-18T06:14:50.000Z">
+<meta property="og:description" content="虽然spark已经提供了大量简单易用的API，但要想编写出高性能的spark应用，必须要对整体框架有一定的了解，对于Spark初学者来说是比较困难的。
+针对这个这个问题，其实在spark1.6中，已经加入了dataset，官方已经对其进行了一系列的优化，用户可以将rdd转化为dataset操作，减少学习成本。不过目前(1.6版本)依旧存在一些bug。
+下文讲解了使用RDD编程时，常用的几种代码优化">
+<meta property="og:updated_time" content="2016-05-10T05:58:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="部署ganglia3.7">
-<meta name="twitter:description" content="环境
-centOS6.6gmetad节点关闭iptable
-gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。
-一.安装epel源sudo wget http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm 
-
-sudo rpm -ivh epel-release-6-8.">
+<meta name="twitter:title" content="编写Spark程序的几个优化点">
+<meta name="twitter:description" content="虽然spark已经提供了大量简单易用的API，但要想编写出高性能的spark应用，必须要对整体框架有一定的了解，对于Spark初学者来说是比较困难的。
+针对这个这个问题，其实在spark1.6中，已经加入了dataset，官方已经对其进行了一系列的优化，用户可以将rdd转化为dataset操作，减少学习成本。不过目前(1.6版本)依旧存在一些bug。
+下文讲解了使用RDD编程时，常用的几种代码优化">
 
 
 
@@ -100,7 +90,7 @@ sudo rpm -ivh epel-release-6-8.">
   };
 </script>
 
-  <title> 部署ganglia3.7 | LSW'S BLOG </title>
+  <title> 编写Spark程序的几个优化点 | LSW'S BLOG </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -280,7 +270,7 @@ sudo rpm -ivh epel-release-6-8.">
             
             
               
-                部署ganglia3.7
+                编写Spark程序的几个优化点
               
             
           </h1>
@@ -292,8 +282,8 @@ sudo rpm -ivh epel-release-6-8.">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-09-26T20:09:17+08:00" content="2015-09-26">
-              2015-09-26
+            <time itemprop="dateCreated" datetime="2016-05-10T14:00:00+08:00" content="2016-05-10">
+              2016-05-10
             </time>
           </span>
 
@@ -306,8 +296,8 @@ sudo rpm -ivh epel-release-6-8.">
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/deploy/" itemprop="url" rel="index">
-                    <span itemprop="name">deploy</span>
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
                   </a>
                 </span>
 
@@ -322,8 +312,8 @@ sudo rpm -ivh epel-release-6-8.">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/09/26/部署ganglia3.7/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/26/部署ganglia3.7/" itemprop="commentsCount"></span>
+                <a href="/2016/05/10/编写Spark程序的几个优化点/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/10/编写Spark程序的几个优化点/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -345,81 +335,60 @@ sudo rpm -ivh epel-release-6-8.">
       
 
       
-        <p><strong>环境</strong></p>
-<p>centOS6.6<br>gmetad节点关闭iptable</p>
-<p>gmetad和httpd只需要在一台节点安装，gmond需要在每台节点上安装。</p>
-<h2 id="一-安装epel源">一.安装epel源</h2><pre><code>sudo wget http:<span class="comment">//download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm </span>
-
-sudo rpm -ivh epel-release-<span class="number">6</span>-<span class="number">8</span><span class="class">.noarch</span><span class="class">.rpm</span> 
-</code></pre><a id="more"></a>
-<h2 id="二-安装gmetad">二.安装gmetad</h2><p>安装依赖和php,gmetad<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install rrdtool rrdtool-devel ganglia-web ganglia-gmetad ganglia-gmond ganglia-gmond-python httpd apr-devel zlib-devel libconfuse-devel expat-devel pcre-devel php-<span class="built_in">common</span> php-<span class="keyword">cli</span> php-gb php</span><br></pre></td></tr></table></figure></p>
-<p>修改配置</p>
-<pre><code>sudo <span class="keyword">vim</span> /etc/ganglia/gmetad.<span class="keyword">conf</span>
-</code></pre><p>修改其中的date_source属性，第一个参数是集群的名字，第二个是接收数据的节点，可以有多个。</p>
-<p>如果使用的默认端口8649也可以不写端口号</p>
-<pre><code>dat<span class="built_in">a_source</span> <span class="string">"spark"</span> spark219:<span class="number">8649</span>
-</code></pre><p>设置开机启动服务</p>
-<pre><code>sudo chkconfig gmetad <span class="function_start"><span class="keyword">on</span></span>
-</code></pre><p>启动gmetad</p>
-<pre><code>sudo service gmetad <span class="literal">start</span>
-</code></pre><h2 id="三-安装httpd">三.安装httpd</h2><pre><code>vim /etc/httpd/<span class="keyword">conf</span>.<span class="keyword">d</span>/ganglia.<span class="keyword">conf</span>    
-</code></pre><p>修改为</p>
-<pre><code><span class="tag">&lt;Location /ganglia&gt;</span>
-<span class="keyword"><span class="common">Order</span></span> deny,allow
-<span class="keyword"><span class="common">Allow</span></span> from <span class="literal">all</span>
-<span class="tag">&lt;/Location&gt;</span>
-</code></pre><p>如果不修改启动网页时则会看到如下错误</p>
-<pre><code>You don<span class="attribute">'t</span> have permission <span class="keyword">to</span> <span class="keyword">access</span> /ganglia <span class="keyword">on</span> this server
-</code></pre><p>设置开机启动服务</p>
-<pre><code>sudo chkconfig httpd <span class="function_start"><span class="keyword">on</span></span>
-</code></pre><p>启动http服务</p>
-<pre><code>sudo service httpd <span class="literal">start</span>
-</code></pre><h2 id="四-安装gmond">四.安装gmond</h2><p>安装gmond</p>
-<pre><code>sudo yum <span class="keyword">install</span> ganglia-gmond
-</code></pre><p><strong>组播模式</strong><br>ganglia默认使用的就是组播模式，所以要修改的配置不多</p>
-<p>如果使用组播，请增加组播地址</p>
-<pre><code>sudo ip route add <span class="number">239.2</span><span class="number">.11</span><span class="number">.71</span> dev 你的网卡
-</code></pre><p>修改配置</p>
-<pre><code>sudo <span class="keyword">vim</span> /etc/ganglia/gmond.<span class="keyword">conf</span>
-</code></pre><p>修改参数</p>
-<pre><code>cluster{
-<span class="comment">//要发送到的分组名</span>
-name = <span class="string">"spark"</span>
-<span class="attribute">...</span>
-}
-</code></pre><p>启动gmond</p>
-<pre><code>sudo service gmond <span class="literal">start</span>
-</code></pre><p><strong>单播模式</strong></p>
-<p>修改配置</p>
-<pre><code>sudo <span class="keyword">vim</span> /etc/ganglia/gmond.<span class="keyword">conf</span>
-</code></pre><p>修改参数</p>
-<pre><code>cluster{
-name = <span class="string">"spark"</span>
-...
-}
-
-udp_send_channel {
-<span class="comment">//收集数据的节点,不同分组数据要发到不同节点</span>
-host = <span class="number">192.168</span><span class="number">.47</span><span class="number">.209</span>
-port = <span class="number">8649</span>
-ttl = <span class="number">1</span>
-}
-
-udp_recv_channel {
-port = <span class="number">8649</span>
-}
-</code></pre><p>设置开机启动服务</p>
-<pre><code>sudo chkconfig gmond <span class="function_start"><span class="keyword">on</span></span>
-</code></pre><p>启动gmond</p>
-<pre><code>sudo service gmond <span class="literal">start</span>
-</code></pre><p>如果服务启动失败，查看</p>
-<pre><code>sudo /usr/sbin/gmond <span class="operator">-d</span> <span class="number">1</span>
-</code></pre><h2 id="五-GUI">五.GUI</h2><p>在网页上通过<code>spark219:80/ganglia</code>访问</p>
-<p>进入web界面发现报错</p>
-<pre><code><span class="tag">There</span> <span class="tag">was</span> <span class="tag">an</span> <span class="tag">error</span> <span class="tag">collecting</span> <span class="tag">ganglia</span> <span class="tag">data</span> (127<span class="class">.0</span><span class="class">.0</span><span class="class">.1</span><span class="pseudo">:8652)</span>: <span class="tag">fsockopen</span> <span class="tag">error</span>: <span class="tag">Permission</span> <span class="tag">denied</span>
-</code></pre><p>临时关闭SELINUX可解决问题</p>
-<pre><code>sudo setenforce <span class="number">0</span>
-</code></pre><p>发现目前spark集群处于比较空闲的状态<br><img src="http://img.blog.csdn.net/20150926203648994" alt="spark"></p>
+        <blockquote>
+<p>虽然spark已经提供了大量简单易用的API，但要想编写出高性能的spark应用，必须要对整体框架有一定的了解，对于Spark初学者来说是比较困难的。</p>
+<p>针对这个这个问题，其实在spark1.6中，已经加入了dataset，官方已经对其进行了一系列的优化，用户可以将rdd转化为dataset操作，减少学习成本。不过目前(1.6版本)依旧存在一些bug。</p>
+<p>下文讲解了使用RDD编程时，常用的几种代码优化方法。</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="1-_repartition和coalesce">1. repartition和coalesce</h3><p>这两个方法都可以用在对数据的重新分区中，其中<code>repartition</code>是一个代价很大的操作，它会将所有的数据进行一次shuffle，然后重新分区。</p>
+<p>如果你仅仅只是想减少分区数，从而达到减少碎片任务或者碎片数据的目的。使用<code>coalesce</code>就可以实现，该操作默认不会进行shuffle。其实<code>repartition</code>只是<code>coalesce</code>的shuffle版本。</p>
+<p>一般我们会在<code>filter</code>算子过滤了大量数据后使用它。比如将 partition 数从1000减少到100。这可以减少碎片任务，降低启动task的开销。</p>
+<p><strong>note1:</strong> 如果想查看当前rdd的分区数，在java/scala中可以使用<code>rdd.partitions.size()</code>，在python中使用<code>rdd.getNumPartitions()</code>。</p>
+<p><strong>note2:</strong> 如果要增加分区数，只能使用repartition,或者把partition缩减为一个非常小的值，比如说“1”，也建议使用repartition。</p>
+<h3 id="2-_mapPartitions和foreachPartitions">2. mapPartitions和foreachPartitions</h3><p>适当使用<code>mapPartitions</code>和<code>foreachPartitions</code>代替<code>map</code>和<code>foreach</code>可以提高程序运行速度。这类操作一次会处理一个partition中的所有数据，而不是一条数据。</p>
+<p>mapPartition - 因为每次操作是针对partition的，那么操作中的很多对象和变量都将可以复用，比如说在方法中使用广播变量等。</p>
+<p>foreachPartition - 在和外部数据库交互操作时使用，比如 redis , mysql 等。通过该方法可以避免频繁的创建和销毁链接，每个partition使用一个数据库链接，对效率的提升还是非常明显的。</p>
+<p><strong>note</strong>: 此类方法也存在缺陷，因为一次处理一个partition中的所有数据，在内存不足的时候，将会遇到OOM的问题。</p>
+<h3 id="3-reduceByKey和aggregateByKey">3.reduceByKey和aggregateByKey</h3><p>使用<code>reduceByKey</code>/<code>aggregateByKey</code>代替<code>groupByKey</code>。</p>
+<p><code>reduceByKey</code>/<code>aggregateByKey</code>会先在map端对本地数据按照用户定义的规则进行一次聚合，之后再将计算的结果进行shuffle，而<code>groupByKey</code>则会将所以的计算放在reduce阶段进行（全量数据在各个节点中进行了分发和传输）。所以前者的操作大量的减少shuffle的数据，减少了网络IO，提高运行效率。</p>
+<h3 id="4-_mapValues">4. mapValues</h3><p>针对k,v结构的rdd，<code>mapValues</code>直接对value进行操作，不对Key造成影响，可以减少不必要的分区操作。</p>
+<h3 id="5-_broadcast">5. broadcast</h3><p>Spark中广播变量有几个常见的用法。</p>
+<ol>
+<li><p>实现map-side join</p>
+<p> 在需要join操作时，将较小的那份数据转化为普通的集合（数组）进行广播，然后在大数据集中使用小数据进行相应的查询操作，就可以实现map-side join的功能，避免了join操作的shuffle过程。在我之前的文章中对此用法有详细说明和过程图解。</p>
+</li>
+<li><p>使用较大的外部变量</p>
+<p> 如果存在较大的外部变量（外部变量可以理解为在driver中定义的变量），比如说字典数据等。在运算过程中，会将这个变量复制出多个副本，传输到每个task之中进行执行。如果这个变量的大小有100M或者更大，将会浪费大量的网络IO，同时，executor也会因此被占用大量的内存，造成频繁GC，甚至引发OOM。</p>
+<p> 因此在这种情况下，我最好提前对该变量进行广播，它会被事先将副本分发到每个executor中，同一executor中的task则在执行时共享该变量。很大程度的减少了网络IO开销以及executor的内存使用。</p>
+</li>
+</ol>
+<h3 id="6-_复用RDD">6. 复用RDD</h3><p>避免创建一些用处不大的中间RDD(比如从父RDD抽取了某几个字段形成新的RDD)，这样可以减少一些算子操作。</p>
+<p>对多次使用的RDD进行缓存操作，减少重复计算，在下文有说明。</p>
+<h3 id="7-_cache和persist">7. cache和persist</h3><p><code>cache</code>方法等价于<code>persist(StorageLevel.MEMORY_ONLY)</code></p>
+<p>不要滥用缓存操作。缓存操作非常消耗内存，缓存前考虑好是否还可以对一些无关数据进行过滤。如果你的数据在接下来的操作中只使用一次，则不要进行缓存。</p>
+<p>如果需要复用RDD，则可以考虑使用缓存操作，将大幅度提高运行效率。缓存也分几个级别。</p>
+<ul>
+<li><p><code>MEMORY_ONLY</code></p>
+<p>  如果缓存的数据量不大或是内存足够，可以使用这种方式，该策略效率是最高的。但是如果内存不够，之前缓存的数据则会被清出内存。在spark1.6中，则会直接提示OOM。</p>
+</li>
+<li><p><code>MEMORY_AND_DISK</code></p>
+<p>  优先将数据写入内存，如果内存不够则写入硬盘。较为稳妥的策略，但是如果不是很复杂的计算，可能重算的速度比从磁盘中读取还要快。</p>
+</li>
+<li><p><code>MEMORY_ONLY_SER</code></p>
+<p>  会将RDD中的数据序列化后存入内存，占用更小的内存空间，减少GC频率，当然，取出数据时需要反序列化，同样会消耗资源。</p>
+</li>
+<li><p><code>MEMORY_AND_DISK_SER</code></p>
+<p>  不再赘述。</p>
+</li>
+<li><p><code>DISK_ONLY</code></p>
+<p>  该策略类似于checkPoint方法，把所有的数据存入了硬盘，再使用的时候从中读出。适用于数据量很大，重算代价也非常高的操作。</p>
+</li>
+<li><p>各种<code>_2</code>结尾的存储策略</p>
+<p>  实际上是对缓存的数据做了一个备份，代价非常高，一般不建议使用。</p>
+</li>
+</ul>
+<h2 id="结语">结语</h2><p>spark的优化方法还有很多，这篇文章主要从使用的角度讲解了常用的优化方法，具体的使用方法可以参考博主的其他优化文章。</p>
 
       
     </div>
@@ -434,7 +403,7 @@ port = <span class="number">8649</span>
       
         <div class="post-tags">
           
-            <a href="/tags/ganglia/" rel="tag">#ganglia</a>
+            <a href="/tags/spark/" rel="tag">#spark</a>
           
         </div>
       
@@ -443,17 +412,13 @@ port = <span class="number">8649</span>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/24/spark-join-broadcast优化/" rel="next" title="spark join broadcast优化">
-                <i class="fa fa-chevron-left"></i> spark join broadcast优化
+              <a href="/2016/04/12/Streaming整合kafka保证数据零丢失/" rel="next" title="Spark Streaming kafka 实现数据零丢失的几种方式">
+                <i class="fa fa-chevron-left"></i> Spark Streaming kafka 实现数据零丢失的几种方式
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/10/09/spark与ElasticSearch交互/" rel="prev" title="使用spark与ElasticSearch交互">
-                使用spark与ElasticSearch交互 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -479,8 +444,8 @@ port = <span class="number">8649</span>
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/09/26/部署ganglia3.7/"
-           data-title="部署ganglia3.7" data-url="http://yoursite.com/2015/09/26/部署ganglia3.7/">
+      <div class="ds-thread" data-thread-key="2016/05/10/编写Spark程序的几个优化点/"
+           data-title="编写Spark程序的几个优化点" data-url="http://yoursite.com/2016/05/10/编写Spark程序的几个优化点/">
       </div>
     
   </div>
@@ -576,7 +541,7 @@ port = <span class="number">8649</span>
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-安装epel源"><span class="nav-number">1.</span> <span class="nav-text">一.安装epel源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-安装gmetad"><span class="nav-number">2.</span> <span class="nav-text">二.安装gmetad</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-安装httpd"><span class="nav-number">3.</span> <span class="nav-text">三.安装httpd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-安装gmond"><span class="nav-number">4.</span> <span class="nav-text">四.安装gmond</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-GUI"><span class="nav-number">5.</span> <span class="nav-text">五.GUI</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-_repartition和coalesce"><span class="nav-number">1.</span> <span class="nav-text">1. repartition和coalesce</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-_mapPartitions和foreachPartitions"><span class="nav-number">2.</span> <span class="nav-text">2. mapPartitions和foreachPartitions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-reduceByKey和aggregateByKey"><span class="nav-number">3.</span> <span class="nav-text">3.reduceByKey和aggregateByKey</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-_mapValues"><span class="nav-number">4.</span> <span class="nav-text">4. mapValues</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-_broadcast"><span class="nav-number">5.</span> <span class="nav-text">5. broadcast</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-_复用RDD"><span class="nav-number">6.</span> <span class="nav-text">6. 复用RDD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-_cache和persist"><span class="nav-number">7.</span> <span class="nav-text">7. cache和persist</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number"></span> <span class="nav-text">结语</span></a></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -266,6 +266,127 @@
             
               
                 
+                <a class="post-title-link" href="/2016/05/10/编写Spark程序的几个优化点/" itemprop="url">
+                  编写Spark程序的几个优化点
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-10T14:00:00+08:00" content="2016-05-10">
+              2016-05-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/10/编写Spark程序的几个优化点/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/10/编写Spark程序的几个优化点/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>虽然spark已经提供了大量简单易用的API，但要想编写出高性能的spark应用，必须要对整体框架有一定的了解，对于Spark初学者来说是比较困难的。</p>
+<p>针对这个这个问题，其实在spark1.6中，已经加入了dataset，官方已经对其进行了一系列的优化，用户可以将rdd转化为dataset操作，减少学习成本。不过目前(1.6版本)依旧存在一些bug。</p>
+<p>下文讲解了使用RDD编程时，常用的几种代码优化方法。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/10/编写Spark程序的几个优化点/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/04/12/Streaming整合kafka保证数据零丢失/" itemprop="url">
                   Spark Streaming kafka 实现数据零丢失的几种方式
                 </a>
@@ -1354,137 +1475,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/16/提高spark-jdbc操作并发度/" itemprop="url">
-                  spark jdbc(mysql) 操作并发度优化
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-12-16T22:00:00+08:00" content="2015-12-16">
-              2015-12-16
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/12/16/提高spark-jdbc操作并发度/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/16/提高spark-jdbc操作并发度/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>下文以 <code>mysql</code> 为例</p>
-</blockquote>
-<h2 id="在spark中使用jdbc">在spark中使用jdbc</h2><p>在 <code>spark-env.sh</code> 文件中加入:</p>
-<pre><code><span class="keyword">export</span> SPARK_CLASSPATH=/path/mysql-connector-java-<span class="number">5.1</span><span class="number">.34</span>.jar
-</code></pre><p>任务提交时加入:</p>
-<pre><code>--jars /path/mysql-connector-java-<span class="number">5.1</span><span class="number">.34</span>.jar
-</code></pre><h2 id="1-_单partition(无并发)">1. 单partition(无并发)</h2><p>调用函数</p>
-<pre><code><span class="function"><span class="keyword">def</span> <span class="title">jdbc</span><span class="params">(url: String, table: String, properties: Properties)</span>:</span> DataFrame
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/16/提高spark-jdbc操作并发度/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1525,7 +1520,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">21</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
